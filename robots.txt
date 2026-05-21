@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://web-oficial-hugusfc.netlify.app/sitemap.xml
