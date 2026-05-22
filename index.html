@@ -57,6 +57,7 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--dark)}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+img{max-width:100%;height:auto;display:block}
 
 /* ===== PRELOADER ===== */
 #preloader{
@@ -523,38 +524,61 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
 .shop-welcome strong{color:var(--gold)}
 .shop-section-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em;color:var(--white);margin-bottom:18px;display:flex;align-items:center;gap:14px}
 .shop-section-title::after{content:'';flex:1;height:1px;background:rgba(201,162,39,.15)}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-bottom:36px}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,320px));justify-content:center;gap:28px;margin-top:30px}
 .product-card{
-  background:var(--dark2);border:1px solid rgba(201,162,39,.1);
-  border-radius:var(--radius-lg);overflow:hidden;
-  transition:all .3s;cursor:default;
+  width:100%;max-width:320px;
+  background:linear-gradient(180deg,#171717 0%,#101010 100%);
+  border-radius:24px;overflow:hidden;
+  border:1px solid rgba(201,162,39,.12);
+  transition:all .35s ease;position:relative;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
-.product-card:hover{border-color:rgba(201,162,39,.35);transform:translateY(-4px);box-shadow:0 16px 44px rgba(0,0,0,.4)}
+.product-card:hover{
+  transform:translateY(-8px) scale(1.02);
+  border-color:rgba(201,162,39,.45);
+  box-shadow:0 18px 45px rgba(0,0,0,.5),0 0 25px rgba(201,162,39,.12);
+}
 .product-img-area{
-  height:150px;
-  background:linear-gradient(135deg,var(--green3),#0a0d20);
+  width:100%;height:260px;
+  background:radial-gradient(circle at top,rgba(201,162,39,.12),transparent 60%),
+             linear-gradient(135deg,#102018,#0b0b0b);
   display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
+  padding:20px;position:relative;overflow:hidden;
 }
-.product-img-area .p-icon{font-size:3.5rem;opacity:.6}
-.product-badge-tag{position:absolute;top:10px;left:10px;background:var(--gold);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:var(--radius-sm)}
-.product-body{padding:18px 20px 20px}
-.product-cat{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px}
-.product-name{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.05em;color:var(--white);margin-bottom:8px}
-.product-desc{font-size:.82rem;color:var(--grey);line-height:1.65;font-weight:300;margin-bottom:16px}
-.product-footer{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.product-price{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);line-height:1}
-.product-price span{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;color:var(--grey);font-weight:400;display:block;line-height:1.2}
+.product-img-area::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.05) 50%,transparent 80%);
+  transform:translateX(-100%);transition:1s;
+}
+.product-card:hover .product-img-area::before{transform:translateX(100%)}
+.product-image{width:100%;height:100%;object-fit:contain;display:block;transition:transform .4s ease}
+.product-card:hover .product-image{transform:scale(1.06)}
+.product-body{padding:22px;text-align:center}
+.product-cat{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.product-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.05em;color:var(--white);margin-bottom:10px;line-height:1}
+.product-desc{font-size:.88rem;color:var(--grey);line-height:1.7;margin-bottom:20px}
+.product-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.product-price{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);line-height:1}
+.product-price span{display:block;font-size:.7rem;color:var(--grey);letter-spacing:.12em;margin-top:4px}
 .btn-wa-product{
-  display:inline-flex;align-items:center;gap:6px;
-  background:#25D366;color:#fff;border:none;
-  padding:9px 16px;border-radius:var(--radius-sm);
-  font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
-  text-decoration:none;transition:all .25s;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:#25D366;color:#fff;padding:11px 18px;border-radius:12px;
+  text-decoration:none;font-family:'Barlow Condensed',sans-serif;
+  font-size:.78rem;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;transition:all .25s ease;border:none;
 }
-.btn-wa-product:hover{background:#1ebe5d;transform:translateY(-1px)}
-.btn-wa-product svg{width:14px;height:14px;fill:#fff}
+.btn-wa-product:hover{
+  background:#1ebe5d;transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(37,211,102,.35);
+}
+.product-badge-tag{
+  position:absolute;top:14px;left:14px;
+  background:linear-gradient(135deg,var(--gold),#f0c040);color:#000;
+  padding:6px 12px;border-radius:10px;
+  font-family:'Barlow Condensed',sans-serif;font-size:.65rem;
+  font-weight:900;letter-spacing:.18em;text-transform:uppercase;
+  box-shadow:0 6px 18px rgba(201,162,39,.25);
+}
 .shop-divider{height:1px;background:rgba(201,162,39,.1);margin:28px 0}
 .membresia-box{
   background:linear-gradient(135deg,var(--green3),#0a0d20);
@@ -565,212 +589,80 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
 .membresia-box p{font-size:.88rem;color:var(--grey);margin-bottom:20px;font-weight:300}
 .membresia-perks{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:22px}
 .mperk{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,162,39,.3);padding:6px 14px;border-radius:var(--radius-sm);font-weight:700}
-/* ===== FIX PRODUCTOS CENTRADOS Y MÁS PRO ===== */
 
-/* GRID MÁS ELEGANTE */
-.products-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(270px,320px));
-  justify-content:center;
-  gap:28px;
-  margin-top:30px;
+/* ==========================================================================
+   MEDIA QUERIES – RESPONSIVE
+   ========================================================================== */
+
+/* ≥1200px ya está cubierto por los estilos base */
+
+/* Tablet grande / laptop pequeña (max 1024px) */
+@media(max-width:1024px){
+  .nav-links{display:none}
+  .btn-nav-acceder{display:inline-flex}
+  .hamburger{display:flex}
+  .about-grid{grid-template-columns:1fr;gap:36px}
+  .kit-feature{grid-template-columns:1fr;gap:36px}
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .g-cell-big{grid-column:span 2;grid-row:span 1}
+  .calendar-grid{grid-template-columns:1fr}
+  .comunidad-inner{grid-template-columns:1fr;gap:40px}
+  .contact-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr 1fr;gap:36px}
+  .valores-grid{grid-template-columns:repeat(2,1fr)}
 }
 
-/* CARD */
-.product-card{
-  width:100%;
-  max-width:320px;
-  background:linear-gradient(180deg,#171717 0%,#101010 100%);
-  border-radius:24px;
-  overflow:hidden;
-  border:1px solid rgba(201,162,39,.12);
-  transition:all .35s ease;
-  position:relative;
-  box-shadow:0 10px 30px rgba(0,0,0,.35);
+/* Tablet pequeña / móvil grande (max 768px) */
+@media(max-width:768px){
+  .hero-title{font-size:clamp(3.5rem,14vw,7rem)}
+  .hero-btns{flex-direction:column;align-items:center}
+  .statsbar-inner{grid-template-columns:repeat(2,1fr)}
+  .st:nth-child(2){border-right:none}
+  .gallery-grid{grid-template-columns:1fr}
+  .g-cell-big{grid-column:span 1}
+  .valores-grid{grid-template-columns:1fr}
+  .ficha-teams{gap:12px}
+  .ficha-vs{font-size:3rem}
+  .ficha-emblem{width:90px;height:90px}
+  .ficha-emblem img{width:65px;height:65px}
+  .ficha-teamname{font-size:1.3rem}
+  .next-matches{grid-template-columns:1fr}
+  .products-grid{grid-template-columns:1fr;justify-items:center}
+  .product-card{max-width:100%}
+  .product-img-area{height:240px}
+  .product-footer{flex-direction:column;align-items:center}
+  .btn-wa-product{width:100%}
 }
 
-.product-card:hover{
-  transform:translateY(-8px) scale(1.02);
-  border-color:rgba(201,162,39,.45);
-  box-shadow:
-    0 18px 45px rgba(0,0,0,.5),
-    0 0 25px rgba(201,162,39,.12);
+/* Móvil mediano (max 600px) */
+@media(max-width:600px){
+  section{padding:60px 16px}
+  .nav-i{padding:0 16px}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr;gap:28px}
+  .ficha-header{padding:28px 20px}
+  .ficha-body{padding:24px}
+  .ficha-info-grid{grid-template-columns:1fr}
 }
 
-/* IMAGEN */
-.product-img-area{
-  width:100%;
-  height:260px;
-  background:
-    radial-gradient(circle at top,
-    rgba(201,162,39,.12),
-    transparent 60%),
-    linear-gradient(135deg,#102018,#0b0b0b);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  position:relative;
-  overflow:hidden;
-}
-
-/* BRILLO */
-.product-img-area::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    120deg,
-    transparent 20%,
-    rgba(255,255,255,.05) 50%,
-    transparent 80%
-  );
-  transform:translateX(-100%);
-  transition:1s;
-}
-
-.product-card:hover .product-img-area::before{
-  transform:translateX(100%);
-}
-
-/* IMAGEN PRODUCTO */
-.product-image{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  display:block;
-  transition:transform .4s ease;
-}
-
-.product-card:hover .product-image{
-  transform:scale(1.06);
-}
-
-/* BODY */
-.product-body{
-  padding:22px;
-  text-align:center;
-}
-
-/* CATEGORÍA */
-.product-cat{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.68rem;
-  letter-spacing:.25em;
-  text-transform:uppercase;
-  color:var(--gold);
-  margin-bottom:8px;
-}
-
-/* NOMBRE */
-.product-name{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.8rem;
-  letter-spacing:.05em;
-  color:var(--white);
-  margin-bottom:10px;
-  line-height:1;
-}
-
-/* DESCRIPCIÓN */
-.product-desc{
-  font-size:.88rem;
-  color:var(--grey);
-  line-height:1.7;
-  margin-bottom:20px;
-}
-
-/* FOOTER */
-.product-footer{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-/* PRECIO */
-.product-price{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:2rem;
-  color:var(--gold);
-  line-height:1;
-}
-
-.product-price span{
-  display:block;
-  font-size:.7rem;
-  color:var(--grey);
-  letter-spacing:.12em;
-  margin-top:4px;
-}
-
-/* BOTÓN WHATSAPP */
-.btn-wa-product{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  background:#25D366;
-  color:#fff;
-  padding:11px 18px;
-  border-radius:12px;
-  text-decoration:none;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.78rem;
-  font-weight:800;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  transition:all .25s ease;
-  border:none;
-}
-
-.btn-wa-product:hover{
-  background:#1ebe5d;
-  transform:translateY(-2px);
-  box-shadow:0 10px 25px rgba(37,211,102,.35);
-}
-
-/* BADGE */
-.product-badge-tag{
-  position:absolute;
-  top:14px;
-  left:14px;
-  background:linear-gradient(135deg,var(--gold),#f0c040);
-  color:#000;
-  padding:6px 12px;
-  border-radius:10px;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.65rem;
-  font-weight:900;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  box-shadow:0 6px 18px rgba(201,162,39,.25);
-}
-
-/* RESPONSIVE */
-@media(max-width:700px){
-
-  .products-grid{
-    grid-template-columns:1fr;
-    justify-items:center;
-  }
-
-  .product-card{
-    max-width:100%;
-  }
-
-  .product-img-area{
-    height:240px;
-  }
-
-  .product-footer{
-    flex-direction:column;
-    align-items:center;
-  }
-
-  .btn-wa-product{
-    width:100%;
-  }
+/* Celular pequeño (max 480px) */
+@media(max-width:480px){
+  .hero-content{padding:80px 12px 50px}
+  .hero-escudo{width:120px;height:120px}
+  .hero-badge{font-size:.6rem;padding:4px 10px}
+  .btn-p,.btn-o{padding:12px 24px;font-size:.8rem;width:100%;text-align:center}
+  .countdown{flex-wrap:wrap;justify-content:center}
+  .cd-sep{display:none}
+  .cd-unit{min-width:50px;padding:6px 10px}
+  .shop-body{padding:20px}
+  .auth-body{padding:20px 24px 28px}
+  .auth-header{padding:24px 20px}
+  .auth-name-row{grid-template-columns:1fr}
+  .mob-menu a{font-size:1rem;padding:12px 0}
+  .mob-menu .mob-acceder{font-size:.8rem;padding:10px}
+  .st{padding:18px 10px}
+  .st-n{font-size:1.6rem}
+  .st-l{font-size:.6rem}
 }
 </style>
 </head>
@@ -1073,7 +965,7 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   </div>
 </section>
 
-<!-- ===== COMUNIDAD ===== -->
+<!-- COMUNIDAD -->
 <section id="comunidad" class="comunidad-sec">
   <div class="comunidad-inner">
     <div class="comunidad-text reveal-l">
@@ -1199,7 +1091,7 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14l5-5 5 5z"/></svg>
 </button>
 
-<!-- ===== MODAL AUTH ===== -->
+<!-- MODAL AUTH -->
 <div class="modal-overlay" id="authOverlay">
   <div class="auth-modal">
     <button class="modal-close-btn" onclick="cerrarAuth()">×</button>
@@ -1256,7 +1148,7 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   </div>
 </div>
 
-<!-- ===== MODAL TIENDA ===== -->
+<!-- MODAL TIENDA -->
 <div class="modal-overlay" id="shopOverlay">
   <div class="shop-modal">
     <div class="shop-header">
@@ -1269,187 +1161,114 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
       </div>
       <button class="shop-close-btn" onclick="cerrarTienda()">×</button>
     </div>
-<div class="products-grid">
+    <div class="shop-body">
+      <div class="shop-welcome">
+        <div class="shop-welcome-icon">🛒</div>
+        <p>Bienvenido a la <strong>Comunidad HUGUS FC</strong>. Aquí puedes ver nuestros productos oficiales y solicitar tu pedido directamente por WhatsApp.</p>
+      </div>
 
-  <!-- CAMISETA -->
-  <div class="product-card">
-    <div class="product-img-area">
-      <div class="product-badge-tag">Más Vendido</div>
+      <div class="shop-section-title">Productos Oficiales</div>
 
-      <img src="imag/camiseta.png" class="product-image" alt="Camiseta HUGUS FC">
-
-    </div>
-
-    <div class="product-body">
-      <div class="product-cat">Indumentaria Oficial</div>
-      <div class="product-name">Camiseta Titular</div>
-
-      <p class="product-desc">
-        Camiseta principal crema con franjas verde y rojo.
-        Escudo HFC + "Dios · Familia · Fútbol".
-      </p>
-
-      <div class="product-footer">
-        <div class="product-price">
-          S/ 85
-          <span>Por unidad</span>
+      <div class="products-grid">
+        <!-- CAMISETA -->
+        <div class="product-card">
+          <div class="product-img-area">
+            <div class="product-badge-tag">Más Vendido</div>
+            <img src="imag/camiseta.png" class="product-image" alt="Camiseta HUGUS FC">
+          </div>
+          <div class="product-body">
+            <div class="product-cat">Indumentaria Oficial</div>
+            <div class="product-name">Camiseta Titular</div>
+            <p class="product-desc">Camiseta principal crema con franjas verde y rojo. Escudo HFC + "Dios · Familia · Fútbol".</p>
+            <div class="product-footer">
+              <div class="product-price">S/ 85<span>Por unidad</span></div>
+              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20la%20Camiseta%20Titular" target="_blank" class="btn-wa-product">Pedir</a>
+            </div>
+          </div>
         </div>
 
-        <a href="imag/camiseta.png" target="_blank" class="btn-wa-product">
-          Pedir
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- KIT -->
-  <div class="product-card">
-    <div class="product-img-area">
-
-      <img src="imag/kit_oficial.png" class="product-image" alt="Kit Oficial">
-
-    </div>
-
-    <div class="product-body">
-      <div class="product-cat">Indumentaria Oficial</div>
-      <div class="product-name">Kit Completo</div>
-
-      <p class="product-desc">
-        Equipación completa: Camiseta + Short + Medias.
-      </p>
-
-      <div class="product-footer">
-        <div class="product-price">
-          S/ 140
-          <span>Kit completo</span>
+        <!-- KIT COMPLETO -->
+        <div class="product-card">
+          <div class="product-img-area">
+            <img src="imag/kit_oficial.png" class="product-image" alt="Kit Oficial">
+          </div>
+          <div class="product-body">
+            <div class="product-cat">Indumentaria Oficial</div>
+            <div class="product-name">Kit Completo</div>
+            <p class="product-desc">Equipación completa: Camiseta + Short + Medias.</p>
+            <div class="product-footer">
+              <div class="product-price">S/ 140<span>Kit completo</span></div>
+              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20el%20Kit%20Completo" target="_blank" class="btn-wa-product">Pedir</a>
+            </div>
+          </div>
         </div>
 
-        <a href="imag/kit_oficial.png" target="_blank" class="btn-wa-product">
-          Pedir
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- BANDERA -->
-  <div class="product-card">
-    <div class="product-img-area">
-      <div class="product-badge-tag">Nuevo</div>
-
-      <img src="imag/bandera_oficial.png" class="product-image" alt="Bandera Oficial">
-
-    </div>
-
-    <div class="product-body">
-      <div class="product-cat">Merchandising</div>
-      <div class="product-name">Bandera Oficial</div>
-
-      <p class="product-desc">
-        Bandera oficial HUGUS FC con escudo y colores del club.
-      </p>
-
-      <div class="product-footer">
-        <div class="product-price">
-          S/ 45
-          <span>Por unidad</span>
+        <!-- BANDERA -->
+        <div class="product-card">
+          <div class="product-img-area">
+            <div class="product-badge-tag">Nuevo</div>
+            <img src="imag/bandera_oficial.png" class="product-image" alt="Bandera Oficial">
+          </div>
+          <div class="product-body">
+            <div class="product-cat">Merchandising</div>
+            <div class="product-name">Bandera Oficial</div>
+            <p class="product-desc">Bandera oficial HUGUS FC con escudo y colores del club.</p>
+            <div class="product-footer">
+              <div class="product-price">S/ 45<span>Por unidad</span></div>
+              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20la%20Bandera%20Oficial" target="_blank" class="btn-wa-product">Pedir</a>
+            </div>
+          </div>
         </div>
 
-        <a href="imag/bandera_oficial.png" target="_blank" class="btn-wa-product">
-          Pedir
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- PELOTA -->
-  <div class="product-card">
-    <div class="product-img-area">
-
-      <img src="imag/pelota_oficial.png" class="product-image" alt="Pelota Oficial">
-
-    </div>
-
-    <div class="product-body">
-      <div class="product-cat">Equipamiento</div>
-      <div class="product-name">Pelota Oficial</div>
-
-      <p class="product-desc">
-        Pelota oficial con diseño exclusivo HUGUS FC.
-      </p>
-
-      <div class="product-footer">
-        <div class="product-price">
-          S/ 120
-          <span>Por unidad</span>
+        <!-- PELOTA -->
+        <div class="product-card">
+          <div class="product-img-area">
+            <img src="imag/pelota_oficial.png" class="product-image" alt="Pelota Oficial">
+          </div>
+          <div class="product-body">
+            <div class="product-cat">Equipamiento</div>
+            <div class="product-name">Pelota Oficial</div>
+            <p class="product-desc">Pelota oficial con diseño exclusivo HUGUS FC.</p>
+            <div class="product-footer">
+              <div class="product-price">S/ 120<span>Por unidad</span></div>
+              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20la%20Pelota%20Oficial" target="_blank" class="btn-wa-product">Pedir</a>
+            </div>
+          </div>
         </div>
 
-        <a href="imag/pelota_oficial.png" target="_blank" class="btn-wa-product">
-          Pedir
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- GORRA -->
-  <div class="product-card">
-    <div class="product-img-area">
-
-      <img src="imag/gorra.png" class="product-image" alt="Gorra Oficial">
-
-    </div>
-
-    <div class="product-body">
-      <div class="product-cat">Merchandising</div>
-      <div class="product-name">Gorra Oficial</div>
-
-      <p class="product-desc">
-        Gorra oficial HUGUS FC estilo premium.
-      </p>
-
-      <div class="product-footer">
-        <div class="product-price">
-          S/ 35
-          <span>Por unidad</span>
+        <!-- GORRA -->
+        <div class="product-card">
+          <div class="product-img-area">
+            <img src="imag/gorra.png" class="product-image" alt="Gorra Oficial">
+          </div>
+          <div class="product-body">
+            <div class="product-cat">Merchandising</div>
+            <div class="product-name">Gorra Oficial</div>
+            <p class="product-desc">Gorra oficial HUGUS FC estilo premium.</p>
+            <div class="product-footer">
+              <div class="product-price">S/ 35<span>Por unidad</span></div>
+              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20la%20Gorra%20Oficial" target="_blank" class="btn-wa-product">Pedir</a>
+            </div>
+          </div>
         </div>
 
-        <a href="imag/gorra.png" target="_blank" class="btn-wa-product">
-          Pedir
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- TARJETA -->
-  <div class="product-card">
-    <div class="product-img-area">
-      <div class="product-badge-tag">Exclusivo</div>
-
-      <img src="imag/tarjeta_ofi.jpg" class="product-image" alt="Tarjeta Oficial">
-
-    </div>
-
-    <div class="product-body">
-      <div class="product-cat">Membresía</div>
-      <div class="product-name">Tarjeta de Hincha</div>
-
-      <p class="product-desc">
-        Tarjeta oficial de miembro HUGUS FC con beneficios exclusivos.
-      </p>
-
-      <div class="product-footer">
-        <div class="product-price">
-          S/ 20
-          <span>Anual</span>
+        <!-- TARJETA -->
+        <div class="product-card">
+          <div class="product-img-area">
+            <div class="product-badge-tag">Exclusivo</div>
+            <img src="imag/tarjeta_ofi.jpg" class="product-image" alt="Tarjeta Oficial">
+          </div>
+          <div class="product-body">
+            <div class="product-cat">Membresía</div>
+            <div class="product-name">Tarjeta de Hincha</div>
+            <p class="product-desc">Tarjeta oficial de miembro HUGUS FC con beneficios exclusivos.</p>
+            <div class="product-footer">
+              <div class="product-price">S/ 20<span>Anual</span></div>
+              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20la%20Tarjeta%20de%20Hincha" target="_blank" class="btn-wa-product">Pedir</a>
+            </div>
+          </div>
         </div>
-
-        <a href="imag/tarjeta_ofi.jpg" target="_blank" class="btn-wa-product">
-          Pedir
-        </a>
       </div>
-    </div>
-  </div>
-
-</div>
 
       <div class="shop-divider"></div>
 
