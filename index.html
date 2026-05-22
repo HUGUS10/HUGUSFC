@@ -406,6 +406,8 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
 .reveal-r{opacity:0;transform:translateX(28px);transition:opacity .7s ease,transform .7s ease}
 .reveal-r.visible{opacity:1;transform:translateX(0)}
 
+
+
 /* ===== MODAL OVERLAY ===== */
 .modal-overlay{
   display:none;position:fixed;inset:0;z-index:1000;
@@ -563,57 +565,212 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
 .membresia-box p{font-size:.88rem;color:var(--grey);margin-bottom:20px;font-weight:300}
 .membresia-perks{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:22px}
 .mperk{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,162,39,.3);padding:6px 14px;border-radius:var(--radius-sm);font-weight:700}
+/* ===== FIX PRODUCTOS CENTRADOS Y MÁS PRO ===== */
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:1024px){
-  .comunidad-inner{grid-template-columns:1fr;gap:40px}
-  .comunidad-visual{display:none}
+/* GRID MÁS ELEGANTE */
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,320px));
+  justify-content:center;
+  gap:28px;
+  margin-top:30px;
 }
-@media(max-width:900px){
-  .nav-links{display:none}
-  .hamburger{display:flex}
-  .btn-nav-acceder{display:none}
-  .about-grid{grid-template-columns:1fr;gap:28px}
-  .valores-grid{grid-template-columns:1fr 1fr}
-  .kit-feature{grid-template-columns:1fr;gap:28px}
-  .footer-top{grid-template-columns:1fr;gap:28px}
-  .statsbar-inner{grid-template-columns:repeat(2,1fr)}
-  .st{border-bottom:1px solid rgba(0,0,0,.08)}
-  .gallery-grid{grid-template-columns:1fr 1fr}
-  .g-cell-big{grid-column:span 2;grid-row:span 1}
-  .calendar-grid{grid-template-columns:1fr}
-  .next-matches{grid-template-columns:1fr}
-  .contact-grid{grid-template-columns:1fr}
-  .ficha-teams{gap:16px}
-  .ficha-vs{font-size:3rem}
-  .ficha-body{padding:24px}
-  .shop-body{padding:20px 20px 32px}
-  .products-grid{grid-template-columns:1fr 1fr}
-  .auth-body{padding:24px 24px 28px}
-  .auth-header{padding:26px 24px 22px}
+
+/* CARD */
+.product-card{
+  width:100%;
+  max-width:320px;
+  background:linear-gradient(180deg,#171717 0%,#101010 100%);
+  border-radius:24px;
+  overflow:hidden;
+  border:1px solid rgba(201,162,39,.12);
+  transition:all .35s ease;
+  position:relative;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
-@media(max-width:600px){
-  .valores-grid{grid-template-columns:1fr}
-  .hero-btns{flex-direction:column;align-items:center;width:100%}
-  .btn-p,.btn-o{width:100%;max-width:280px;text-align:center;display:block;padding:15px 20px}
-  .statsbar-inner{grid-template-columns:repeat(2,1fr)}
-  .footer-bottom{flex-direction:column;align-items:flex-start}
-  section{padding:64px 16px}
-  .gallery-grid{grid-template-columns:1fr}
-  .g-cell-big{grid-column:span 1}
-  .calendar-head{gap:12px}
-  .match-teams{flex-direction:column;gap:16px}
-  .ficha-header{padding:28px 20px}
-  .ficha-emblem{width:90px;height:90px}
-  .ficha-emblem img{width:65px;height:65px}
-  .ficha-vs{font-size:2.5rem}
-  .ficha-teamname{font-size:1.4rem}
-  .contact-grid{grid-template-columns:1fr}
-  .cd-unit{min-width:52px;padding:6px 10px}
-  .next-matches{grid-template-columns:1fr}
-  .products-grid{grid-template-columns:1fr}
-  .auth-name-row{grid-template-columns:1fr}
-  .shop-header{padding:18px 20px}
+
+.product-card:hover{
+  transform:translateY(-8px) scale(1.02);
+  border-color:rgba(201,162,39,.45);
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.5),
+    0 0 25px rgba(201,162,39,.12);
+}
+
+/* IMAGEN */
+.product-img-area{
+  width:100%;
+  height:260px;
+  background:
+    radial-gradient(circle at top,
+    rgba(201,162,39,.12),
+    transparent 60%),
+    linear-gradient(135deg,#102018,#0b0b0b);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* BRILLO */
+.product-img-area::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(255,255,255,.05) 50%,
+    transparent 80%
+  );
+  transform:translateX(-100%);
+  transition:1s;
+}
+
+.product-card:hover .product-img-area::before{
+  transform:translateX(100%);
+}
+
+/* IMAGEN PRODUCTO */
+.product-image{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  transition:transform .4s ease;
+}
+
+.product-card:hover .product-image{
+  transform:scale(1.06);
+}
+
+/* BODY */
+.product-body{
+  padding:22px;
+  text-align:center;
+}
+
+/* CATEGORÍA */
+.product-cat{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.68rem;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:8px;
+}
+
+/* NOMBRE */
+.product-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;
+  letter-spacing:.05em;
+  color:var(--white);
+  margin-bottom:10px;
+  line-height:1;
+}
+
+/* DESCRIPCIÓN */
+.product-desc{
+  font-size:.88rem;
+  color:var(--grey);
+  line-height:1.7;
+  margin-bottom:20px;
+}
+
+/* FOOTER */
+.product-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+/* PRECIO */
+.product-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;
+  color:var(--gold);
+  line-height:1;
+}
+
+.product-price span{
+  display:block;
+  font-size:.7rem;
+  color:var(--grey);
+  letter-spacing:.12em;
+  margin-top:4px;
+}
+
+/* BOTÓN WHATSAPP */
+.btn-wa-product{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  background:#25D366;
+  color:#fff;
+  padding:11px 18px;
+  border-radius:12px;
+  text-decoration:none;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.78rem;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:all .25s ease;
+  border:none;
+}
+
+.btn-wa-product:hover{
+  background:#1ebe5d;
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(37,211,102,.35);
+}
+
+/* BADGE */
+.product-badge-tag{
+  position:absolute;
+  top:14px;
+  left:14px;
+  background:linear-gradient(135deg,var(--gold),#f0c040);
+  color:#000;
+  padding:6px 12px;
+  border-radius:10px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:.65rem;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  box-shadow:0 6px 18px rgba(201,162,39,.25);
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+
+  .products-grid{
+    grid-template-columns:1fr;
+    justify-items:center;
+  }
+
+  .product-card{
+    max-width:100%;
+  }
+
+  .product-img-area{
+    height:240px;
+  }
+
+  .product-footer{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .btn-wa-product{
+    width:100%;
+  }
 }
 </style>
 </head>
@@ -1112,128 +1269,187 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
       </div>
       <button class="shop-close-btn" onclick="cerrarTienda()">×</button>
     </div>
+<div class="products-grid">
 
-    <div class="shop-body">
-      <div class="shop-welcome">
-        <div class="shop-welcome-icon">🏆</div>
-        <p>¡Bienvenido a la comunidad! Aquí encontrarás todos los <strong>productos oficiales de HUGUS FC</strong>. Para pedidos y cotizaciones escríbenos directamente por <strong>WhatsApp</strong>.</p>
+  <!-- CAMISETA -->
+  <div class="product-card">
+    <div class="product-img-area">
+      <div class="product-badge-tag">Más Vendido</div>
+
+      <img src="imag/camiseta.png" class="product-image" alt="Camiseta HUGUS FC">
+
+    </div>
+
+    <div class="product-body">
+      <div class="product-cat">Indumentaria Oficial</div>
+      <div class="product-name">Camiseta Titular</div>
+
+      <p class="product-desc">
+        Camiseta principal crema con franjas verde y rojo.
+        Escudo HFC + "Dios · Familia · Fútbol".
+      </p>
+
+      <div class="product-footer">
+        <div class="product-price">
+          S/ 85
+          <span>Por unidad</span>
+        </div>
+
+        <a href="imag/camiseta.png" target="_blank" class="btn-wa-product">
+          Pedir
+        </a>
       </div>
+    </div>
+  </div>
 
-      <div class="shop-section-title">Kit & Indumentaria</div>
-      <div class="products-grid">
+  <!-- KIT -->
+  <div class="product-card">
+    <div class="product-img-area">
 
-        <div class="product-card">
-          <div class="product-img-area">
-            <div class="product-badge-tag">Más Vendido</div>
-            <div class="p-icon">👕</div>
-          </div>
-          <div class="product-body">
-            <div class="product-cat">Indumentaria Oficial</div>
-            <div class="product-name">Camiseta Titular</div>
-            <p class="product-desc">Camiseta principal crema con franjas verde y rojo. Escudo HFC + "Dios · Familia · Fútbol". Tallas S al XXL.</p>
-            <div class="product-footer">
-              <div class="product-price">S/ 85<span>Por unidad</span></div>
-              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20la%20Camiseta%20Titular%202026%20%F0%9F%91%95" target="_blank" class="btn-wa-product">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Pedir
-              </a>
-            </div>
-          </div>
+      <img src="imag/kit_oficial.png" class="product-image" alt="Kit Oficial">
+
+    </div>
+
+    <div class="product-body">
+      <div class="product-cat">Indumentaria Oficial</div>
+      <div class="product-name">Kit Completo</div>
+
+      <p class="product-desc">
+        Equipación completa: Camiseta + Short + Medias.
+      </p>
+
+      <div class="product-footer">
+        <div class="product-price">
+          S/ 140
+          <span>Kit completo</span>
         </div>
 
-        <div class="product-card">
-          <div class="product-img-area">
-            <div class="p-icon">🩳</div>
-          </div>
-          <div class="product-body">
-            <div class="product-cat">Indumentaria Oficial</div>
-            <div class="product-name">Kit Completo</div>
-            <p class="product-desc">Equipación completa: Camiseta + Short + Medias. Colores oficiales del club. Nombre y número personalizados.</p>
-            <div class="product-footer">
-              <div class="product-price">S/ 140<span>Kit completo</span></div>
-              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20pedir%20el%20Kit%20Completo%202026%20%E2%9A%BD" target="_blank" class="btn-wa-product">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Pedir
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="product-img-area">
-            <div class="product-badge-tag">Nuevo</div>
-            <div class="p-icon">🏳️</div>
-          </div>
-          <div class="product-body">
-            <div class="product-cat">Merchandising</div>
-            <div class="product-name">Bandera Oficial</div>
-            <p class="product-desc">Bandera oficial HUGUS FC con escudo y colores del club. Ideal para los partidos y para tu casa.</p>
-            <div class="product-footer">
-              <div class="product-price">S/ 45<span>Por unidad</span></div>
-              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20la%20Bandera%20Oficial%20%F0%9F%8F%B3%EF%B8%8F" target="_blank" class="btn-wa-product">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Pedir
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="product-img-area">
-            <div class="p-icon">⚽</div>
-          </div>
-          <div class="product-body">
-            <div class="product-cat">Equipamiento</div>
-            <div class="product-name">Pelota Oficial</div>
-            <p class="product-desc">Pelota oficial con diseño exclusivo HUGUS FC. Usada en los entrenamientos y partidos del club.</p>
-            <div class="product-footer">
-              <div class="product-price">S/ 120<span>Por unidad</span></div>
-              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20la%20Pelota%20Oficial%20%E2%9A%BD" target="_blank" class="btn-wa-product">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Pedir
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="product-img-area">
-            <div class="p-icon">🧢</div>
-          </div>
-          <div class="product-body">
-            <div class="product-cat">Merchandising</div>
-            <div class="product-name">Gorra Oficial</div>
-            <p class="product-desc">Gorra con bordado del escudo HUGUS FC. Colores verde y crema. Talla única ajustable.</p>
-            <div class="product-footer">
-              <div class="product-price">S/ 35<span>Por unidad</span></div>
-              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20la%20Gorra%20Oficial%20%F0%9F%A7%A2" target="_blank" class="btn-wa-product">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Pedir
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="product-card">
-          <div class="product-img-area">
-            <div class="product-badge-tag">Exclusivo</div>
-            <div class="p-icon">🏅</div>
-          </div>
-          <div class="product-body">
-            <div class="product-cat">Membresía</div>
-            <div class="product-name">Carnet de Hincha</div>
-            <p class="product-desc">Carnet oficial de miembro de la comunidad HUGUS FC. Incluye descuentos y beneficios exclusivos.</p>
-            <div class="product-footer">
-              <div class="product-price">S/ 20<span>Anual</span></div>
-              <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Quiero%20mi%20Carnet%20de%20Hincha%20Oficial%20%F0%9F%8F%85" target="_blank" class="btn-wa-product">
-                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Pedir
-              </a>
-            </div>
-          </div>
-        </div>
-
+        <a href="imag/kit_oficial.png" target="_blank" class="btn-wa-product">
+          Pedir
+        </a>
       </div>
+    </div>
+  </div>
+
+  <!-- BANDERA -->
+  <div class="product-card">
+    <div class="product-img-area">
+      <div class="product-badge-tag">Nuevo</div>
+
+      <img src="imag/bandera_oficial.png" class="product-image" alt="Bandera Oficial">
+
+    </div>
+
+    <div class="product-body">
+      <div class="product-cat">Merchandising</div>
+      <div class="product-name">Bandera Oficial</div>
+
+      <p class="product-desc">
+        Bandera oficial HUGUS FC con escudo y colores del club.
+      </p>
+
+      <div class="product-footer">
+        <div class="product-price">
+          S/ 45
+          <span>Por unidad</span>
+        </div>
+
+        <a href="imag/bandera_oficial.png" target="_blank" class="btn-wa-product">
+          Pedir
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PELOTA -->
+  <div class="product-card">
+    <div class="product-img-area">
+
+      <img src="imag/pelota_oficial.png" class="product-image" alt="Pelota Oficial">
+
+    </div>
+
+    <div class="product-body">
+      <div class="product-cat">Equipamiento</div>
+      <div class="product-name">Pelota Oficial</div>
+
+      <p class="product-desc">
+        Pelota oficial con diseño exclusivo HUGUS FC.
+      </p>
+
+      <div class="product-footer">
+        <div class="product-price">
+          S/ 120
+          <span>Por unidad</span>
+        </div>
+
+        <a href="imag/pelota_oficial.png" target="_blank" class="btn-wa-product">
+          Pedir
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- GORRA -->
+  <div class="product-card">
+    <div class="product-img-area">
+
+      <img src="imag/gorra.png" class="product-image" alt="Gorra Oficial">
+
+    </div>
+
+    <div class="product-body">
+      <div class="product-cat">Merchandising</div>
+      <div class="product-name">Gorra Oficial</div>
+
+      <p class="product-desc">
+        Gorra oficial HUGUS FC estilo premium.
+      </p>
+
+      <div class="product-footer">
+        <div class="product-price">
+          S/ 35
+          <span>Por unidad</span>
+        </div>
+
+        <a href="imag/gorra.png" target="_blank" class="btn-wa-product">
+          Pedir
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARJETA -->
+  <div class="product-card">
+    <div class="product-img-area">
+      <div class="product-badge-tag">Exclusivo</div>
+
+      <img src="imag/tarjeta_ofi.jpg" class="product-image" alt="Tarjeta Oficial">
+
+    </div>
+
+    <div class="product-body">
+      <div class="product-cat">Membresía</div>
+      <div class="product-name">Tarjeta de Hincha</div>
+
+      <p class="product-desc">
+        Tarjeta oficial de miembro HUGUS FC con beneficios exclusivos.
+      </p>
+
+      <div class="product-footer">
+        <div class="product-price">
+          S/ 20
+          <span>Anual</span>
+        </div>
+
+        <a href="imag/tarjeta_ofi.jpg" target="_blank" class="btn-wa-product">
+          Pedir
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
 
       <div class="shop-divider"></div>
 
