@@ -1,71 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>HUGUS FC | Web Oficial</title>
-
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
 <meta name="description" content="HUGUS FC | Web Oficial del club de fútbol HUGUS FC. Noticias, comunidad, camisetas, jugadores y contenido oficial."/>
-<meta name="keywords" content="HUGUS FC, club de fútbol, Hugo Laban Guerrero, fútbol peruano, camisetas, comunidad HUGUS FC"/>
+<meta name="keywords" content="HUGUS FC, club de fútbol, HUGUS FC, fútbol peruano, camisetas"/>
 <meta name="author" content="HUGUS FC"/>
-<meta name="robots" content="index, follow"/>
 <meta name="theme-color" content="#0f150f"/>
-
-<meta name="google-site-verification" content="1qapL6C3pRcPmK8wucZhzhoEy-OG1Mhc1SNTbByCTLg"/>
-
 <link rel="canonical" href="https://hugusfc.online/"/>
-
-<link rel="icon" type="image/png" sizes="32x32" href="/imag/logo.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/imag/logo.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/imag/logo.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/imag/logo.png">
-
+<link rel="icon" type="image/png" href="/imag/logo.png">
+<link rel="apple-touch-icon" href="/imag/logo.png">
 <meta property="og:title" content="HUGUS FC | Web Oficial">
 <meta property="og:description" content="Dios · Familia · Fútbol — Club fundado en Abril 2026">
 <meta property="og:image" content="https://hugusfc.online/imag/logo.png">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://hugusfc.online/">
-
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="HUGUS FC | Web Oficial">
-<meta name="twitter:description" content="Club oficial de fútbol HUGUS FC">
-<meta name="twitter:image" content="https://hugusfc.online/imag/logo.png">
-
-<link rel="preload" as="image" href="imag/logo.png">
-
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"SportsOrganization",
-  "name":"HUGUS FC",
-  "url":"https://hugusfc.online",
-  "logo":"https://hugusfc.online/imag/logo.png"
-}
-</script>
-
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
-/* ===== VARIABLES ===== */
 :root{
-  --cream:#E8E0CC;
-  --cream2:#F2EDD8;
-  --green:#1B3A2D;
-  --green2:#2A5940;
-  --green3:#0F2318;
-  --red:#C0392B;
-  --gold:#C9A227;
-  --gold2:#F0C040;
-  --black:#080C09;
-  --dark:#0F150F;
-  --dark2:#161E16;
-  --dark3:#1E2A1E;
-  --white:#F5F0E8;
-  --grey:#7A8A7A;
-  --radius-sm:10px;
-  --radius-md:16px;
-  --radius-lg:20px;
+  --cream:#E8E0CC; --cream2:#F2EDD8; --green:#1B3A2D; --green2:#2A5940;
+  --green3:#0F2318; --red:#C0392B; --gold:#C9A227; --gold2:#F0C040;
+  --black:#080C09; --dark:#0F150F; --dark2:#161E16; --dark3:#1E2A1E;
+  --white:#F5F0E8; --grey:#7A8A7A; --radius-sm:10px; --radius-md:16px; --radius-lg:20px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -75,110 +32,43 @@ body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
 img{max-width:100%;height:auto;display:block}
 
-/* Fondo animado sin video */
-.bg-animation{
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background: radial-gradient(circle at 20% 30%, #0a1a12, #020503);
-  z-index:-2;
-}
-.particles{
-  position:fixed; inset:0;
-  background-image: radial-gradient(rgba(201,162,39,0.2) 1px, transparent 1px);
-  background-size: 40px 40px;
-  animation: drift 30s linear infinite;
-  opacity:0.4;
-  z-index:-1;
-}
-@keyframes drift{
-  from{transform:translateY(0)}
-  to{transform:translateY(-120px)}
-}
+.bg-animation{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 30%,#0a1a12,#020503);z-index:-2}
+.particles{position:fixed;inset:0;background-image:radial-gradient(rgba(201,162,39,0.2) 1px,transparent 1px);background-size:40px 40px;animation:drift 30s linear infinite;opacity:0.4;z-index:-1}
+@keyframes drift{from{transform:translateY(0)}to{transform:translateY(-120px)}}
 
-/* ===== PRELOADER ===== */
-#preloader{
-  position:fixed;inset:0;background:var(--black);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:9999;transition:opacity .7s ease,visibility .7s
-}
+#preloader{position:fixed;inset:0;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .7s}
 #preloader.hide{opacity:0;visibility:hidden;pointer-events:none}
-.pre-logo{
-  width:90px;height:90px;border-radius:50%;
-  background:var(--green3);border:2px solid rgba(201,162,39,.4);
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;
-  box-shadow:0 0 40px rgba(201,162,39,.25);
-  animation:preGlow 1.4s ease infinite
-}
+.pre-logo{width:90px;height:90px;border-radius:50%;background:var(--green3);border:2px solid rgba(201,162,39,.4);display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 0 40px rgba(201,162,39,.25);animation:preGlow 1.4s infinite}
 .pre-logo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.pre-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,10vw,5.5rem);color:var(--gold);letter-spacing:.3em}
-.pre-sub{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.45em;color:var(--cream);opacity:.5;margin-bottom:28px}
-.pre-bar{width:200px;height:2px;background:rgba(255,255,255,.1);overflow:hidden;border-radius:2px}
-.pre-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:preLoad 2s ease forwards}
+.pre-title{font-family:'Bebas Neue';font-size:clamp(3rem,10vw,5.5rem);color:var(--gold);letter-spacing:.3em}
+.pre-sub{font-family:'Barlow Condensed';font-size:.75rem;letter-spacing:.45em;color:var(--cream);opacity:.5;margin-bottom:28px}
+.pre-bar{width:200px;height:2px;background:rgba(255,255,255,.1);border-radius:2px}
+.pre-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:preLoad 2s forwards}
 @keyframes preGlow{0%,100%{box-shadow:0 0 40px rgba(201,162,39,.25)}50%{box-shadow:0 0 60px rgba(201,162,39,.5)}}
 @keyframes preLoad{from{width:0}to{width:100%}}
 
-/* ===== NAV ===== */
-nav{
-  position:fixed;top:0;width:100%;z-index:200;
-  background:rgba(8,12,9,.95);backdrop-filter:blur(16px);
-  border-bottom:1px solid rgba(201,162,39,.15);
-  transition:box-shadow .3s
-}
+nav{position:fixed;top:0;width:100%;z-index:200;background:rgba(8,12,9,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(201,162,39,.15);transition:box-shadow .3s}
 nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.5)}
 .nav-i{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:66px}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-brand-logo{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1px solid rgba(201,162,39,.4);background:var(--green3);display:flex;align-items:center;justify-content:center}
 .nav-brand-logo img{width:28px;height:28px;object-fit:cover}
-.nav-brand-text{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);letter-spacing:.15em}
+.nav-brand-text{font-family:'Bebas Neue';font-size:1.6rem;color:var(--gold);letter-spacing:.15em}
 .nav-right{display:flex;align-items:center;gap:16px}
 .nav-links{display:flex;gap:24px;list-style:none}
-.nav-links a{
-  text-decoration:none;color:rgba(245,240,232,.65);
-  font-family:'Barlow Condensed',sans-serif;font-size:.82rem;
-  letter-spacing:.16em;text-transform:uppercase;font-weight:700;
-  transition:color .2s;position:relative
-}
+.nav-links a{text-decoration:none;color:rgba(245,240,232,.65);font-family:'Barlow Condensed';font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;transition:color .2s;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s}
 .nav-links a:hover{color:var(--gold)}
 .nav-links a:hover::after,.nav-links a.active::after{width:100%}
 .nav-links a.active{color:var(--gold)}
-
-.btn-nav-acceder{
-  display:inline-flex;align-items:center;gap:7px;
-  background:transparent;border:1px solid rgba(201,162,39,.5);
-  color:var(--gold);padding:8px 18px;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  cursor:pointer;border-radius:var(--radius-sm);
-  transition:all .25s;
-}
+.btn-nav-acceder{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid rgba(201,162,39,.5);color:var(--gold);padding:8px 18px;font-family:'Barlow Condensed';font-size:.75rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:var(--radius-sm);transition:all .25s}
 .btn-nav-acceder:hover{background:var(--gold);color:var(--black)}
-
 .user-menu-container{position:relative;display:none}
-.user-avatar-btn{
-  width:40px;height:40px;border-radius:50%;
-  background:var(--gold);color:var(--black);
-  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;border:2px solid var(--gold2);
-  transition:all .25s;font-weight:bold;
-}
+.user-avatar-btn{width:40px;height:40px;border-radius:50%;background:var(--gold);color:var(--black);font-family:'Bebas Neue';font-size:1.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;border:2px solid var(--gold2);transition:all .25s;font-weight:bold}
 .user-avatar-btn:hover{transform:scale(1.08);box-shadow:0 0 16px rgba(201,162,39,.4)}
-.user-dropdown{
-  position:absolute;top:calc(100% + 12px);right:0;
-  background:rgba(22,30,22,0.95);backdrop-filter:blur(12px);
-  border:1px solid rgba(201,162,39,.4);
-  border-radius:var(--radius-md);min-width:200px;
-  display:none;flex-direction:column;overflow:hidden;z-index:210;
-}
+.user-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:rgba(22,30,22,0.95);backdrop-filter:blur(12px);border:1px solid rgba(201,162,39,.4);border-radius:var(--radius-md);min-width:200px;display:none;flex-direction:column;overflow:hidden;z-index:210}
 .user-dropdown.active{display:flex}
-.user-dropdown-item{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 18px;background:none;border:none;
-  color:var(--cream);font-family:'Barlow Condensed',sans-serif;
-  font-size:.8rem;letter-spacing:.05em;font-weight:600;
-  cursor:pointer;width:100%;text-align:left;
-}
+.user-dropdown-item{display:flex;align-items:center;gap:12px;padding:12px 18px;background:none;border:none;color:var(--cream);font-family:'Barlow Condensed';font-size:.8rem;letter-spacing:.05em;font-weight:600;cursor:pointer;width:100%;text-align:left}
 .user-dropdown-item:hover{background:rgba(201,162,39,.15);color:var(--gold)}
 .user-dropdown-divider{height:1px;background:rgba(255,255,255,.1)}
 .user-dropdown-item.logout{color:#e74c3c}
@@ -189,43 +79,19 @@ nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.5)}
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
 .hamburger.active span:nth-child(2){opacity:0}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-.mob-menu{
-  display:none;position:fixed;top:66px;left:0;right:0;
-  background:rgba(8,12,9,.95);backdrop-filter:blur(20px);
-  padding:12px 24px;z-index:199;
-  border-bottom:1px solid rgba(201,162,39,.2);
-  transform:translateY(-10px);opacity:0;
-  transition:opacity .3s,transform .3s;
-}
+.mob-menu{display:none;position:fixed;top:66px;left:0;right:0;background:rgba(8,12,9,.95);backdrop-filter:blur(20px);padding:12px 24px;z-index:199;border-bottom:1px solid rgba(201,162,39,.2);transform:translateY(-10px);opacity:0;transition:opacity .3s,transform .3s}
 .mob-menu.open{display:block;transform:translateY(0);opacity:1}
-.mob-menu a{display:block;padding:14px 0;text-decoration:none;color:var(--white);font-family:'Barlow Condensed';font-size:1.1rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;border-bottom:1px solid rgba(255,255,255,.05);}
+.mob-menu a{display:block;padding:14px 0;text-decoration:none;color:var(--white);font-family:'Barlow Condensed';font-size:1.1rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;border-bottom:1px solid rgba(255,255,255,.05)}
 .mob-menu a:hover{color:var(--gold);padding-left:8px}
 .mob-menu .mob-acceder{display:block;margin-top:14px;padding:13px;text-align:center;background:rgba(201,162,39,.12);border:1px solid rgba(201,162,39,.35);color:var(--gold);border-radius:var(--radius-sm);cursor:pointer}
 
-/* ===== HERO ===== */
-.hero{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-  background:radial-gradient(ellipse 100% 80% at 50% -10%,rgba(27,58,45,.7) 0%,transparent 65%),
-             linear-gradient(180deg,var(--black) 0%,var(--dark) 100%);
-}
-.hero-grid-bg{
-  position:absolute;inset:0;opacity:.03;
-  background-image:repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(201,162,39,.8) 48px,rgba(201,162,39,.8) 49px),
-                    repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(201,162,39,.8) 48px,rgba(201,162,39,.8) 49px);
-}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse 100% 80% at 50% -10%,rgba(27,58,45,.7) 0%,transparent 65%),linear-gradient(180deg,var(--black) 0%,var(--dark) 100%)}
+.hero-grid-bg{position:absolute;inset:0;opacity:.03;background-image:repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(201,162,39,.8) 48px,rgba(201,162,39,.8) 49px),repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(201,162,39,.8) 48px,rgba(201,162,39,.8) 49px)}
 .hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(8,12,9,.75) 100%)}
 .hero-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(27,58,45,.3) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-55%)}
 .hero-content{text-align:center;position:relative;z-index:2;padding:100px 20px 70px;animation:heroFade .9s .5s both}
 @keyframes heroFade{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.hero-escudo{
-  width:clamp(140px,28vw,210px);height:clamp(140px,28vw,210px);
-  margin:0 auto 26px;border-radius:50%;overflow:hidden;
-  border:3px solid rgba(201,162,39,.4);
-  box-shadow:0 0 60px rgba(201,162,39,.25),0 0 120px rgba(27,58,45,.4),inset 0 0 30px rgba(0,0,0,.3);
-  animation:floatY 4s infinite;background:var(--green3);
-  display:flex;align-items:center;justify-content:center;
-}
+.hero-escudo{width:clamp(140px,28vw,210px);height:clamp(140px,28vw,210px);margin:0 auto 26px;border-radius:50%;overflow:hidden;border:3px solid rgba(201,162,39,.4);box-shadow:0 0 60px rgba(201,162,39,.25),0 0 120px rgba(27,58,45,.4),inset 0 0 30px rgba(0,0,0,.3);animation:floatY 4s infinite;background:var(--green3);display:flex;align-items:center;justify-content:center}
 .hero-escudo img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .hero-badge{display:inline-block;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);font-family:'Barlow Condensed';font-size:.7rem;letter-spacing:.35em;color:var(--gold);border:1px solid rgba(201,162,39,.5);padding:6px 18px;margin-bottom:18px;border-radius:30px}
@@ -234,15 +100,14 @@ nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.5)}
 .hero-lema{font-family:'Barlow Condensed';font-size:clamp(.85rem,2.5vw,1.15rem);letter-spacing:.3em;text-transform:uppercase;color:var(--cream);opacity:.6;margin:14px 0 8px}
 .hero-motto{font-family:'Bebas Neue';font-size:clamp(1.4rem,4vw,2.2rem);letter-spacing:.1em;color:var(--gold);margin-bottom:36px}
 .hero-btns{display:inline-flex;gap:14px;flex-wrap:wrap;justify-content:center}
-.btn-p{padding:14px 40px;background:var(--gold);color:var(--black);font-family:'Barlow Condensed';font-weight:900;font-size:.9rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius-sm);display:inline-block;border:none;cursor:pointer;transition:all .25s;}
+.btn-p{padding:14px 40px;background:var(--gold);color:var(--black);font-family:'Barlow Condensed';font-weight:900;font-size:.9rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius-sm);display:inline-block;border:none;cursor:pointer;transition:all .25s}
 .btn-p:hover{background:var(--gold2);transform:translateY(-3px);box-shadow:0 10px 28px rgba(201,162,39,.35)}
-.btn-o{padding:14px 40px;background:transparent;color:var(--cream);font-family:'Barlow Condensed';font-weight:700;font-size:.9rem;letter-spacing:.18em;text-transform:uppercase;border:1px solid rgba(201,162,39,.4);border-radius:var(--radius-sm);display:inline-block;cursor:pointer;transition:all .25s;}
+.btn-o{padding:14px 40px;background:transparent;color:var(--cream);font-family:'Barlow Condensed';font-weight:700;font-size:.9rem;letter-spacing:.18em;text-transform:uppercase;border:1px solid rgba(201,162,39,.4);border-radius:var(--radius-sm);display:inline-block;cursor:pointer;transition:all .25s}
 .btn-o:hover{background:rgba(201,162,39,.1);border-color:var(--gold);transform:translateY(-3px)}
 .scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-family:'Barlow Condensed';font-size:.65rem;letter-spacing:.25em;color:var(--grey);animation:scrollBounce 2.2s infinite}
 .scroll-hint::after{content:'';width:1px;height:34px;background:linear-gradient(var(--gold),transparent)}
 @keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
 
-/* ===== STATS ===== */
 .statsbar{background:var(--gold);overflow:hidden}
 .statsbar-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
 .st{padding:26px 16px;text-align:center;border-right:1px solid rgba(0,0,0,.12);transition:background .2s}
@@ -251,7 +116,6 @@ nav.scrolled{box-shadow:0 4px 30px rgba(0,0,0,.5)}
 .st-n{font-family:'Bebas Neue';font-size:clamp(2rem,5vw,2.8rem);color:var(--black);line-height:1}
 .st-l{font-family:'Barlow Condensed';font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,0,0,.55);font-weight:600}
 
-/* ===== SECTIONS BASE ===== */
 section{padding:90px 20px}
 .si{max-width:1200px;margin:0 auto}
 .stag{font-family:'Barlow Condensed';font-size:.68rem;letter-spacing:.38em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px}
@@ -260,7 +124,6 @@ section{padding:90px 20px}
 .stit .g{color:var(--gold)}
 .sdesc{font-size:.95rem;color:var(--grey);max-width:520px;line-height:1.75;font-weight:300}
 
-/* ===== ABOUT ===== */
 .about-sec{background:var(--dark)}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:52px}
 .about-card{background:var(--dark2);border:1px solid rgba(201,162,39,.12);padding:38px 36px;position:relative;border-radius:var(--radius-lg)}
@@ -274,7 +137,6 @@ section{padding:90px 20px}
 .fv{font-weight:700;font-size:.95rem;color:var(--white);text-align:right}
 .fv.g{color:var(--gold)}
 
-/* ===== VALORES ===== */
 .valores-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
 .vcard{background:var(--dark2);border:1px solid rgba(201,162,39,.08);padding:34px 26px;border-radius:var(--radius-lg);transition:all .3s}
 .vcard:hover{transform:translateY(-5px);border-color:rgba(201,162,39,.3);box-shadow:0 20px 44px rgba(0,0,0,.35)}
@@ -282,7 +144,6 @@ section{padding:90px 20px}
 .v-title{font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:.05em;color:var(--gold)}
 .v-txt{font-size:.87rem;color:var(--grey);line-height:1.65}
 
-/* ===== KIT ===== */
 .kit-sec{background:var(--dark)}
 .kit-feature{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:52px}
 .kit-img-wrap{position:relative;background:linear-gradient(135deg,var(--green3),var(--dark2));border-radius:var(--radius-lg);overflow:hidden}
@@ -298,7 +159,6 @@ section{padding:90px 20px}
 .ktag{font-family:'Barlow Condensed';font-size:.7rem;color:var(--gold);border:1px solid rgba(201,162,39,.3);padding:5px 14px;border-radius:var(--radius-sm)}
 .kit-info-grid{background:var(--dark3);border-radius:var(--radius-md);padding:18px}
 
-/* ===== GALERIA ===== */
 .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:52px;border-radius:var(--radius-lg);overflow:hidden}
 .g-cell{position:relative;overflow:hidden;background:var(--dark3);cursor:pointer}
 .g-cell img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
@@ -308,7 +168,6 @@ section{padding:90px 20px}
 .g-cell:hover .g-overlay{opacity:1}
 .g-label{font-family:'Barlow Condensed';font-size:.78rem;letter-spacing:.15em;color:var(--gold)}
 
-/* ===== NOTICIAS ===== */
 .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:52px}
 .news-card{background:var(--dark2);border:1px solid rgba(201,162,39,.12);border-radius:var(--radius-lg);overflow:hidden;transition:all .3s;cursor:pointer}
 .news-card:hover{transform:translateY(-6px);border-color:rgba(201,162,39,.3)}
@@ -322,7 +181,6 @@ section{padding:90px 20px}
 .news-link{display:inline-block;margin-top:16px;font-family:'Barlow Condensed';font-size:.75rem;letter-spacing:.2em;color:var(--gold);border-bottom:1px solid transparent;cursor:pointer}
 .news-link:hover{border-bottom-color:var(--gold)}
 
-/* ===== CALENDARIO ===== */
 .cal-sec{background:var(--dark)}
 .calendar-head{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:36px}
 .next-label{font-family:'Barlow Condensed';font-weight:900;color:var(--grey);letter-spacing:.12em;text-transform:uppercase;font-size:.85rem}
@@ -331,12 +189,7 @@ section{padding:90px 20px}
 .cd-num{line-height:1;color:var(--white)}
 .cd-label{font-family:'Barlow Condensed';font-size:.6rem;letter-spacing:.18em;color:var(--grey)}
 .cd-sep{color:var(--gold);font-size:2rem}
-.live-score-container{
-  background:rgba(22,30,22,0.9);border:1px solid rgba(201,162,39,.4);
-  border-radius:var(--radius-lg);padding:16px 24px;
-  display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:center;
-  backdrop-filter:blur(8px);
-}
+.live-score-container{background:rgba(22,30,22,0.9);border:1px solid rgba(201,162,39,.4);border-radius:var(--radius-lg);padding:16px 24px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;justify-content:center;backdrop-filter:blur(8px)}
 .live-badge{background:#C0392B;color:white;font-family:'Barlow Condensed';padding:8px 20px;border-radius:40px;font-size:1.2rem;font-weight:bold;animation:pulseRed 1.2s infinite}
 @keyframes pulseRed{0%{opacity:1}50%{opacity:0.7}100%{opacity:1}}
 .score-panel{display:flex;align-items:center;gap:24px}
@@ -346,8 +199,7 @@ section{padding:90px 20px}
 .score-buttons{display:flex;gap:12px;margin-top:8px}
 .score-btn{background:rgba(255,255,255,.1);border:1px solid rgba(201,162,39,.5);color:var(--white);font-size:1.2rem;width:40px;height:40px;border-radius:50%;cursor:pointer}
 .score-btn:hover{background:var(--gold);color:var(--black)}
-.reset-score{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.2);color:var(--grey);padding:6px 16px;border-radius:30px;font-size:.7rem;cursor:pointer}
-.match-finished{background:#2c3e2b;color:#aaa;font-weight:bold;padding:6px 16px;border-radius:30px;font-size:.85rem}
+.reset-score{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.2);color:var(--grey);padding:6px 16px;border-radius:30px;font-size:.7rem;cursor:pointer;margin-left:16px}
 .calendar-grid{display:grid;grid-template-columns:380px 1fr;gap:22px}
 .match-card{background:rgba(22,30,22,0.8);backdrop-filter:blur(12px);border-radius:var(--radius-lg);overflow:hidden;border:1px solid rgba(201,162,39,.2);transition:all .3s}
 .match-top{background:linear-gradient(135deg,rgba(13,16,41,0.7),rgba(17,18,41,0.7));padding:28px 24px}
@@ -379,8 +231,10 @@ section{padding:90px 20px}
 .scorer-name{color:var(--cream)}
 .scorer-goals{color:var(--gold);font-weight:bold}
 .edit-scorers-btn{background:none;border:1px dashed var(--gold);color:var(--gold);font-size:.7rem;padding:4px 10px;border-radius:20px;cursor:pointer;margin-top:12px;width:100%}
+.admin-match-controls{display:flex;gap:12px;margin-top:16px;justify-content:center}
+.admin-btn{background:rgba(255,255,255,.1);border:1px solid var(--gold);color:var(--gold);padding:8px 16px;border-radius:30px;font-size:.7rem;font-weight:bold;cursor:pointer;transition:.2s}
+.admin-btn:hover{background:var(--gold);color:var(--black)}
 
-/* ===== FICHA PARTIDO ===== */
 .ficha-sec{background:var(--dark2);padding:90px 20px}
 .ficha-card{background:rgba(30,42,30,0.7);backdrop-filter:blur(12px);border:1px solid rgba(201,162,39,.2);border-radius:var(--radius-lg);overflow:hidden}
 .ficha-header{background:linear-gradient(135deg,rgba(10,13,32,0.8),rgba(17,18,41,0.8));padding:48px 40px}
@@ -398,14 +252,13 @@ section{padding:90px 20px}
 .previa-box{background:rgba(13,16,41,0.5);border-radius:var(--radius-md);padding:28px}
 .previa-title{font-family:'Bebas Neue';font-size:1.8rem;color:var(--gold);margin-bottom:14px}
 
-/* ===== COMUNIDAD ===== */
 .comunidad-sec{background:linear-gradient(135deg,var(--green3) 0%,var(--dark) 50%,#0a0d1a 100%);position:relative}
 .comunidad-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
 .comunidad-desc{font-size:.95rem;color:var(--grey);line-height:1.8;margin:16px 0 28px}
 .comunidad-perks{display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
 .cperk{display:flex;align-items:center;gap:12px;font-size:.9rem}
 .cperk-dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
-.btn-comunidad{display:inline-flex;align-items:center;gap:12px;background:var(--gold);color:var(--black);padding:16px 42px;font-weight:900;font-size:1rem;letter-spacing:.2em;border:none;border-radius:var(--radius-sm);cursor:pointer}
+.btn-comunidad{display:inline-flex;align-items:center;gap:12px;background:var(--gold);color:var(--black);padding:16px 42px;font-weight:900;font-size:1rem;letter-spacing:.2em;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:.25s}
 .btn-comunidad:hover{background:var(--gold2);transform:translateY(-3px)}
 .comunidad-visual{background:rgba(255,255,255,.03);backdrop-filter:blur(8px);border:1px solid rgba(201,162,39,.15);border-radius:var(--radius-lg);padding:36px}
 .cv-title{font-family:'Bebas Neue';font-size:1.2rem;color:var(--gold);margin-bottom:20px}
@@ -416,7 +269,6 @@ section{padding:90px 20px}
 .cv-badge-row{display:flex;gap:8px;flex-wrap:wrap}
 .cv-badge{font-size:.7rem;color:var(--gold);border:1px solid rgba(201,162,39,.3);padding:6px 14px;border-radius:var(--radius-sm)}
 
-/* ===== PATROCINADORES ===== */
 .sponsors-sec{background:var(--dark2);padding:70px 20px}
 .sponsors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px;margin-top:48px}
 .sponsor-item{background:rgba(255,255,255,.02);border:1px solid rgba(201,162,39,.1);border-radius:var(--radius-md);padding:24px;text-align:center;transition:all .3s}
@@ -425,14 +277,11 @@ section{padding:90px 20px}
 .sponsor-name{font-family:'Barlow Condensed';font-size:.85rem;letter-spacing:.2em;color:var(--gold);margin-top:16px}
 .sponsor-desc{font-size:.7rem;color:var(--grey);margin-top:6px}
 
-/* ===== CONTACTO ===== */
 .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
 .contact-card{background:rgba(22,30,22,0.7);backdrop-filter:blur(8px);border:1px solid rgba(201,162,39,.1);padding:36px 26px;text-align:center;border-radius:var(--radius-lg);transition:all .3s;cursor:pointer}
 .contact-card:hover{transform:translateY(-5px)}
 .contact-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
 .contact-title{font-family:'Bebas Neue';font-size:1.3rem}
-
-/* ===== FOOTER ===== */
 .footer-strip{height:3px;background:linear-gradient(90deg,var(--gold),var(--green2),var(--red))}
 footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px 24px}
 .footer-inner{max-width:1200px;margin:0 auto}
@@ -447,30 +296,25 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
 .footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap}
 .footer-cr{font-family:'Barlow Condensed';font-size:.75rem;letter-spacing:.12em;color:var(--grey)}
 .footer-cr span{color:var(--gold)}
-
-/* ===== WHATSAPP FLOAT ===== */
 .wa-btn{position:fixed;bottom:28px;right:28px;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.4);z-index:300}
 .wa-btn svg{width:28px;height:28px;fill:#fff}
 .wa-tooltip{position:absolute;right:68px;top:50%;transform:translateY(-50%);background:rgba(22,30,22,0.9);color:var(--white);font-size:.78rem;padding:6px 14px;white-space:nowrap;border-radius:var(--radius-sm);opacity:0;pointer-events:none}
 .wa-btn:hover .wa-tooltip{opacity:1}
 .btt{position:fixed;bottom:100px;right:28px;width:44px;height:44px;border-radius:50%;background:rgba(201,162,39,.2);border:1px solid rgba(201,162,39,.3);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:.3s;color:var(--gold)}
 .btt.show{opacity:1}
-
-/* ===== REVEAL ===== */
 .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
 .reveal.visible{opacity:1;transform:translateY(0)}
 .reveal-l{opacity:0;transform:translateX(-28px);transition:opacity .7s,transform .7s}
 .reveal-l.visible{opacity:1;transform:translateX(0)}
 .reveal-r{opacity:0;transform:translateX(28px);transition:opacity .7s,transform .7s}
 .reveal-r.visible{opacity:1;transform:translateX(0)}
-
-/* ===== MODALES ===== */
 .modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(5,8,6,.9);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:20px}
 .modal-overlay.active{display:flex}
-.auth-modal,.shop-modal,.news-modal{background:rgba(22,30,22,0.95);backdrop-filter:blur(20px);border:1px solid rgba(201,162,39,.35);border-radius:var(--radius-lg);width:100%;overflow:hidden;position:relative}
+.auth-modal,.shop-modal,.news-modal,.profile-modal{background:rgba(22,30,22,0.95);backdrop-filter:blur(20px);border:1px solid rgba(201,162,39,.35);border-radius:var(--radius-lg);width:100%;overflow:hidden;position:relative}
 .auth-modal{max-width:440px}
 .shop-modal{max-width:860px;max-height:90vh;overflow-y:auto}
 .news-modal{max-width:600px}
+.profile-modal{max-width:500px}
 .modal-close-btn{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.1);border:none;color:var(--grey);width:30px;height:30px;border-radius:50%;font-size:18px;cursor:pointer}
 .auth-header{background:linear-gradient(135deg,var(--green3),#0a0d20);padding:32px 36px 28px;text-align:center}
 .auth-escudo{width:64px;height:64px;border-radius:50%;background:var(--green3);border:2px solid rgba(201,162,39,.6);margin:0 auto 14px;overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -490,6 +334,14 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
 .auth-switch{text-align:center;margin-top:18px;font-size:.82rem;color:var(--grey)}
 .auth-switch a{color:var(--gold);cursor:pointer}
 .auth-name-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.profile-pic{width:100px;height:100px;border-radius:50%;margin:0 auto 20px;background:var(--dark3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}
+.profile-pic img{width:100%;height:100%;object-fit:cover}
+.profile-pic span{font-size:3rem;color:var(--gold)}
+.profile-field{margin-bottom:16px}
+.profile-field label{display:block;font-size:.7rem;letter-spacing:.2em;color:var(--grey);margin-bottom:5px}
+.profile-field input, .profile-field p{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(201,162,39,.3);padding:10px 14px;color:var(--white);border-radius:var(--radius-sm)}
+.profile-field p{padding:10px 14px;margin:0}
+.edit-profile-btn{background:var(--gold);color:var(--black);border:none;padding:10px;border-radius:var(--radius-sm);cursor:pointer;width:100%;margin-top:10px;font-weight:bold}
 .shop-header{background:linear-gradient(135deg,var(--green3),#0a0d20);padding:24px 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
 .shop-header-left{display:flex;gap:14px;align-items:center}
 .shop-header-escudo{width:42px;height:42px;border-radius:50%;background:var(--green3);border:1px solid rgba(201,162,39,.5);display:flex;align-items:center;justify-content:center}
@@ -556,10 +408,7 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
 
 <nav id="mainNav">
   <div class="nav-i">
-    <a href="#inicio" class="nav-brand">
-      <div class="nav-brand-logo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div>
-      <span class="nav-brand-text">HUGUS FC</span>
-    </a>
+    <a href="#inicio" class="nav-brand"><div class="nav-brand-logo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><span class="nav-brand-text">HUGUS FC</span></a>
     <ul class="nav-links">
       <li><a href="#inicio">Inicio</a></li>
       <li><a href="#nosotros">Nosotros</a></li>
@@ -572,15 +421,13 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <div class="nav-right">
-      <button class="btn-nav-acceder" id="btnAcceder" onclick="abrirAuth()">
-        <svg viewBox="0 0 24 24" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Acceder
-      </button>
+      <button class="btn-nav-acceder" id="btnAcceder" onclick="abrirAuth()"><svg viewBox="0 0 24 24" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Acceder</button>
       <div class="user-menu-container" id="userMenuContainer">
         <button class="user-avatar-btn" id="userAvatarBtn">H</button>
         <div class="user-dropdown" id="userDropdown">
           <div class="user-dropdown-item" id="userProfileItem" style="pointer-events:none; opacity:0.8;">👤 <span id="userEmailDisplay"></span></div>
           <div class="user-dropdown-divider"></div>
+          <button class="user-dropdown-item" onclick="abrirPerfil()">📋 Mi Perfil</button>
           <button class="user-dropdown-item" onclick="abrirTienda()">🛒 Mi Comunidad</button>
           <button class="user-dropdown-item logout" onclick="logout()">🚪 Cerrar sesión</button>
         </div>
@@ -606,9 +453,7 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
 
 <!-- HERO -->
 <section class="hero" id="inicio">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-vignette"></div>
-  <div class="hero-glow"></div>
+  <div class="hero-grid-bg"></div><div class="hero-vignette"></div><div class="hero-glow"></div>
   <div class="hero-content">
     <div class="hero-badge">Est. Abril 2026 — C. El Colorado</div>
     <div class="hero-escudo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC Escudo"></div>
@@ -620,17 +465,15 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
   <div class="scroll-hint">Scroll</div>
 </section>
 
-<div class="statsbar">
-  <div class="statsbar-inner">
-    <div class="st"><div class="st-n" data-target="2026">0</div><div class="st-l">Año Fundación</div></div>
-    <div class="st"><div class="st-n" data-target="11">0</div><div class="st-l">Jugadores</div></div>
-    <div class="st"><div class="st-n" data-target="1">0</div><div class="st-l">Temporada</div></div>
-    <div class="st"><div class="st-n" data-target="100">0</div><div class="st-l">Compromiso</div></div>
-  </div>
-</div>
+<div class="statsbar"><div class="statsbar-inner">
+  <div class="st"><div class="st-n" data-target="2026">0</div><div class="st-l">Año Fundación</div></div>
+  <div class="st"><div class="st-n" data-target="11">0</div><div class="st-l">Jugadores</div></div>
+  <div class="st"><div class="st-n" data-target="1">0</div><div class="st-l">Temporada</div></div>
+  <div class="st"><div class="st-n" data-target="100">0</div><div class="st-l">Compromiso</div></div>
+</div></div>
 
-<!-- NOSOTROS, VALORES, KIT, GALERIA (contenido idéntico al original, abreviado por longitud) -->
-<section id="nosotros" class="about-sec"><div class="si"><div class="stag">Quiénes Somos</div><h2 class="stit">HISTORIA <span class="g">DEL CLUB</span></h2><p class="sdesc">Un club nacido del corazón, con valores sólidos y una visión clara: crecer juntos.</p><div class="about-grid"><div class="about-card reveal-l"><div class="about-big">HUGUS</div><p class="about-p"><strong style="color:var(--gold)">HUGUS FC</strong> es un club de fútbol fundado en <strong>Abril del 2026</strong> en el Caserío El Colorado, con la visión de crear una institución deportiva sólida, competitiva y con valores que trascienden la cancha.</p><p class="about-p">Bajo el liderazgo de su propietario y fundador <strong style="color:var(--cream)">Hugo Laban Guerrero</strong>, el club ha sido construido sobre tres pilares fundamentales: <em>Dios, Familia y Fútbol</em> — una filosofía que guía cada entrenamiento, cada partido y cada decisión.</p><p class="about-p">Con un diseño de indumentaria inspirado en la grandeza de los clubes más icónicos del mundo, HUGUS FC nace para quedarse y dejar huella en el fútbol local y regional.</p></div><div class="reveal-r"><div class="facts"><div class="fact"><span class="fl">Club</span><span class="fv">HUGUS FC</span></div><div class="fact"><span class="fl">Fundación</span><span class="fv g">Abril 2026</span></div><div class="fact"><span class="fl">Sede</span><span class="fv">C. El Colorado</span></div><div class="fact"><span class="fl">Propietario</span><span class="fv">Hugo Laban Guerrero</span></div><div class="fact"><span class="fl">Lema</span><span class="fv g">Dios · Familia · Fútbol</span></div><div class="fact"><span class="fl">Marca Indumentaria</span><span class="fv">Adidas / LAGUE</span></div><div class="fact"><span class="fl">Colores Oficiales</span><span class="fv"><span style="background:#E8E0CC;display:inline-block;width:14px;height:14px;border-radius:3px;"></span> <span style="background:#1B3A2D;display:inline-block;width:14px;height:14px;border-radius:3px;"></span> <span style="background:#C0392B;display:inline-block;width:14px;height:14px;border-radius:3px;"></span> <span style="background:#C9A227;display:inline-block;width:14px;height:14px;border-radius:3px;"></span></span></div><div class="fact"><span class="fl">Número Icónico</span><span class="fv g">#10</span></div></div></div></div></div></section>
+<!-- NOSOTROS, VALORES, KIT, GALERIA, NOTICIAS (contenido original) -->
+<section id="nosotros" class="about-sec"><div class="si"><div class="stag">Quiénes Somos</div><h2 class="stit">HISTORIA <span class="g">DEL CLUB</span></h2><p class="sdesc">Un club nacido del corazón, con valores sólidos y una visión clara: crecer juntos.</p><div class="about-grid"><div class="about-card reveal-l"><div class="about-big">HUGUS</div><p class="about-p"><strong style="color:var(--gold)">HUGUS FC</strong> es un club de fútbol fundado en <strong>Abril del 2026</strong> en el Caserío El Colorado, con la visión de crear una institución deportiva sólida, competitiva y con valores que trascienden la cancha.</p><p class="about-p">Bajo el liderazgo de su propietario y fundador <strong style="color:var(--cream)">HUGUS FC</strong>, el club ha sido construido sobre tres pilares fundamentales: <em>Dios, Familia y Fútbol</em> — una filosofía que guía cada entrenamiento, cada partido y cada decisión.</p><p class="about-p">Con un diseño de indumentaria inspirado en la grandeza de los clubes más icónicos del mundo, HUGUS FC nace para quedarse y dejar huella en el fútbol local y regional.</p></div><div class="reveal-r"><div class="facts"><div class="fact"><span class="fl">Club</span><span class="fv">HUGUS FC</span></div><div class="fact"><span class="fl">Fundación</span><span class="fv g">Abril 2026</span></div><div class="fact"><span class="fl">Sede</span><span class="fv">C. El Colorado</span></div><div class="fact"><span class="fl">Propietario</span><span class="fv">HUGUS FC</span></div><div class="fact"><span class="fl">Lema</span><span class="fv g">Dios · Familia · Fútbol</span></div><div class="fact"><span class="fl">Marca Indumentaria</span><span class="fv">Adidas / LAGUE</span></div><div class="fact"><span class="fl">Colores Oficiales</span><span class="fv"><span style="background:#E8E0CC;display:inline-block;width:14px;height:14px;border-radius:3px;"></span> <span style="background:#1B3A2D;display:inline-block;width:14px;height:14px;border-radius:3px;"></span> <span style="background:#C0392B;display:inline-block;width:14px;height:14px;border-radius:3px;"></span> <span style="background:#C9A227;display:inline-block;width:14px;height:14px;border-radius:3px;"></span></span></div><div class="fact"><span class="fl">Número Icónico</span><span class="fv g">#10</span></div></div></div></div></div></section>
 
 <section id="valores"><div class="si"><div class="stag">Filosofía</div><h2 class="stit">NUESTROS <span class="g">VALORES</span></h2><p class="sdesc">Los principios que definen nuestra identidad dentro y fuera del campo.</p><div class="valores-grid"><div class="vcard reveal"><div class="v-icon">✝️</div><div class="v-title">Fe en Dios</div><p class="v-txt">Nuestra fortaleza espiritual es el primer pilar.</p></div><div class="vcard reveal"><div class="v-icon">👨‍👩‍👦</div><div class="v-title">Familia</div><p class="v-txt">El equipo es familia. Nos apoyamos y crecemos juntos.</p></div><div class="vcard reveal"><div class="v-icon">⚽</div><div class="v-title">Fútbol</div><p class="v-txt">Pasión pura por el juego. Competimos con orgullo.</p></div><div class="vcard reveal"><div class="v-icon">👑</div><div class="v-title">Grandeza</div><p class="v-txt">Inspirados en los clubes más grandes del mundo.</p></div><div class="vcard reveal"><div class="v-icon">🏆</div><div class="v-title">Disciplina</div><p class="v-txt">Trabajamos duro, respetamos los compromisos.</p></div><div class="vcard reveal"><div class="v-icon">🌟</div><div class="v-title">Orgullo</div><p class="v-txt">Vestir la camiseta de HUGUS FC es un privilegio.</p></div></div></div></section>
 
@@ -638,7 +481,6 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
 
 <section id="galeria"><div class="si"><div class="stag">Galería Visual</div><h2 class="stit">GALERÍA <span class="g">HUGUS FC</span></h2><div class="gallery-grid reveal"><div class="g-cell g-cell-big"><img src="imag/kit_completo.png" alt="Kit completo"><div class="g-overlay"><span class="g-label">Kit Oficial Completo</span></div></div><div class="g-cell"><img src="imag/pelota.png" alt="Pelota"><div class="g-overlay"><span class="g-label">Pelota Oficial</span></div></div><div class="g-cell"><img src="imag/bandera.png" alt="Bandera"><div class="g-overlay"><span class="g-label">Bandera Oficial</span></div></div></div><p style="text-align:center;margin-top:18px;font-family:'Barlow Condensed';font-size:.75rem;letter-spacing:.2em;color:var(--grey);text-transform:uppercase">Más fotos próximamente · Temporada 2026</p></div></section>
 
-<!-- NOTICIAS -->
 <section id="noticias"><div class="si"><div class="stag">Últimas Noticias</div><h2 class="stit">ACTUALIDAD <span class="g">HUGUS FC</span></h2><div class="news-grid reveal"><div class="news-card" data-news="kit2026"><div class="news-img"><img src="imag/kit_oficial.png" alt="Kit"><div class="news-date">20 Abr 2026</div></div><div class="news-content"><div class="news-title">Presentación oficial del Kit 2026</div><p class="news-excerpt">En una emotiva ceremonia en El Colorado, HUGUS FC presentó su nueva indumentaria oficial.</p><div class="news-link" onclick="openNewsModal('kit2026')">Leer más →</div></div></div><div class="news-card" data-news="fichaje10"><div class="news-img"><img src="imag/escudo_hugusfc.png" alt="Fichaje"><div class="news-date">15 Abr 2026</div></div><div class="news-content"><div class="news-title">Primer fichaje estrella: El '10' ya tiene dueño</div><p class="news-excerpt">El experimentado volante de creación, Carlos 'Loco' Valderrama, se une al proyecto.</p><div class="news-link" onclick="openNewsModal('fichaje10')">Leer más →</div></div></div><div class="news-card" data-news="amistoso"><div class="news-img"><img src="imag/bandera.png" alt="Amistoso"><div class="news-date">05 Abr 2026</div></div><div class="news-content"><div class="news-title">Amistoso ante Deportivo La Unión</div><p class="news-excerpt">El próximo sábado 2 de mayo, el equipo jugará su primer encuentro de preparación.</p><div class="news-link" onclick="openNewsModal('amistoso')">Leer más →</div></div></div></div></div></section>
 
 <!-- CALENDARIO MEJORADO -->
@@ -650,7 +492,7 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
     <div class="calendar-grid reveal">
       <div class="match-card" id="mainMatchCard"></div>
       <div class="calendar-side">
-        <div class="cal-side-title">Próximos Partidos</div>
+        <div class="cal-side-title">📋 Historial y Próximos</div>
         <div class="next-matches" id="nextMatchesList"></div>
         <div class="scorers-table">
           <h4>⚽ TABLA DE GOLEADORES</h4>
@@ -664,24 +506,26 @@ footer{background:rgba(15,35,24,0.9);backdrop-filter:blur(8px);padding:52px 20px
 
 <section id="ficha-partido" class="ficha-sec"><div class="si"><div class="stag">Partido Oficial</div><h2 class="stit" id="fichaTitle">HUGUS FC <span class="g">VS</span> EL COLORADO FC</h2><div class="ficha-card reveal" id="fichaCard"></div></div></section>
 
+<!-- COMUNIDAD, PATROCINADORES, CONTACTO, FOOTER (original) -->
 <section id="comunidad" class="comunidad-sec"><div class="comunidad-inner"><div class="comunidad-text reveal-l"><div class="stag">Únete a Nosotros</div><h2 class="stit" style="color:var(--white)">ÚNETE A LA <span class="g">COMUNIDAD</span></h2><p class="comunidad-desc">Sé parte oficial de la familia HUGUS FC. Accede a contenido exclusivo, productos del club y precios especiales.</p><div class="comunidad-perks"><div class="cperk"><div class="cperk-dot"></div><span>Catálogo de productos oficiales</span></div><div class="cperk"><div class="cperk-dot"></div><span>Acceso anticipado a noticias</span></div><div class="cperk"><div class="cperk-dot"></div><span>Descuentos en kits</span></div></div><button class="btn-comunidad" onclick="entrarComunidad()"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Entrar</button></div><div class="comunidad-visual reveal-r"><div class="cv-title">⚽ Comunidad HUGUS FC</div><div class="cv-stat-row"><div class="cv-stat"><div class="cv-stat-num">1ª</div><div class="cv-stat-label">Temporada</div></div><div class="cv-stat"><div class="cv-stat-num">11</div><div class="cv-stat-label">Jugadores</div></div></div><div class="cv-badge-row"><span class="cv-badge">Kit Oficial</span><span class="cv-badge">Merchandising</span><span class="cv-badge">WhatsApp</span></div></div></div></section>
 
 <section id="sponsors" class="sponsors-sec"><div class="si"><div class="stag">Aliados Comerciales</div><h2 class="stit">PATROCINADORES <span class="g">OFICIALES</span></h2><div class="sponsors-grid reveal"><div class="sponsor-item"><div class="sponsor-logo">ADIDAS</div><div class="sponsor-name">Adidas</div><div class="sponsor-desc">Indumentaria Oficial</div></div><div class="sponsor-item"><div class="sponsor-logo">LAGUE</div><div class="sponsor-name">LAGUE</div><div class="sponsor-desc">Equipamiento Deportivo</div></div><div class="sponsor-item"><div class="sponsor-logo">EL COLORADO</div><div class="sponsor-name">Municipalidad El Colorado</div><div class="sponsor-desc">Sede y Auspiciador</div></div><div class="sponsor-item"><div class="sponsor-logo">GATORADE</div><div class="sponsor-name">Gatorade</div><div class="sponsor-desc">Hidratación Oficial</div></div></div></div></section>
 
 <section id="contacto"><div class="si"><div class="stag">Contacto</div><h2 class="stit">ÚNETE A <span class="g">HUGUS FC</span></h2><div class="contact-grid reveal"><a href="https://wa.me/51935419810" class="contact-card-link"><div class="contact-card"><div class="contact-icon" style="background:#25D366">📱</div><div class="contact-title">WhatsApp</div><div class="contact-val">+51 935 419 810</div></div></a><a href="mailto:lg_hugusfc@hotmail.com" class="contact-card-link"><div class="contact-card"><div class="contact-icon" style="background:rgba(201,162,39,.3)">✉️</div><div class="contact-title">Email</div><div class="contact-val">LG_HUGUSFC@hotmail.com</div></div></a><div class="contact-card"><div class="contact-icon">📍</div><div class="contact-title">Ubicación</div><div class="contact-val">Caserío El Colorado</div></div></div></div></section>
 
-<footer><div class="footer-inner"><div class="footer-top"><div><div class="fb-name">HUGUS FC</div><div class="fb-lema">Dios · Familia · Fútbol</div><p class="fb-desc">Club fundado en Abril 2026 en El Colorado. Pasión, disciplina y orgullo.</p></div><div class="footer-col"><h4>Club</h4><ul><li><a href="#nosotros">Historia</a></li><li><a href="#valores">Valores</a></li><li><a href="#kit">Kit</a></li></ul></div><div class="footer-col"><h4>Contacto</h4><p>📱 +51 935 419 810<br>✉️ LG_HUGUSFC@hotmail.com</p></div></div><div class="footer-bottom"><div class="footer-cr">© 2026 <span>HUGUS FC</span></div><div class="footer-cr">Fundado por <span>Hugo Laban Guerrero</span></div></div></div></footer>
+<footer><div class="footer-inner"><div class="footer-top"><div><div class="fb-name">HUGUS FC</div><div class="fb-lema">Dios · Familia · Fútbol</div><p class="fb-desc">Club fundado en Abril 2026 en El Colorado. Pasión, disciplina y orgullo.</p></div><div class="footer-col"><h4>Club</h4><ul><li><a href="#nosotros">Historia</a></li><li><a href="#valores">Valores</a></li><li><a href="#kit">Kit</a></li></ul></div><div class="footer-col"><h4>Contacto</h4><p>📱 +51 935 419 810<br>✉️ LG_HUGUSFC@hotmail.com</p></div></div><div class="footer-bottom"><div class="footer-cr">© 2026 <span>HUGUS FC</span></div><div class="footer-cr">Fundado por <span>HUGUS FC</span></div></div></div></footer>
 
 <a href="https://wa.me/51935419810" class="wa-btn" target="_blank"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><div class="wa-tooltip">💬 Escríbenos</div></a>
 <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
 
-<!-- MODALES -->
+<!-- MODALES: AUTH, SHOP, NEWS, PROFILE -->
 <div class="modal-overlay" id="authOverlay"><div class="auth-modal"><button class="modal-close-btn" onclick="cerrarAuth()">×</button><div class="auth-header"><div class="auth-escudo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="auth-club-name">HUGUS FC</div></div><div class="auth-tabs"><button class="auth-tab active" onclick="switchTab('login')">Iniciar Sesión</button><button class="auth-tab" onclick="switchTab('registro')">Registrarse</button></div><div class="auth-body"><div id="form-login"><div class="auth-form-group"><label>Correo</label><input type="email" id="loginEmail" placeholder="tu@correo.com"></div><div class="auth-form-group"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="********"></div><button class="btn-auth-submit" onclick="loginUser()">Ingresar</button><p class="auth-switch">¿No tienes cuenta? <a onclick="switchTab('registro')">Regístrate</a></p></div><div id="form-registro" style="display:none"><div class="auth-name-row"><div class="auth-form-group"><label>Nombre</label><input type="text" id="regNombre"></div><div class="auth-form-group"><label>Apellido</label><input type="text" id="regApellido"></div></div><div class="auth-form-group"><label>Correo</label><input type="email" id="regEmail"></div><div class="auth-form-group"><label>Contraseña</label><input type="password" id="regPassword"></div><button class="btn-auth-submit" onclick="registerUser()">Registrarse</button><p class="auth-switch">¿Ya tienes cuenta? <a onclick="switchTab('login')">Inicia sesión</a></p></div></div></div></div>
 <div class="modal-overlay" id="shopOverlay"><div class="shop-modal"><div class="shop-header"><div class="shop-header-left"><div class="shop-header-escudo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div><div class="shop-header-title">Comunidad HUGUS FC</div><div class="shop-header-sub">Productos Oficiales</div></div></div><button class="shop-close-btn" onclick="cerrarTienda()">×</button></div><div class="shop-body"><div class="shop-welcome"><p>Bienvenido a la tienda oficial. Solicita tu pedido por WhatsApp.</p></div><div class="products-grid"><div class="product-card"><div class="product-img-area"><img src="imag/camiseta.png" class="product-image"></div><div class="product-body"><div class="product-name">Camiseta Titular</div><div class="product-footer"><div class="product-price">S/85</div><a href="https://wa.me/51935419810?text=Camiseta" class="btn-wa-product">Pedir</a></div></div></div><div class="product-card"><div class="product-img-area"><img src="imag/kit_oficial.png" class="product-image"></div><div class="product-body"><div class="product-name">Kit Completo</div><div class="product-footer"><div class="product-price">S/140</div><a href="https://wa.me/51935419810?text=Kit" class="btn-wa-product">Pedir</a></div></div></div></div></div></div></div>
 <div class="modal-overlay" id="newsModalOverlay"><div class="news-modal"><button class="modal-close-btn" onclick="closeNewsModal()">×</button><div class="auth-header"><div class="auth-escudo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="auth-club-name">HUGUS FC</div></div><div class="auth-body" id="newsModalContent"><div class="news-modal-title"></div><div class="news-modal-date"></div><div class="news-modal-content"></div></div></div></div>
+<div class="modal-overlay" id="profileModalOverlay"><div class="profile-modal"><button class="modal-close-btn" onclick="cerrarPerfil()">×</button><div class="auth-header"><div class="auth-escudo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="auth-club-name">Mi Perfil</div></div><div class="auth-body" id="profileModalContent"></div></div></div>
 
 <script>
-// ==================== DATOS DE PARTIDOS (incluyendo el del 24 de mayo ya pasado) ====================
+// ==================== DATOS DE PARTIDOS ====================
 const matchesList = [
   { id: 1, home: "HUGUS FC", away: "EL COLORADO FC", date: new Date(2026, 4, 24, 15, 0, 0), location: "Cancha El Colorado", competition: "Partido Oficial", homeLogo: "imag/escudo_hugusfc.png", awayLogo: "RC" },
   { id: 2, home: "HUGUS FC", away: "Dep. La Unión", date: new Date(2026, 4, 30, 16, 0, 0), location: "Cancha El Colorado", competition: "Amistoso", homeLogo: "imag/escudo_hugusfc.png", awayLogo: "DLU" },
@@ -701,25 +545,20 @@ let scorers = [
   { name: "Jefferson Farfán", goals: 1 }
 ];
 
-// Cargar/grabar goleadores
-function loadScorers() {
-  const saved = localStorage.getItem(STORAGE_SCORERS_KEY);
-  if (saved) scorers = JSON.parse(saved);
-  else saveScorers();
-}
+function loadScorers() { const s = localStorage.getItem(STORAGE_SCORERS_KEY); if(s) scorers = JSON.parse(s); else saveScorers(); }
 function saveScorers() { localStorage.setItem(STORAGE_SCORERS_KEY, JSON.stringify(scorers)); }
 function updateScorersUI() {
   const container = document.getElementById('scorersList');
-  if (!container) return;
+  if(!container) return;
   container.innerHTML = scorers.map(s => `<div class="scorer-item"><span class="scorer-name">${s.name}</span><span class="scorer-goals">${s.goals} goles</span></div>`).join('');
-  if (isAdmin) document.getElementById('editScorersBtn').style.display = 'block';
+  if(isAdmin) document.getElementById('editScorersBtn').style.display = 'block';
   else document.getElementById('editScorersBtn').style.display = 'none';
 }
 function editScorers() {
-  if (!isAdmin) return;
-  let newScorers = prompt("Editar goleadores (formato: Nombre1:Goles1, Nombre2:Goles2)", scorers.map(s=>`${s.name}:${s.goals}`).join(','));
-  if(newScorers){
-    let parts = newScorers.split(',').map(p=>p.trim());
+  if(!isAdmin) return;
+  let newData = prompt("Editar goleadores (Nombre:Goles, Nombre2:Goles2)", scorers.map(s=>`${s.name}:${s.goals}`).join(','));
+  if(newData){
+    let parts = newData.split(',').map(p=>p.trim());
     let newList = [];
     for(let part of parts){
       let [name, goals] = part.split(':');
@@ -731,48 +570,58 @@ function editScorers() {
   }
 }
 
-// Funciones para goles (cada partido guarda su marcador)
 function getMatchScore(matchId) {
   const saved = localStorage.getItem(`${STORAGE_SCORE_KEY}_${matchId}`);
-  if (saved) return JSON.parse(saved);
-  // Para el partido del 24 de mayo (id=1) ponemos resultado por defecto 3-2 a favor de HUGUS
-  if (matchId === 1) return { home: 3, away: 2 };
+  if(saved) return JSON.parse(saved);
+  if(matchId === 1) return { home: 3, away: 2 };
   return { home: 0, away: 0 };
 }
 function setMatchScore(matchId, score) {
   localStorage.setItem(`${STORAGE_SCORE_KEY}_${matchId}`, JSON.stringify(score));
 }
-function editMatchScore(matchId, home, away) {
-  setMatchScore(matchId, { home, away });
-  updateScheduleUI(); // refrescar
-}
+function editMatchScore(matchId, home, away) { setMatchScore(matchId, {home, away}); updateScheduleUI(); }
 
-// Obtener siguiente partido no pasado
 function getNextMatch() {
   const now = new Date();
-  for (let i = 0; i < matchesList.length; i++) {
-    if (matchesList[i].date > now) return matchesList[i];
+  // Buscar el próximo partido cuya fecha sea mayor a ahora o que esté en curso (pero no finalizado manualmente)
+  // Para simplificar, usamos fecha. El admin puede forzar finalización marcando un flag.
+  // Implementamos un flag "finished" para partidos que el admin haya finalizado.
+  for(let m of matchesList) {
+    if(m.date > now && !m._forceFinished) return m;
   }
   return null;
 }
-// Obtener todos los partidos pasados ordenados
 function getPastMatches() {
   const now = new Date();
-  return matchesList.filter(m => m.date < now).sort((a,b)=>b.date - a.date);
+  return matchesList.filter(m => m.date < now || m._forceFinished).sort((a,b)=>b.date - a.date);
 }
 
-// Funciones de UI del calendario (mejoradas)
+// Funciones de admin: finalizar partido actual
+function finishCurrentMatch() {
+  if(!isAdmin || !currentMatch) return;
+  currentMatch._forceFinished = true;
+  // Guardar estado de finalización
+  localStorage.setItem(`match_finished_${currentMatch.id}`, 'true');
+  updateScheduleUI();
+}
+function forceNextMatch() {
+  if(!isAdmin) return;
+  // Marcar el current como finished y recargar
+  if(currentMatch) finishCurrentMatch();
+  updateScheduleUI();
+}
+
 function updateScheduleUI() {
   const upcomingMatch = getNextMatch();
   const pastMatches = getPastMatches();
   const now = new Date();
+  currentMatch = upcomingMatch;
   
-  // Mostrar el próximo partido en la tarjeta principal
   const mainCard = document.getElementById('mainMatchCard');
   const dynamicArea = document.getElementById('dynamicMatchArea');
   
-  if (upcomingMatch) {
-    const isLive = now >= upcomingMatch.date;
+  if(upcomingMatch) {
+    const isLive = now >= upcomingMatch.date && !upcomingMatch._forceFinished;
     const score = getMatchScore(upcomingMatch.id);
     mainCard.innerHTML = `
       <div class="match-top">
@@ -785,18 +634,14 @@ function updateScheduleUI() {
       </div>
       <div class="match-bottom">
         <div class="match-date-big">${upcomingMatch.date.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' })} · ${upcomingMatch.date.getHours()}:${String(upcomingMatch.date.getMinutes()).padStart(2,'0')}</div>
-        <div class="match-meta">
-          <span>📅 <strong>${upcomingMatch.date.toLocaleDateString()}</strong></span>
-          <span>⏰ <strong>${upcomingMatch.date.getHours()}:${String(upcomingMatch.date.getMinutes()).padStart(2,'0')}</strong></span>
-          <span>📍 <strong>${upcomingMatch.location}</strong></span>
-        </div>
+        <div class="match-meta"><span>📅 <strong>${upcomingMatch.date.toLocaleDateString()}</strong></span><span>⏰ <strong>${upcomingMatch.date.getHours()}:${String(upcomingMatch.date.getMinutes()).padStart(2,'0')}</strong></span><span>📍 <strong>${upcomingMatch.location}</strong></span></div>
         <a href="#ficha-partido" class="btn-p">Ver Ficha del Partido</a>
+        ${isAdmin ? `<div class="admin-match-controls"><button class="admin-btn" onclick="finishCurrentMatch()">🏁 Finalizar Partido</button><button class="admin-btn" onclick="forceNextMatch()">⏩ Forzar siguiente partido</button></div>` : ''}
       </div>
     `;
     
-    // Área de countdown o marcador en vivo
     let liveHtml = '';
-    if (isLive) {
+    if(isLive) {
       const showBtns = isAdmin;
       liveHtml = `
         <div class="live-score-container">
@@ -811,114 +656,90 @@ function updateScheduleUI() {
       `;
     } else {
       const diff = upcomingMatch.date - now;
-      const days = Math.floor(diff / (1000*60*60*24));
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
-      const secs = Math.floor((diff % 60000) / 1000);
-      liveHtml = `
-        <div class="calendar-head" style="margin-top:28px">
-          <span class="next-label">Próximo partido en</span>
-          <div class="countdown">
-            <div class="cd-unit"><span class="cd-num">${String(days).padStart(2,'0')}</span><span class="cd-label">Días</span></div><span class="cd-sep">:</span>
-            <div class="cd-unit"><span class="cd-num">${String(hours).padStart(2,'0')}</span><span class="cd-label">Hrs</span></div><span class="cd-sep">:</span>
-            <div class="cd-unit"><span class="cd-num">${String(mins).padStart(2,'0')}</span><span class="cd-label">Min</span></div><span class="cd-sep">:</span>
-            <div class="cd-unit"><span class="cd-num">${String(secs).padStart(2,'0')}</span><span class="cd-label">Seg</span></div>
-          </div>
-        </div>
-      `;
+      if(diff > 0) {
+        const days = Math.floor(diff / (86400000));
+        const hours = Math.floor((diff % 86400000) / 3600000);
+        const mins = Math.floor((diff % 3600000) / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        liveHtml = `<div class="calendar-head"><span class="next-label">Próximo partido en</span><div class="countdown"><div class="cd-unit"><span class="cd-num">${String(days).padStart(2,'0')}</span><span class="cd-label">Días</span></div><span class="cd-sep">:</span><div class="cd-unit"><span class="cd-num">${String(hours).padStart(2,'0')}</span><span class="cd-label">Hrs</span></div><span class="cd-sep">:</span><div class="cd-unit"><span class="cd-num">${String(mins).padStart(2,'0')}</span><span class="cd-label">Min</span></div><span class="cd-sep">:</span><div class="cd-unit"><span class="cd-num">${String(secs).padStart(2,'0')}</span><span class="cd-label">Seg</span></div></div></div>`;
+      } else {
+        liveHtml = `<div class="calendar-head"><span class="next-label">Partido finalizado</span><div class="match-finished">✅ Resultado final: ${score.home} - ${score.away}</div></div>`;
+      }
     }
     dynamicArea.innerHTML = liveHtml;
     
-    // Ficha del partido
     document.getElementById('fichaTitle').innerHTML = `${upcomingMatch.home} <span class="g">VS</span> ${upcomingMatch.away}`;
     document.getElementById('fichaCard').innerHTML = `
       <div class="ficha-header"><div class="ficha-teams"><div class="ficha-team"><div class="ficha-emblem">${upcomingMatch.homeLogo.includes('.png') ? '<img src="'+upcomingMatch.homeLogo+'">' : '<span class="ficha-emblem-txt">'+upcomingMatch.homeLogo+'</span>'}</div><div class="ficha-teamname">${upcomingMatch.home}</div></div><div class="ficha-vs">VS</div><div class="ficha-team"><div class="ficha-emblem">${upcomingMatch.awayLogo.includes('.png') ? '<img src="'+upcomingMatch.awayLogo+'">' : '<span class="ficha-emblem-txt">'+upcomingMatch.awayLogo+'</span>'}</div><div class="ficha-teamname">${upcomingMatch.away}</div></div></div></div>
       <div class="ficha-body"><div class="ficha-info-grid"><div class="ficha-info-item"><div class="ficha-info-label">📅 Fecha</div><div class="ficha-info-val">${upcomingMatch.date.toLocaleDateString()}</div></div><div class="ficha-info-item"><div class="ficha-info-label">⏰ Hora</div><div class="ficha-info-val">${upcomingMatch.date.getHours()}:${String(upcomingMatch.date.getMinutes()).padStart(2,'0')}</div></div><div class="ficha-info-item"><div class="ficha-info-label">📍 Lugar</div><div class="ficha-info-val">${upcomingMatch.location}</div></div></div><div class="previa-box"><div class="previa-title">Previa del Partido</div><p class="previa-txt">${upcomingMatch.home} se enfrentará a ${upcomingMatch.away} en un emocionante encuentro. ¡Apoya a HUGUS FC!</p></div></div>
     `;
   } else {
-    // No hay más partidos
     mainCard.innerHTML = `<div class="match-top"><div class="match-comp-badge">Temporada finalizada</div><div class="match-teams"><div class="team-block"><div class="team-emblem"><img src="imag/escudo_hugusfc.png"></div><div class="team-name">HUGUS FC</div></div><div class="vs-badge">🏆</div><div class="team-block"><div class="team-emblem"><span class="team-emblem-txt">FIN</span></div><div class="team-name">Gracias</div></div></div></div><div class="match-bottom"><div class="match-date-big">Temporada 2026 Finalizada</div></div>`;
     dynamicArea.innerHTML = '';
     document.getElementById('fichaTitle').innerHTML = 'TEMPORADA FINALIZADA';
     document.getElementById('fichaCard').innerHTML = '<div class="ficha-header"><div class="previa-box"><div class="previa-title">Fin de la temporada</div><p class="previa-txt">Gracias por acompañar a HUGUS FC. Nos vemos el próximo año.</p></div></div>';
   }
   
-  // Mostrar partidos pasados (resultados)
+  // Mostrar historial y próximos
   const nextContainer = document.getElementById('nextMatchesList');
   let pastHtml = '';
-  if (pastMatches.length > 0) {
-    pastHtml = `<div class="cal-side-title" style="margin-top:20px;">📋 Resultados anteriores</div>`;
-    for (let m of pastMatches) {
+  if(pastMatches.length > 0) {
+    pastHtml = `<div class="cal-side-title" style="margin-top:0;">📋 Resultados anteriores</div>`;
+    for(let m of pastMatches) {
       const score = getMatchScore(m.id);
-      pastHtml += `
-        <div class="mini-match" style="background:rgba(0,0,0,0.4);">
-          <div class="mini-date">${m.date.toLocaleDateString('es-ES', { month:'short', day:'numeric' })}</div>
-          <div class="mini-teams"><span class="t home">${m.home}</span><span class="mini-vs">${score.home} - ${score.away}</span><span class="t away">${m.away}</span></div>
-          ${isAdmin ? `<button class="edit-score-btn" style="background:none; border:1px dashed var(--gold); color:var(--gold); font-size:.6rem; padding:2px 8px; border-radius:12px; margin-top:6px; cursor:pointer;" onclick="editPastScore(${m.id})">✏️ Editar resultado</button>` : ''}
-        </div>
-      `;
+      pastHtml += `<div class="mini-match" style="background:rgba(0,0,0,0.4);"><div class="mini-date">${m.date.toLocaleDateString('es-ES', { month:'short', day:'numeric' })}</div><div class="mini-teams"><span class="t home">${m.home}</span><span class="mini-vs">${score.home} - ${score.away}</span><span class="t away">${m.away}</span></div>${isAdmin ? `<button class="edit-score-btn" style="background:none; border:1px dashed var(--gold); color:var(--gold); font-size:.6rem; padding:2px 8px; border-radius:12px; margin-top:6px; cursor:pointer;" onclick="editPastScore(${m.id})">✏️ Editar resultado</button>` : ''}</div>`;
     }
   }
-  // Próximos partidos (futuros)
-  const futureMatches = matchesList.filter(m => m.date > new Date() && (!upcomingMatch || m.id !== upcomingMatch.id));
+  const futureMatches = matchesList.filter(m => (!m._forceFinished && m.date > new Date()) && (!upcomingMatch || m.id !== upcomingMatch.id));
   let futureHtml = '';
-  if (futureMatches.length > 0) {
+  if(futureMatches.length > 0) {
     futureHtml = `<div class="cal-side-title">⏳ Próximos partidos</div>`;
-    for (let m of futureMatches) {
-      futureHtml += `
-        <div class="mini-match">
-          <div class="mini-date">${m.date.toLocaleDateString('es-ES', { month:'short', day:'numeric' })} · ${m.date.getHours()}:${String(m.date.getMinutes()).padStart(2,'0')}</div>
-          <div class="mini-teams"><span class="t home">${m.home}</span><span class="mini-vs">VS</span><span class="t away">${m.away}</span></div>
-        </div>
-      `;
+    for(let m of futureMatches) {
+      futureHtml += `<div class="mini-match"><div class="mini-date">${m.date.toLocaleDateString('es-ES', { month:'short', day:'numeric' })} · ${m.date.getHours()}:${String(m.date.getMinutes()).padStart(2,'0')}</div><div class="mini-teams"><span class="t home">${m.home}</span><span class="mini-vs">VS</span><span class="t away">${m.away}</span></div></div>`;
     }
   }
   nextContainer.innerHTML = pastHtml + futureHtml;
   
-  // Actualizar UI de goles en vivo si existe
-  if (upcomingMatch && now >= upcomingMatch.date) {
+  if(upcomingMatch && !(now >= upcomingMatch.date && !upcomingMatch._forceFinished) && now >= upcomingMatch.date) {
     const score = getMatchScore(upcomingMatch.id);
-    const homeSpan = document.getElementById('scoreHomeDisplay');
-    const awaySpan = document.getElementById('scoreAwayDisplay');
-    if (homeSpan) homeSpan.innerText = score.home;
-    if (awaySpan) awaySpan.innerText = score.away;
+    const hs = document.getElementById('scoreHomeDisplay');
+    const as = document.getElementById('scoreAwayDisplay');
+    if(hs) hs.innerText = score.home;
+    if(as) as.innerText = score.away;
   }
 }
 
-// Funciones para editar goles (admin)
 window.addGoal = function(matchId, team) {
-  if (!isAdmin) return;
+  if(!isAdmin) return;
   let score = getMatchScore(matchId);
-  if (team === 'home') score.home++;
+  if(team === 'home') score.home++;
   else score.away++;
   setMatchScore(matchId, score);
   updateScheduleUI();
 };
 window.removeGoal = function(matchId, team) {
-  if (!isAdmin) return;
+  if(!isAdmin) return;
   let score = getMatchScore(matchId);
-  if (team === 'home' && score.home > 0) score.home--;
-  else if (team === 'away' && score.away > 0) score.away--;
+  if(team === 'home' && score.home > 0) score.home--;
+  else if(team === 'away' && score.away > 0) score.away--;
   setMatchScore(matchId, score);
   updateScheduleUI();
 };
 window.resetScore = function(matchId) {
-  if (!isAdmin) return;
+  if(!isAdmin) return;
   setMatchScore(matchId, { home:0, away:0 });
   updateScheduleUI();
 };
 window.editPastScore = function(matchId) {
-  if (!isAdmin) return;
+  if(!isAdmin) return;
   let current = getMatchScore(matchId);
-  let newHome = prompt("Goles de local (HUGUS FC si aplica):", current.home);
-  let newAway = prompt("Goles de visitante:", current.away);
-  if (newHome !== null && newAway !== null) {
-    setMatchScore(matchId, { home: parseInt(newHome)||0, away: parseInt(newAway)||0 });
-    updateScheduleUI();
-  }
+  let newHome = prompt("Goles local:", current.home);
+  let newAway = prompt("Goles visitante:", current.away);
+  if(newHome !== null && newAway !== null) setMatchScore(matchId, { home: parseInt(newHome)||0, away: parseInt(newAway)||0 });
+  updateScheduleUI();
 };
 
-// ==================== AUTENTICACIÓN ====================
+// ==================== AUTENTICACIÓN Y PERFIL ====================
 const USERS_KEY = 'hugusfc_users';
 const SESSION_KEY = 'hugusfc_session';
 function getUsers(){ return JSON.parse(localStorage.getItem(USERS_KEY)||'[]'); }
@@ -927,11 +748,10 @@ function getSession(){ return JSON.parse(localStorage.getItem(SESSION_KEY)||'nul
 function saveSession(user){ localStorage.setItem(SESSION_KEY, JSON.stringify(user)); }
 function clearSession(){ localStorage.removeItem(SESSION_KEY); }
 
-// Crear admin por defecto si no existe
 function ensureAdminUser() {
   const users = getUsers();
-  if (!users.find(u => u.email === 'admin@hugusfc.com')) {
-    users.push({ nombre: 'Admin', apellido: 'HUGUS', email: 'admin@hugusfc.com', password: 'admin123' });
+  if(!users.find(u => u.email === 'admin@hugusfc.com')) {
+    users.push({ nombre: 'Admin', apellido: 'HUGUS', email: 'admin@hugusfc.com', password: 'admin123', foto: '' });
     saveUsers(users);
   }
 }
@@ -942,10 +762,7 @@ function updateUIForLoggedInUser(user) {
   document.getElementById('userAvatarBtn').textContent = user.nombre.charAt(0).toUpperCase();
   document.getElementById('userEmailDisplay').textContent = user.email;
   const mobBtn = document.getElementById('mobAccederBtn');
-  if (mobBtn) {
-    mobBtn.textContent = '⚽ ' + user.nombre + ' (Mi Comunidad)';
-    mobBtn.onclick = function(){ closeMenu(); abrirTienda(); };
-  }
+  if(mobBtn) { mobBtn.textContent = '⚽ ' + user.nombre + ' (Mi Comunidad)'; mobBtn.onclick = function(){ closeMenu(); abrirTienda(); }; }
   isAdmin = (user.email === 'admin@hugusfc.com');
   currentUser = user;
   updateScorersUI();
@@ -955,10 +772,7 @@ function updateUIForLoggedOut() {
   document.getElementById('btnAcceder').style.display = 'inline-flex';
   document.getElementById('userMenuContainer').style.display = 'none';
   const mobBtn = document.getElementById('mobAccederBtn');
-  if (mobBtn) {
-    mobBtn.textContent = '⚽ Acceder / Registrarse';
-    mobBtn.onclick = function(){ closeMenu(); abrirAuth(); };
-  }
+  if(mobBtn) { mobBtn.textContent = '⚽ Acceder / Registrarse'; mobBtn.onclick = function(){ closeMenu(); abrirAuth(); }; }
   isAdmin = false;
   currentUser = null;
   updateScorersUI();
@@ -970,11 +784,11 @@ function registerUser() {
   const apellido = document.getElementById('regApellido').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
-  if (!nombre || !apellido || !email || !password) { alert('Completa todos los campos'); return; }
-  if (password.length < 8) { alert('Mínimo 8 caracteres'); return; }
+  if(!nombre||!apellido||!email||!password){ alert('Completa todos los campos'); return; }
+  if(password.length<8){ alert('Mínimo 8 caracteres'); return; }
   const users = getUsers();
-  if (users.find(u => u.email === email)) { alert('Correo ya registrado'); return; }
-  const newUser = { nombre, apellido, email, password };
+  if(users.find(u=>u.email===email)){ alert('Correo ya registrado'); return; }
+  const newUser = { nombre, apellido, email, password, foto: '' };
   users.push(newUser);
   saveUsers(users);
   saveSession(newUser);
@@ -984,49 +798,96 @@ function registerUser() {
 function loginUser() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
-  const user = getUsers().find(u => u.email === email);
-  if (user && user.password === password) {
+  const user = getUsers().find(u=>u.email===email);
+  if(user && user.password===password){
     saveSession(user);
     updateUIForLoggedInUser(user);
     cerrarAuth();
   } else alert('Credenciales incorrectas');
 }
 function loginWithGoogle() {
-  const demo = { nombre: 'Hincha', apellido: 'HUGUS', email: 'hincha@hugusfc.com', password: 'google' };
+  const demo = { nombre: 'Hincha', apellido: 'HUGUS', email: 'hincha@hugusfc.com', password: 'google', foto: '' };
   const users = getUsers();
-  if (!users.find(u => u.email === demo.email)) { users.push(demo); saveUsers(users); }
+  if(!users.find(u=>u.email===demo.email)){ users.push(demo); saveUsers(users); }
   saveSession(demo);
   updateUIForLoggedInUser(demo);
   cerrarAuth();
 }
-function logout() { clearSession(); updateUIForLoggedOut(); cerrarTienda(); }
+function logout() { clearSession(); updateUIForLoggedOut(); cerrarTienda(); cerrarPerfil(); }
 function entrarComunidad() { getSession() ? abrirTienda() : abrirAuth(); }
 function abrirAuth() { document.getElementById('authOverlay').classList.add('active'); }
 function cerrarAuth() { document.getElementById('authOverlay').classList.remove('active'); }
 function abrirTienda() { document.getElementById('shopOverlay').classList.add('active'); }
 function cerrarTienda() { document.getElementById('shopOverlay').classList.remove('active'); }
 function switchTab(tab) {
-  const login = document.getElementById('form-login');
-  const reg = document.getElementById('form-registro');
+  const login = document.getElementById('form-login'), reg = document.getElementById('form-registro');
   const tabs = document.querySelectorAll('#authOverlay .auth-tab');
-  if (tab === 'login') {
-    login.style.display = 'block'; reg.style.display = 'none';
-    tabs[0].classList.add('active'); tabs[1].classList.remove('active');
-  } else {
-    login.style.display = 'none'; reg.style.display = 'block';
-    tabs[0].classList.remove('active'); tabs[1].classList.add('active');
+  if(tab==='login'){ login.style.display='block'; reg.style.display='none'; tabs[0].classList.add('active'); tabs[1].classList.remove('active'); }
+  else{ login.style.display='none'; reg.style.display='block'; tabs[0].classList.remove('active'); tabs[1].classList.add('active'); }
+}
+
+// Perfil
+function abrirPerfil() {
+  if(!currentUser) return;
+  const content = document.getElementById('profileModalContent');
+  const fotoUrl = currentUser.foto || '';
+  content.innerHTML = `
+    <div style="text-align:center;">
+      <div class="profile-pic" onclick="document.getElementById('profilePhotoInput').click()">
+        ${fotoUrl ? `<img src="${fotoUrl}" alt="foto perfil">` : `<span>📷</span>`}
+      </div>
+      <input type="file" id="profilePhotoInput" accept="image/*" style="display:none" onchange="uploadProfilePhoto(this)">
+      <div class="profile-field"><label>Nombre</label><p id="profileNombre">${currentUser.nombre}</p></div>
+      <div class="profile-field"><label>Apellido</label><p id="profileApellido">${currentUser.apellido}</p></div>
+      <div class="profile-field"><label>Correo electrónico</label><p id="profileEmail">${currentUser.email}</p></div>
+      <button class="edit-profile-btn" onclick="editarPerfil()">✏️ Editar perfil</button>
+    </div>
+  `;
+  document.getElementById('profileModalOverlay').classList.add('active');
+}
+function cerrarPerfil() { document.getElementById('profileModalOverlay').classList.remove('active'); }
+function uploadProfilePhoto(input) {
+  if(!currentUser) return;
+  const file = input.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      currentUser.foto = e.target.result;
+      // actualizar en localStorage
+      const users = getUsers();
+      const index = users.findIndex(u=>u.email===currentUser.email);
+      if(index!==-1) users[index] = currentUser;
+      saveUsers(users);
+      saveSession(currentUser);
+      abrirPerfil(); // refrescar
+    };
+    reader.readAsDataURL(file);
   }
+}
+function editarPerfil() {
+  if(!currentUser) return;
+  const newNombre = prompt("Nuevo nombre:", currentUser.nombre);
+  const newApellido = prompt("Nuevo apellido:", currentUser.apellido);
+  if(newNombre) currentUser.nombre = newNombre;
+  if(newApellido) currentUser.apellido = newApellido;
+  const users = getUsers();
+  const index = users.findIndex(u=>u.email===currentUser.email);
+  if(index!==-1) users[index] = currentUser;
+  saveUsers(users);
+  saveSession(currentUser);
+  updateUIForLoggedInUser(currentUser);
+  abrirPerfil();
 }
 
 // ==================== NOTICIAS ====================
 const newsData = {
-  kit2026: { title: "Presentación oficial del Kit 2026", date: "20 de Abril, 2026", content: "En una emotiva ceremonia realizada en la Cancha El Colorado, HUGUS FC presentó su nueva indumentaria oficial para la temporada 2026. El diseño, inspirado en los grandes clubes europeos, combina elegancia y tecnología. Los jugadores lucieron la camiseta crema con detalles en verde y rojo, mientras los directivos destacaron el apoyo de Adidas y LAGUE. 'Esta camiseta representa nuestro ADN: Dios, Familia y Fútbol', declaró el fundador Hugo Laban Guerrero. La equipación estará disponible para los miembros de la comunidad a partir del próximo mes." },
-  fichaje10: { title: "Primer fichaje estrella: El '10' ya tiene dueño", date: "15 de Abril, 2026", content: "HUGUS FC anunció la contratación del experimentado volante de creación Carlos 'Loco' Valderrama, quien llega para portar la histórica camiseta número 10. Con amplia trayectoria en el fútbol regional, Valderrama se mostró emocionado: 'Es un honor ser parte de este proyecto que nace con una filosofía clara. Vamos a dar todo por esta camiseta'. El club espera que su experiencia sea clave en la temporada inaugural. Valderrama entrenará con el equipo a partir de la próxima semana." },
+  kit2026: { title: "Presentación oficial del Kit 2026", date: "20 de Abril, 2026", content: "En una emotiva ceremonia realizada en la Cancha El Colorado, HUGUS FC presentó su nueva indumentaria oficial para la temporada 2026. El diseño, inspirado en los grandes clubes europeos, combina elegancia y tecnología. Los jugadores lucieron la camiseta crema con detalles en verde y rojo, mientras los directivos destacaron el apoyo de Adidas y LAGUE. 'Esta camiseta representa nuestro ADN: Dios, Familia y Fútbol', declaró el fundador HUGUS FC. La equipación estará disponible para los miembros de la comunidad a partir del próximo mes." },
+  fichaje10: { title: "Primer fichaje estrella: El '10' ya tiene dueño", date: "15 de Abril, 2026", content: "HUGUS FC anunció la contratación del experimentado volante de creación Carlos 'Loco' Valderrama, quien llega para portar la histórica camiseta número 10. Con amplia trayectoria en el fútbol regional, Valderrama se mostró emocionado: 'Es un honor ser parte de este proyecto que nace con una filosofía clara. Vamos a dar todo por esta camiseta'. El club espera que su experiencia sea clave en la temporada inaugural." },
   amistoso: { title: "HUGUS FC disputará amistoso ante Deportivo La Unión", date: "05 de Abril, 2026", content: "El próximo sábado 2 de mayo a las 4:00 p.m., HUGUS FC enfrentará a Deportivo La Unión en la Cancha El Colorado. Será el primer partido de preparación del club, y la entrada será libre para los socios de la comunidad. El técnico anunció que rotará el equipo para evaluar a todos los jugadores. 'Queremos ver el funcionamiento colectivo y empezar a rodar con buen pie', comentó. Se espera una gran asistencia de la hinchada." }
 };
 function openNewsModal(id) {
   const data = newsData[id];
-  if (data) {
+  if(data){
     document.querySelector('#newsModalContent .news-modal-title').textContent = data.title;
     document.querySelector('#newsModalContent .news-modal-date').textContent = data.date;
     document.querySelector('#newsModalContent .news-modal-content').textContent = data.content;
@@ -1037,15 +898,15 @@ function closeNewsModal() { document.getElementById('newsModalOverlay').classLis
 
 // ==================== INICIALIZACIÓN ====================
 window.addEventListener('load', () => {
-  setTimeout(() => document.getElementById('preloader').classList.add('hide'), 1500);
+  setTimeout(()=>document.getElementById('preloader').classList.add('hide'),1500);
   ensureAdminUser();
   loadScorers();
   updateScorersUI();
   document.getElementById('editScorersBtn').addEventListener('click', editScorers);
   const session = getSession();
-  if (session && session.email) {
-    const user = getUsers().find(u => u.email === session.email);
-    if (user) updateUIForLoggedInUser(user);
+  if(session && session.email){
+    const user = getUsers().find(u=>u.email===session.email);
+    if(user) updateUIForLoggedInUser(user);
     else { clearSession(); updateUIForLoggedOut(); }
   } else updateUIForLoggedOut();
   updateScheduleUI();
@@ -1053,33 +914,29 @@ window.addEventListener('load', () => {
   animateCounters();
 });
 function animateCounters() {
-  document.querySelectorAll('[data-target]').forEach(el => {
-    const target = +el.getAttribute('data-target');
-    let current = 0;
-    const step = Math.max(1, Math.floor(target / 60));
-    const timer = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = current + (target === 100 ? '%' : '');
-      if (current >= target) clearInterval(timer);
-    }, 30);
+  document.querySelectorAll('[data-target]').forEach(el=>{
+    const target=+el.getAttribute('data-target');
+    let current=0, step=Math.max(1,Math.floor(target/60));
+    let timer=setInterval(()=>{ current=Math.min(current+step,target); el.textContent=current+(target===100?'%':''); if(current>=target) clearInterval(timer); },30);
   });
 }
-const statsObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { animateCounters(); statsObs.disconnect(); } }); }, { threshold: .3 });
+const statsObs = new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){animateCounters();statsObs.disconnect()}})},{threshold:.3});
 statsObs.observe(document.querySelector('.statsbar'));
-const revealObs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: .08 });
-document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => revealObs.observe(el));
-window.addEventListener('scroll', () => {
-  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
-  document.getElementById('btt').classList.toggle('show', window.scrollY > 400);
+const revealObs = new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.08});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>revealObs.observe(el));
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>50);
+  document.getElementById('btt').classList.toggle('show',window.scrollY>400);
 });
-const ham = document.getElementById('ham'), mob = document.getElementById('mobMenu');
-ham.addEventListener('click', () => { ham.classList.toggle('active'); mob.classList.toggle('open'); });
-function closeMenu() { ham.classList.remove('active'); mob.classList.remove('open'); }
-document.addEventListener('click', e => { if (mob.classList.contains('open') && !mob.contains(e.target) && !ham.contains(e.target)) closeMenu(); });
-document.getElementById('authOverlay').addEventListener('click', e => { if (e.target === document.getElementById('authOverlay')) cerrarAuth(); });
-document.getElementById('shopOverlay').addEventListener('click', e => { if (e.target === document.getElementById('shopOverlay')) cerrarTienda(); });
-document.getElementById('newsModalOverlay').addEventListener('click', e => { if (e.target === document.getElementById('newsModalOverlay')) closeNewsModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { cerrarAuth(); cerrarTienda(); closeNewsModal(); } });
+const ham=document.getElementById('ham'), mob=document.getElementById('mobMenu');
+ham.addEventListener('click',()=>{ ham.classList.toggle('active'); mob.classList.toggle('open'); });
+function closeMenu(){ ham.classList.remove('active'); mob.classList.remove('open'); }
+document.addEventListener('click',e=>{ if(mob.classList.contains('open')&&!mob.contains(e.target)&&!ham.contains(e.target)) closeMenu(); });
+document.getElementById('authOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('authOverlay')) cerrarAuth(); });
+document.getElementById('shopOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('shopOverlay')) cerrarTienda(); });
+document.getElementById('newsModalOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('newsModalOverlay')) closeNewsModal(); });
+document.getElementById('profileModalOverlay').addEventListener('click',e=>{ if(e.target===document.getElementById('profileModalOverlay')) cerrarPerfil(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ cerrarAuth(); cerrarTienda(); closeNewsModal(); cerrarPerfil(); } });
 </script>
 </body>
 </html>
