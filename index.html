@@ -292,22 +292,6 @@ section{padding:90px 20px}
 .g-cell:hover .g-overlay{opacity:1}
 .g-label{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);font-weight:700}
 
-/* ===== NOTICIAS (NUEVO) ===== */
-.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:52px}
-.news-card{background:var(--dark2);border:1px solid rgba(201,162,39,.12);border-radius:var(--radius-lg);overflow:hidden;transition:all .3s}
-.news-card:hover{transform:translateY(-6px);border-color:rgba(201,162,39,.3);box-shadow:0 16px 36px rgba(0,0,0,.35)}
-.news-img{height:200px;background:linear-gradient(135deg,var(--green3),#0a0d20);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-.news-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.news-card:hover .news-img img{transform:scale(1.05)}
-.news-date{position:absolute;bottom:12px;left:12px;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);padding:4px 10px;border-radius:var(--radius-sm);font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.1em;color:var(--gold);font-weight:700}
-.news-content{padding:24px}
-.news-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;margin-bottom:12px;line-height:1.2}
-.news-title a{color:var(--white);text-decoration:none;transition:color .2s}
-.news-title a:hover{color:var(--gold)}
-.news-excerpt{font-size:.88rem;color:var(--grey);line-height:1.65;font-weight:300}
-.news-link{display:inline-block;margin-top:16px;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
-.news-link:hover{border-bottom-color:var(--gold)}
-
 /* ===== CALENDARIO ===== */
 .cal-sec{background:var(--dark)}
 .calendar-head{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:36px}
@@ -407,17 +391,6 @@ section{padding:90px 20px}
 .cv-divider{height:1px;background:rgba(201,162,39,.1);margin:16px 0}
 .cv-badge-row{display:flex;gap:8px;flex-wrap:wrap}
 .cv-badge{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,162,39,.3);padding:6px 14px;border-radius:var(--radius-sm);font-weight:700}
-
-/* ===== PATROCINADORES (NUEVO) ===== */
-.sponsors-sec{background:var(--dark2);padding:70px 20px}
-.sponsors-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:32px;margin-top:48px;align-items:center}
-.sponsor-item{background:rgba(255,255,255,.02);border:1px solid rgba(201,162,39,.1);border-radius:var(--radius-md);padding:24px;text-align:center;transition:all .3s}
-.sponsor-item:hover{transform:translateY(-4px);border-color:rgba(201,162,39,.25);background:rgba(201,162,39,.03)}
-.sponsor-logo{height:70px;display:flex;align-items:center;justify-content:center}
-.sponsor-logo svg{max-width:100px;max-height:50px;opacity:.7;transition:opacity .2s}
-.sponsor-item:hover .sponsor-logo svg{opacity:1}
-.sponsor-name{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-top:16px;font-weight:600}
-.sponsor-desc{font-size:.7rem;color:var(--grey);margin-top:6px}
 
 /* ===== CONTACTO ===== */
 .contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
@@ -659,6 +632,9 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
    MEDIA QUERIES – RESPONSIVE
    ========================================================================== */
 
+/* ≥1200px ya está cubierto por los estilos base */
+
+/* Tablet grande / laptop pequeña (max 1024px) */
 @media(max-width:1024px){
   .nav-links{display:none}
   .btn-nav-acceder{display:inline-flex}
@@ -672,10 +648,9 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   .contact-grid{grid-template-columns:repeat(2,1fr)}
   .footer-top{grid-template-columns:1fr 1fr;gap:36px}
   .valores-grid{grid-template-columns:repeat(2,1fr)}
-  .news-grid{grid-template-columns:repeat(2,1fr)}
-  .sponsors-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
 }
 
+/* Tablet pequeña / móvil grande (max 768px) */
 @media(max-width:768px){
   .hero-title{font-size:clamp(3.5rem,14vw,7rem)}
   .hero-btns{flex-direction:column;align-items:center}
@@ -695,10 +670,9 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   .product-img-area{height:240px}
   .product-footer{flex-direction:column;align-items:center}
   .btn-wa-product{width:100%}
-  .news-grid{grid-template-columns:1fr}
-  .sponsors-grid{grid-template-columns:repeat(2,1fr)}
 }
 
+/* Móvil mediano (max 600px) */
 @media(max-width:600px){
   section{padding:60px 16px}
   .nav-i{padding:0 16px}
@@ -709,6 +683,7 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   .ficha-info-grid{grid-template-columns:1fr}
 }
 
+/* Celular pequeño (max 480px) */
 @media(max-width:480px){
   .hero-content{padding:80px 12px 50px}
   .hero-escudo{width:120px;height:120px}
@@ -726,7 +701,6 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   .st{padding:18px 10px}
   .st-n{font-size:1.6rem}
   .st-l{font-size:.6rem}
-  .sponsors-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -753,16 +727,17 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
       <li><a href="#valores">Valores</a></li>
       <li><a href="#kit">Kit</a></li>
       <li><a href="#galeria">Galería</a></li>
-      <li><a href="#noticias">Noticias</a></li>
       <li><a href="#calendario">Calendario</a></li>
       <li><a href="#comunidad">Comunidad</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <div class="nav-right">
+      <!-- Botón Acceder (visible si no ha iniciado sesión) -->
       <button class="btn-nav-acceder" id="btnAcceder" onclick="abrirAuth()">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         Acceder
       </button>
+      <!-- Contenedor del avatar de usuario (visible al iniciar sesión) -->
       <div class="user-menu-container" id="userMenuContainer">
         <button class="user-avatar-btn" id="userAvatarBtn" aria-label="Menú de usuario">H</button>
         <div class="user-dropdown" id="userDropdown">
@@ -785,7 +760,6 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
     <li><a href="#valores" onclick="closeMenu()">Valores</a></li>
     <li><a href="#kit" onclick="closeMenu()">Kit Oficial</a></li>
     <li><a href="#galeria" onclick="closeMenu()">Galería</a></li>
-    <li><a href="#noticias" onclick="closeMenu()">Noticias</a></li>
     <li><a href="#calendario" onclick="closeMenu()">Calendario</a></li>
     <li><a href="#comunidad" onclick="closeMenu()">Comunidad</a></li>
     <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
@@ -832,7 +806,7 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
       <div class="about-card reveal-l">
         <div class="about-big">HUGUS</div>
         <p class="about-p"><strong style="color:var(--gold)">HUGUS FC</strong> es un club de fútbol fundado en <strong>Abril del 2026</strong> en el Caserío El Colorado, con la visión de crear una institución deportiva sólida, competitiva y con valores que trascienden la cancha.</p>
-        <p class="about-p">Bajo el liderazgo de su propietario y fundador <strong style="color:var(--cream)">Hugo Laban Guerrero</strong>, el club ha sido construido sobre tres pilares fundamentales: <em>Dios, Familia y Fútbol</em> — una filosofía que guía cada entrenamiento, cada partido y cada decisión.</p>
+        <p class="about-p">Bajo el liderazgo de su propietario y fundador <strong style="color:var(--cream)">HUGUS FC</strong>, el club ha sido construido sobre tres pilares fundamentales: <em>Dios, Familia y Fútbol</em> — una filosofía que guía cada entrenamiento, cada partido y cada decisión.</p>
         <p class="about-p">Con un diseño de indumentaria inspirado en la grandeza de los clubes más icónicos del mundo, HUGUS FC nace para quedarse y dejar huella en el fútbol local y regional.</p>
       </div>
       <div class="reveal-r">
@@ -840,7 +814,7 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
           <div class="fact"><span class="fl">Club</span><span class="fv">HUGUS FC</span></div>
           <div class="fact"><span class="fl">Fundación</span><span class="fv g">Abril 2026</span></div>
           <div class="fact"><span class="fl">Sede</span><span class="fv">C. El Colorado</span></div>
-          <div class="fact"><span class="fl">Propietario</span><span class="fv">Hugo Laban Guerrero</span></div>
+          <div class="fact"><span class="fl">Propietario</span><span class="fv">HUGUS FC</span></div>
           <div class="fact"><span class="fl">Lema</span><span class="fv g">Dios · Familia · Fútbol</span></div>
           <div class="fact"><span class="fl">Marca Indumentaria</span><span class="fv">Adidas / LAGUE</span></div>
           <div class="fact">
@@ -946,50 +920,6 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   </div>
 </section>
 
-<!-- NOTICIAS (NUEVA SECCIÓN) -->
-<section id="noticias">
-  <div class="si">
-    <div class="stag">Últimas Noticias</div>
-    <h2 class="stit">ACTUALIDAD <span class="g">HUGUS FC</span></h2>
-    <p class="sdesc">Entérate de los últimos acontecimientos, fichajes y actividades del club.</p>
-    <div class="news-grid reveal">
-      <div class="news-card">
-        <div class="news-img">
-          <img src="imag/kit_oficial.png" alt="Presentación kit">
-          <div class="news-date">20 Abr 2026</div>
-        </div>
-        <div class="news-content">
-          <div class="news-title"><a href="#">Presentación oficial del Kit 2026</a></div>
-          <p class="news-excerpt">En una emotiva ceremonia en El Colorado, HUGUS FC presentó su nueva indumentaria oficial para la temporada inaugural. Con el respaldo de Adidas, los jugadores lucieron la combinación crema-verde-rojo.</p>
-          <a href="#" class="news-link">Leer más →</a>
-        </div>
-      </div>
-      <div class="news-card">
-        <div class="news-img">
-          <img src="imag/escudo_hugusfc.png" alt="Fichaje">
-          <div class="news-date">15 Abr 2026</div>
-        </div>
-        <div class="news-content">
-          <div class="news-title"><a href="#">Primer fichaje estrella: El '10' ya tiene dueño</a></div>
-          <p class="news-excerpt">El experimentado volante de creación, Carlos 'Loco' Valderrama, se une al proyecto deportivo de HUGUS FC. Llega con el dorsal 10 y la misión de liderar el mediocampo.</p>
-          <a href="#" class="news-link">Leer más →</a>
-        </div>
-      </div>
-      <div class="news-card">
-        <div class="news-img">
-          <img src="imag/bandera.png" alt="Amistoso">
-          <div class="news-date">05 Abr 2026</div>
-        </div>
-        <div class="news-content">
-          <div class="news-title"><a href="#">HUGUS FC disputará amistoso ante Deportivo La Unión</a></div>
-          <p class="news-excerpt">El próximo sábado 2 de mayo, el equipo jugará su primer encuentro de preparación en la Cancha El Colorado. La cita será a las 4:00 p.m. Entrada libre para los socios.</p>
-          <a href="#" class="news-link">Leer más →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- CALENDARIO -->
 <section id="calendario" class="cal-sec">
   <div class="si">
@@ -1037,10 +967,10 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
       <div class="calendar-side">
         <div class="cal-side-title">Próximos Partidos</div>
         <div class="next-matches">
-          <div class="mini-match"><div class="mini-date">Sábado 30 · 4:00 PM</div><div class="mini-teams"><span class="t home">HUGUS FC</span><span class="mini-vs">VS</span><span class="t away">Dep. La Unión</span></div></div>
-          <div class="mini-match"><div class="mini-date">Domingo 7 Jun · 3:00 PM</div><div class="mini-teams"><span class="t home">Sporting Cristal</span><span class="mini-vs">VS</span><span class="t away">HUGUS FC</span></div></div>
-          <div class="mini-match"><div class="mini-date">Sábado 13 Jun · 5:00 PM</div><div class="mini-teams"><span class="t home">HUGUS FC</span><span class="mini-vs">VS</span><span class="t away">Universitario</span></div></div>
-          <div class="mini-match"><div class="mini-date">Sábado 20 Jun · 3:30 PM</div><div class="mini-teams"><span class="t home">Alianza Lima</span><span class="mini-vs">VS</span><span class="t away">HUGUS FC</span></div></div>
+          <div class="mini-match"><div class="mini-date">Por definirse</div><div class="mini-teams"><span class="t home">HUGUS FC</span><span class="mini-vs">VS</span><span class="t away">Equipo 1</span></div></div>
+          <div class="mini-match"><div class="mini-date">Por definirse</div><div class="mini-teams"><span class="t home">HUGUS FC</span><span class="mini-vs">VS</span><span class="t away">Equipo 2</span></div></div>
+          <div class="mini-match"><div class="mini-date">Por definirse</div><div class="mini-teams"><span class="t home">Equipo 3</span><span class="mini-vs">VS</span><span class="t away">HUGUS FC</span></div></div>
+          <div class="mini-match"><div class="mini-date">Por definirse</div><div class="mini-teams"><span class="t home">HUGUS FC</span><span class="mini-vs">VS</span><span class="t away">Equipo 4</span></div></div>
         </div>
       </div>
     </div>
@@ -1124,45 +1054,6 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
   </div>
 </section>
 
-<!-- PATROCINADORES (NUEVA SECCIÓN) -->
-<section id="sponsors" class="sponsors-sec">
-  <div class="si">
-    <div class="stag">Aliados Comerciales</div>
-    <h2 class="stit">PATROCINADORES <span class="g">OFICIALES</span></h2>
-    <p class="sdesc">Empresas y marcas que confían en el proyecto HUGUS FC.</p>
-    <div class="sponsors-grid reveal">
-      <div class="sponsor-item">
-        <div class="sponsor-logo">
-          <svg width="100" height="50" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="80" fill="none"/><text x="20" y="48" font-family="Arial, sans-serif" font-weight="bold" font-size="28" fill="#C9A227">Adidas</text></svg>
-        </div>
-        <div class="sponsor-name">Adidas</div>
-        <div class="sponsor-desc">Indumentaria Oficial</div>
-      </div>
-      <div class="sponsor-item">
-        <div class="sponsor-logo">
-          <svg width="100" height="50" viewBox="0 0 200 80"><rect width="200" height="80" fill="none"/><text x="20" y="48" font-family="Arial" font-weight="bold" font-size="26" fill="#E8E0CC">LAGUE</text></svg>
-        </div>
-        <div class="sponsor-name">LAGUE</div>
-        <div class="sponsor-desc">Equipamiento Deportivo</div>
-      </div>
-      <div class="sponsor-item">
-        <div class="sponsor-logo">
-          <svg width="100" height="50" viewBox="0 0 200 80"><rect width="200" height="80" fill="none"/><text x="20" y="48" font-family="Arial" font-weight="bold" font-size="22" fill="#C9A227">El Colorado</text></svg>
-        </div>
-        <div class="sponsor-name">Municipalidad El Colorado</div>
-        <div class="sponsor-desc">Sede y Auspiciador</div>
-      </div>
-      <div class="sponsor-item">
-        <div class="sponsor-logo">
-          <svg width="100" height="50" viewBox="0 0 200 80"><rect width="200" height="80" fill="none"/><text x="20" y="48" font-family="Arial" font-weight="bold" font-size="22" fill="#E8E0CC">Gatorade</text></svg>
-        </div>
-        <div class="sponsor-name">Gatorade</div>
-        <div class="sponsor-desc">Hidratación Oficial</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACTO -->
 <section id="contacto">
   <div class="si">
@@ -1219,7 +1110,6 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
           <li><a href="#valores">Valores</a></li>
           <li><a href="#kit">Kit Oficial</a></li>
           <li><a href="#galeria">Galería</a></li>
-          <li><a href="#noticias">Noticias</a></li>
           <li><a href="#calendario">Calendario</a></li>
           <li><a href="#comunidad">Comunidad</a></li>
         </ul>
@@ -1325,8 +1215,11 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
         <div class="shop-welcome-icon">🛒</div>
         <p>Bienvenido a la <strong>Comunidad HUGUS FC</strong>. Aquí puedes ver nuestros productos oficiales y solicitar tu pedido directamente por WhatsApp.</p>
       </div>
+
       <div class="shop-section-title">Productos Oficiales</div>
+
       <div class="products-grid">
+        <!-- CAMISETA -->
         <div class="product-card">
           <div class="product-img-area">
             <div class="product-badge-tag">Más Vendido</div>
@@ -1342,6 +1235,8 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
             </div>
           </div>
         </div>
+
+        <!-- KIT COMPLETO -->
         <div class="product-card">
           <div class="product-img-area">
             <img src="imag/kit_oficial.png" class="product-image" alt="Kit Oficial">
@@ -1356,6 +1251,8 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
             </div>
           </div>
         </div>
+
+        <!-- BANDERA -->
         <div class="product-card">
           <div class="product-img-area">
             <div class="product-badge-tag">Nuevo</div>
@@ -1371,6 +1268,8 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
             </div>
           </div>
         </div>
+
+        <!-- PELOTA -->
         <div class="product-card">
           <div class="product-img-area">
             <img src="imag/pelota_oficial.png" class="product-image" alt="Pelota Oficial">
@@ -1385,6 +1284,8 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
             </div>
           </div>
         </div>
+
+        <!-- GORRA -->
         <div class="product-card">
           <div class="product-img-area">
             <img src="imag/gorra.png" class="product-image" alt="Gorra Oficial">
@@ -1399,6 +1300,8 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
             </div>
           </div>
         </div>
+
+        <!-- TARJETA -->
         <div class="product-card">
           <div class="product-img-area">
             <div class="product-badge-tag">Exclusivo</div>
@@ -1415,7 +1318,9 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
           </div>
         </div>
       </div>
+
       <div class="shop-divider"></div>
+
       <div class="membresia-box">
         <h3>🌟 MEMBRESÍA PREMIUM HUGUS FC</h3>
         <p>Accede a todos los beneficios exclusivos de ser parte oficial de la familia. Escríbenos para más información.</p>
@@ -1436,7 +1341,7 @@ footer{background:var(--green3);border-top:1px solid rgba(201,162,39,.12);paddin
 </div>
 
 <script>
-/* ===== SISTEMA DE AUTENTICACIÓN (IDÉNTICO AL ORIGINAL) ===== */
+/* ===== SISTEMA DE AUTENTICACIÓN ===== */
 const USERS_KEY = 'hugusfc_users';
 const SESSION_KEY = 'hugusfc_session';
 
@@ -1456,6 +1361,7 @@ function clearSession() {
   localStorage.removeItem(SESSION_KEY);
 }
 
+/* Actualizar UI según sesión */
 function updateUIForLoggedInUser(user) {
   document.getElementById('btnAcceder').style.display = 'none';
   const menuContainer = document.getElementById('userMenuContainer');
@@ -1463,6 +1369,7 @@ function updateUIForLoggedInUser(user) {
   const avatarBtn = document.getElementById('userAvatarBtn');
   const inicial = user.nombre.charAt(0).toUpperCase();
   avatarBtn.textContent = inicial;
+  // Actualizar menú móvil
   const mobBtn = document.getElementById('mobAccederBtn');
   if (mobBtn) {
     mobBtn.textContent = '⚽ ' + user.nombre + ' (Mi Comunidad)';
@@ -1480,9 +1387,11 @@ function updateUIForLoggedOut() {
   }
 }
 
+/* Cargar sesión al iniciar */
 (function initSession() {
   const session = getSession();
   if (session && session.email) {
+    // Verificar que el usuario aún existe en la lista
     const users = getUsers();
     const user = users.find(u => u.email === session.email);
     if (user) {
@@ -1496,6 +1405,7 @@ function updateUIForLoggedOut() {
   }
 })();
 
+/* Mostrar error en modal */
 function showAuthError(msg) {
   const errEl = document.getElementById('authError');
   errEl.textContent = msg;
@@ -1503,12 +1413,14 @@ function showAuthError(msg) {
   setTimeout(() => errEl.classList.remove('show'), 4000);
 }
 
+/* Registro */
 function registerUser() {
   const nombre = document.getElementById('regNombre').value.trim();
   const apellido = document.getElementById('regApellido').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const password = document.getElementById('regPassword').value;
   const referido = document.getElementById('regReferido').value.trim();
+
   if (!nombre || !apellido || !email || !password) {
     showAuthError('Todos los campos son obligatorios.');
     return;
@@ -1522,12 +1434,14 @@ function registerUser() {
     showAuthError('Este correo ya está registrado.');
     return;
   }
+
   const newUser = { nombre, apellido, email, password, referido };
   users.push(newUser);
   saveUsers(users);
   saveSession(newUser);
   updateUIForLoggedInUser(newUser);
   cerrarAuth();
+  // Limpiar formularios
   document.getElementById('regNombre').value = '';
   document.getElementById('regApellido').value = '';
   document.getElementById('regEmail').value = '';
@@ -1535,9 +1449,11 @@ function registerUser() {
   document.getElementById('regReferido').value = '';
 }
 
+/* Inicio de sesión */
 function loginUser() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
+
   if (!email || !password) {
     showAuthError('Ingresa tu correo y contraseña.');
     return;
@@ -1552,6 +1468,7 @@ function loginUser() {
     showAuthError('Contraseña incorrecta.');
     return;
   }
+
   saveSession(user);
   updateUIForLoggedInUser(user);
   cerrarAuth();
@@ -1559,6 +1476,7 @@ function loginUser() {
   document.getElementById('loginPassword').value = '';
 }
 
+/* Google simulado (demo) */
 function loginWithGoogle() {
   const demoUser = { nombre: 'Hincha', apellido: 'HUGUS', email: 'hincha@hugusfc.com', password: 'google' };
   const users = getUsers();
@@ -1571,6 +1489,7 @@ function loginWithGoogle() {
   cerrarAuth();
 }
 
+/* Cerrar sesión */
 function logout() {
   clearSession();
   updateUIForLoggedOut();
@@ -1578,6 +1497,7 @@ function logout() {
   cerrarTienda();
 }
 
+/* Función para entrar a la comunidad (verifica sesión) */
 function entrarComunidad() {
   const session = getSession();
   if (session && session.email) {
@@ -1587,6 +1507,7 @@ function entrarComunidad() {
   }
 }
 
+/* Toggle dropdown del avatar */
 document.getElementById('userAvatarBtn').addEventListener('click', function(e) {
   e.stopPropagation();
   document.getElementById('userDropdown').classList.toggle('active');
@@ -1682,6 +1603,7 @@ function abrirAuth(){
 function cerrarAuth(){
   document.getElementById('authOverlay').classList.remove('active')
   document.body.style.overflow=''
+  // Limpiar error al cerrar
   document.getElementById('authError').classList.remove('show');
 }
 function abrirTienda(){
@@ -1693,6 +1615,7 @@ function cerrarTienda(){
   document.body.style.overflow=''
 }
 
+/* ===== TABS AUTH ===== */
 function switchTab(tab){
   const loginForm=document.getElementById('form-login')
   const registroForm=document.getElementById('form-registro')
@@ -1712,12 +1635,15 @@ function switchTab(tab){
   }
 }
 
+/* Cerrar overlays al click en fondo */
 document.getElementById('authOverlay').addEventListener('click',function(e){
   if(e.target===this)cerrarAuth()
 })
 document.getElementById('shopOverlay').addEventListener('click',function(e){
   if(e.target===this)cerrarTienda()
 })
+
+/* Cerrar con ESC */
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){cerrarAuth();cerrarTienda()}
 })
