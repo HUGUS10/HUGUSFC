@@ -9,6 +9,7 @@
     <meta name="author" content="HUGUS FC">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0f150f">
+    <link rel="manifest" href="manifest.json">
     <link rel="canonical" href="https://hugusfc.online/">
     <link rel="icon" type="image/png" sizes="32x32" href="/imag/logo.png">
     <link rel="apple-touch-icon" href="/imag/logo.png">
@@ -142,6 +143,35 @@
         .fl { font-family:'Barlow Condensed',sans-serif; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); font-weight:600; }
         .fv { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.95rem; color:var(--white); text-align:right; }
         .fv.g { color:var(--gold); }
+
+        .install-bubble {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #C9A227;
+        color: #080C09;
+        border: none;
+        padding: 14px 22px;
+        border-radius: 999px;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 900;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        box-shadow: 0 10px 30px rgba(0,0,0,.45);
+        z-index: 9999;
+        display: none;
+        }
+
+        .install-bubble.show {
+        display: block;
+        }
+
+        @media (min-width: 1025px) {
+        .install-bubble {
+            display: none !important;
+        }
+        }
 
         /* Valores */
         .valores-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:52px; }
@@ -386,7 +416,7 @@
         .admin-form-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; }
         .admin-form-group { display:flex; flex-direction:column; gap:6px; }
         .admin-form-group label { font-family:'Barlow Condensed',sans-serif; font-size:.65rem; letter-spacing:.18em; text-transform:uppercase; color:var(--grey); font-weight:700; }
-        .admin-form-group input, .admin-form-group select, .admin-form-group textarea { width:100%; padding:12px 15px; background:rgba(0,0,0,.4); border:1px solid rgba(201,162,39,.25); color:var(--white); border-radius:var(--radius-sm); font-family:'Barlow',sans-serif; }
+        .admin-form-group input, .admin-form-group select { width:100%; padding:12px 15px; background:rgba(0,0,0,.4); border:1px solid rgba(201,162,39,.25); color:var(--white); border-radius:var(--radius-sm); }
         .admin-form-actions { margin-top:20px; display:flex; gap:12px; flex-wrap:wrap; }
         .btn-admin { padding:12px 24px; border-radius:var(--radius-sm); font-weight:700; cursor:pointer; border:none; font-family:'Barlow Condensed',sans-serif; letter-spacing:.1em; text-transform:uppercase; }
         .btn-admin-save { background:var(--gold); color:var(--black); }
@@ -398,27 +428,31 @@
         .admin-badge { display:inline-block; padding:3px 10px; border-radius:12px; font-family:'Barlow Condensed',sans-serif; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; }
         .admin-badge.jugado { background:rgba(46,204,113,.2); border:1px solid rgba(46,204,113,.4); color:#2ecc71; }
         .admin-badge.proximo { background:rgba(52,152,219,.2); border:1px solid rgba(52,152,219,.4); color:#3498db; }
-        .admin-tabs { display:flex; border-bottom:1px solid rgba(255,255,255,0.1); margin-bottom:20px; }
-        .admin-tab-btn { flex:1; padding:12px; background:none; border:none; color:var(--grey); font-family:'Barlow Condensed',sans-serif; font-size:0.9rem; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; border-bottom:2px solid transparent; transition:all 0.3s; }
-        .admin-tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
-        .admin-tab-content { display:block; }
-        .admin-news-form { margin-top:20px; }
 
-        /* Noticias */
-        .noticias-sec { background: var(--dark); }
-        .noticias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
-        .noticia-card { background: linear-gradient(135deg, #1a1e2b, #0f111a); border: 1px solid rgba(201,162,39,0.12); border-radius: var(--radius-lg); overflow: hidden; transition: transform .3s, border-color .3s; }
-        .noticia-card:hover { transform: translateY(-5px); border-color: rgba(201,162,39,0.5); }
-        .noticia-img { width: 100%; height: 180px; object-fit: cover; background: var(--dark3); display: flex; align-items: center; justify-content: center; color: var(--grey); font-size: 2rem; }
-        .noticia-body { padding: 20px; }
-        .noticia-fecha { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 10px; }
-        .noticia-titulo { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--white); margin-bottom: 10px; line-height: 1.1; }
-        .noticia-resumen { font-size: 0.85rem; color: var(--grey); line-height: 1.6; }
-
-        /* PWA */
-        .install-bubble { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--black); border: none; padding: 14px 22px; border-radius: 999px; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 10px 30px rgba(0,0,0,.45); z-index: 9999; display: none; }
-        .install-bubble.show { display: block; }
-        @media (min-width: 1025px) { .install-bubble { display: none !important; } }
+        /* Resultados */
+        .resultados-sec { background: var(--dark); padding: 90px 20px; }
+        .resultados-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; margin-top: 40px; }
+        .resultado-card { background: linear-gradient(135deg, #111229, #0d1029); border: 1px solid rgba(201,162,39,0.15); border-radius: var(--radius-lg); overflow: hidden; transition: all .3s; }
+        .resultado-card:hover { border-color: rgba(201,162,39,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.6); }
+        .resultado-header { background: linear-gradient(135deg, #1a1e2b, #0f111a); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(201,162,39,0.15); }
+        .resultado-equipo { display: flex; align-items: center; gap: 10px; }
+        .resultado-escudo-peq { width: 36px; height: 36px; border-radius: 50%; background: var(--green3); display: flex; align-items: center; justify-content: center; }
+        .resultado-escudo-peq img { width: 28px; height: 28px; object-fit: contain; }
+        .resultado-nombre { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.05em; }
+        .resultado-marcador { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); }
+        .resultado-fecha { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--grey); margin-top: 6px; }
+        .resultado-body { padding: 20px 24px; }
+        .goles-lista { list-style: none; margin-top: 12px; }
+        .goles-lista li { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.85rem; }
+        .goles-lista li:last-child { border-bottom: none; }
+        .gol-minuto { background: var(--gold); color: var(--black); padding: 2px 8px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; }
+        .gol-jugador { color: var(--cream); flex: 1; }
+        .gol-equipo { font-size: 0.7rem; color: var(--grey); text-transform: uppercase; letter-spacing: 0.1em; }
+        .admin-goles-editor { margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; }
+        .admin-gol-row { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+        .admin-gol-row input, .admin-gol-row select { background: rgba(0,0,0,0.5); border: 1px solid rgba(201,162,39,0.3); color: var(--white); padding: 8px; border-radius: 6px; }
+        .btn-admin-small { padding: 6px 14px; font-size: 0.7rem; background: var(--gold); color: var(--black); border: none; border-radius: 6px; cursor: pointer; font-weight: 700; }
+        .btn-admin-small.delete { background: rgba(231,76,60,0.2); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
 
         /* Responsive */
         @media(max-width:1024px) {
@@ -441,10 +475,16 @@
             section{padding:60px 16px} .contact-grid{grid-template-columns:1fr}
             .footer-top{grid-template-columns:1fr} .shop-body{padding:20px}
             .admin-form-grid{grid-template-columns:1fr}
+            .admin-gol-row { flex-direction: column; align-items: stretch; }
         }
     </style>
 </head>
 <body>
+
+    <button id="installBubble" class="install-bubble">
+  📲 Instalar App
+    </button>
+
     <!-- PRELOADER -->
     <div id="preloader"><div class="pre-logo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="pre-title">HUGUS FC</div><div class="pre-sub">Dios · Familia · Fútbol</div><div class="pre-bar"><div class="pre-fill"></div></div></div>
 
@@ -453,18 +493,18 @@
         <div class="nav-i">
             <a href="#inicio" class="nav-brand"><div class="nav-brand-logo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><span class="nav-brand-text">HUGUS FC</span></a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#inicio">Inicio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#valores">Valores</a></li><li><a href="#kit">Kit</a></li><li><a href="#galeria">Galería</a></li><li><a href="#calendario">Calendario</a></li><li><a href="#resultados">Resultados</a></li><li><a href="#noticias">Noticias</a></li><li><a href="#comunidad">Comunidad</a></li><li><a href="#contacto">Contacto</a></li>
+                <li><a href="#inicio">Inicio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#valores">Valores</a></li><li><a href="#kit">Kit</a></li><li><a href="#galeria">Galería</a></li><li><a href="#calendario">Calendario</a></li><li><a href="#resultados">Resultados</a></li><li><a href="#comunidad">Comunidad</a></li><li><a href="#contacto">Contacto</a></li>
             </ul>
             <div class="nav-right">
-                <button class="btn-nav-acceder" id="btnAcceder">⚽ Acceder</button>
+                <button class="btn-nav-acceder" id="btnAcceder" onclick="abrirAuth()"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Acceder</button>
                 <div class="user-menu-container" id="userMenuContainer">
                     <button class="user-avatar-btn" id="userAvatarBtn">H</button>
                     <div class="user-dropdown" id="userDropdown">
-                        <button class="user-dropdown-item" id="perfilBtn">👤 Mi Perfil</button>
-                        <button class="user-dropdown-item" id="tiendaBtn">🛒 Tienda Oficial</button>
-                        <button class="user-dropdown-item admin-link" id="adminLinkBtn" style="display:none">⚙️ Panel Admin</button>
+                        <button class="user-dropdown-item" onclick="abrirPerfil()">👤 Mi Perfil</button>
+                        <button class="user-dropdown-item" onclick="abrirTienda()">🛒 Tienda Oficial</button>
+                        <button class="user-dropdown-item admin-link" id="adminLinkBtn" style="display:none" onclick="abrirAdminPanel()">⚙️ Panel Admin</button>
                         <div class="user-dropdown-divider"></div>
-                        <button class="user-dropdown-item logout" id="logoutBtn">🚪 Cerrar sesión</button>
+                        <button class="user-dropdown-item logout" onclick="logout()">🚪 Cerrar sesión</button>
                     </div>
                 </div>
                 <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
@@ -473,9 +513,9 @@
     </nav>
     <div class="mob-menu" id="mobMenu">
         <ul>
-            <li><a href="#inicio">Inicio</a></li><li><a href="#nosotros">Nosotros</a></li><li><a href="#valores">Valores</a></li><li><a href="#kit">Kit Oficial</a></li><li><a href="#galeria">Galería</a></li><li><a href="#calendario">Calendario</a></li><li><a href="#resultados">Resultados</a></li><li><a href="#noticias">Noticias</a></li><li><a href="#comunidad">Comunidad</a></li><li><a href="#contacto">Contacto</a></li>
+            <li><a href="#inicio" onclick="closeMenu()">Inicio</a></li><li><a href="#nosotros" onclick="closeMenu()">Nosotros</a></li><li><a href="#valores" onclick="closeMenu()">Valores</a></li><li><a href="#kit" onclick="closeMenu()">Kit Oficial</a></li><li><a href="#galeria" onclick="closeMenu()">Galería</a></li><li><a href="#calendario" onclick="closeMenu()">Calendario</a></li><li><a href="#resultados" onclick="closeMenu()">Resultados</a></li><li><a href="#comunidad" onclick="closeMenu()">Comunidad</a></li><li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
         </ul>
-        <div class="mob-acceder" id="mobAccederBtn">⚽ Acceder / Registrarse</div>
+        <div class="mob-acceder" id="mobAccederBtn" onclick="closeMenu();abrirAuth()">⚽ Acceder / Registrarse</div>
     </div>
 
     <!-- HERO -->
@@ -502,24 +542,8 @@
             <h2 class="stit">HISTORIA <span class="g">DEL CLUB</span></h2>
             <p class="sdesc">Un club nacido del corazón, con valores sólidos y una visión clara: crecer juntos.</p>
             <div class="about-grid">
-                <div class="about-card reveal-l">
-                    <div class="about-big">HUGUS</div>
-                    <p class="about-p"><strong style="color:var(--gold)">HUGUS FC</strong> es un club de fútbol fundado en <strong>Abril del 2026</strong> en el Caserío El Colorado, con la visión de crear una institución deportiva sólida, competitiva y con valores que trascienden la cancha.</p>
-                    <p class="about-p">Bajo el liderazgo de su propietario y fundador <strong style="color:var(--cream)">Hugo Laban Guerrero</strong>, el club ha sido construido sobre tres pilares fundamentales: <em>Dios, Familia y Fútbol</em> — una filosofía que guía cada entrenamiento, cada partido y cada decisión.</p>
-                    <p class="about-p">Con un diseño de indumentaria inspirado en la grandeza de los clubes más icónicos del mundo, HUGUS FC nace para quedarse y dejar huella en el fútbol local y regional.</p>
-                </div>
-                <div class="reveal-r">
-                    <div class="facts">
-                        <div class="fact"><span class="fl">Club</span><span class="fv">HUGUS FC</span></div>
-                        <div class="fact"><span class="fl">Fundación</span><span class="fv g">Abril 2026</span></div>
-                        <div class="fact"><span class="fl">Sede</span><span class="fv">C. El Colorado</span></div>
-                        <div class="fact"><span class="fl">Propietario</span><span class="fv">Hugo Laban Guerrero</span></div>
-                        <div class="fact"><span class="fl">Lema</span><span class="fv g">Dios · Familia · Fútbol</span></div>
-                        <div class="fact"><span class="fl">Marca Indumentaria</span><span class="fv">Adidas / LAGUE</span></div>
-                        <div class="fact"><span class="fl">Colores Oficiales</span><span class="fv" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><span style="width:14px;height:14px;background:#E8E0CC;border-radius:3px;border:1px solid rgba(255,255,255,.2);display:inline-block"></span><span style="width:14px;height:14px;background:#1B3A2D;border-radius:3px;display:inline-block"></span><span style="width:14px;height:14px;background:#C0392B;border-radius:3px;display:inline-block"></span><span style="width:14px;height:14px;background:#C9A227;border-radius:3px;display:inline-block"></span><span style="color:var(--grey);font-size:.78rem">Crema · Verde · Rojo · Oro</span></span></div>
-                        <div class="fact"><span class="fl">Número Icónico</span><span class="fv g">#10</span></div>
-                    </div>
-                </div>
+                <div class="about-card reveal-l"><div class="about-big">HUGUS</div><p class="about-p"><strong style="color:var(--gold)">HUGUS FC</strong> es un club de fútbol fundado en <strong>Abril del 2026</strong> en el Caserío El Colorado, con la visión de crear una institución deportiva sólida, competitiva y con valores que trascienden la cancha.</p><p class="about-p">Bajo el liderazgo de su propietario y fundador <strong style="color:var(--cream)">Hugo Laban Guerrero</strong>, el club ha sido construido sobre tres pilares fundamentales: <em>Dios, Familia y Fútbol</em> — una filosofía que guía cada entrenamiento, cada partido y cada decisión.</p><p class="about-p">Con un diseño de indumentaria inspirado en la grandeza de los clubes más icónicos del mundo, HUGUS FC nace para quedarse y dejar huella en el fútbol local y regional.</p></div>
+                <div class="reveal-r"><div class="facts"><div class="fact"><span class="fl">Club</span><span class="fv">HUGUS FC</span></div><div class="fact"><span class="fl">Fundación</span><span class="fv g">Abril 2026</span></div><div class="fact"><span class="fl">Sede</span><span class="fv">C. El Colorado</span></div><div class="fact"><span class="fl">Propietario</span><span class="fv">Hugo Laban Guerrero</span></div><div class="fact"><span class="fl">Lema</span><span class="fv g">Dios · Familia · Fútbol</span></div><div class="fact"><span class="fl">Marca Indumentaria</span><span class="fv">Adidas / LAGUE</span></div><div class="fact"><span class="fl">Colores Oficiales</span><span class="fv" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><span style="width:14px;height:14px;background:#E8E0CC;border-radius:3px;border:1px solid rgba(255,255,255,.2);display:inline-block"></span><span style="width:14px;height:14px;background:#1B3A2D;border-radius:3px;display:inline-block"></span><span style="width:14px;height:14px;background:#C0392B;border-radius:3px;display:inline-block"></span><span style="width:14px;height:14px;background:#C9A227;border-radius:3px;display:inline-block"></span><span style="color:var(--grey);font-size:.78rem">Crema · Verde · Rojo · Oro</span></span></div><div class="fact"><span class="fl">Número Icónico</span><span class="fv g">#10</span></div></div></div>
             </div>
         </div>
     </section>
@@ -595,7 +619,7 @@
         </div>
     </section>
 
-    <!-- RESULTADOS -->
+    <!-- RESULTADOS (Nueva sección) -->
     <section id="resultados" class="resultados-sec">
         <div class="si">
             <div class="stag">Historial</div>
@@ -605,33 +629,11 @@
         </div>
     </section>
 
-    <!-- NOTICIAS -->
-    <section id="noticias" class="noticias-sec">
-        <div class="si">
-            <div class="stag">Actualidad</div>
-            <h2 class="stit">NOTICIAS <span class="g">HUGUS FC</span></h2>
-            <p class="sdesc">Lo último del club, fichajes, partidos y más.</p>
-            <div class="noticias-grid" id="noticiasGrid"></div>
-        </div>
-    </section>
-
     <!-- COMUNIDAD -->
     <section id="comunidad" class="comunidad-sec">
         <div class="comunidad-inner">
-            <div class="comunidad-text reveal-l">
-                <div class="stag">Únete a Nosotros</div>
-                <h2 class="stit" style="color:var(--white)">ÚNETE A LA <span class="g">COMUNIDAD</span></h2>
-                <p class="comunidad-desc">Sé parte oficial de la familia HUGUS FC. Accede a contenido exclusivo, productos del club, noticias antes que nadie y precios especiales para miembros.</p>
-                <div class="comunidad-perks"><div class="cperk"><div class="cperk-dot"></div><span>Catálogo de productos oficiales con precios exclusivos</span></div><div class="cperk"><div class="cperk-dot"></div><span>Acceso anticipado a noticias y convocatorias</span></div><div class="cperk"><div class="cperk-dot"></div><span>Cotizaciones y pedidos directos por WhatsApp</span></div><div class="cperk"><div class="cperk-dot"></div><span>Descuentos en kits y merchandising oficial</span></div><div class="cperk"><div class="cperk-dot"></div><span>Comunidad exclusiva de hinchas HUGUS FC</span></div></div>
-                <button class="btn-comunidad" id="btnComunidad">⚽ Entrar</button>
-            </div>
-            <div class="comunidad-visual reveal-r">
-                <div class="cv-title">⚽ Comunidad HUGUS FC · 2026</div>
-                <div class="cv-stat-row"><div class="cv-stat"><div class="cv-stat-num">1ª</div><div class="cv-stat-label">Temporada</div></div><div class="cv-stat"><div class="cv-stat-num">11</div><div class="cv-stat-label">Jugadores</div></div></div>
-                <div class="cv-stat-row"><div class="cv-stat"><div class="cv-stat-num">100%</div><div class="cv-stat-label">Compromiso</div></div><div class="cv-stat"><div class="cv-stat-num">∞</div><div class="cv-stat-label">Pasión</div></div></div>
-                <div class="cv-divider"></div>
-                <div class="cv-badge-row"><span class="cv-badge">Kit Oficial</span><span class="cv-badge">Merchandising</span><span class="cv-badge">Noticias</span><span class="cv-badge">WhatsApp</span><span class="cv-badge">Descuentos</span></div>
-            </div>
+            <div class="comunidad-text reveal-l"><div class="stag">Únete a Nosotros</div><h2 class="stit" style="color:var(--white)">ÚNETE A LA <span class="g">COMUNIDAD</span></h2><p class="comunidad-desc">Sé parte oficial de la familia HUGUS FC. Accede a contenido exclusivo, productos del club, noticias antes que nadie y precios especiales para miembros.</p><div class="comunidad-perks"><div class="cperk"><div class="cperk-dot"></div><span>Catálogo de productos oficiales con precios exclusivos</span></div><div class="cperk"><div class="cperk-dot"></div><span>Acceso anticipado a noticias y convocatorias</span></div><div class="cperk"><div class="cperk-dot"></div><span>Cotizaciones y pedidos directos por WhatsApp</span></div><div class="cperk"><div class="cperk-dot"></div><span>Descuentos en kits y merchandising oficial</span></div><div class="cperk"><div class="cperk-dot"></div><span>Comunidad exclusiva de hinchas HUGUS FC</span></div></div><button class="btn-comunidad" onclick="entrarComunidad()"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Entrar</button></div>
+            <div class="comunidad-visual reveal-r"><div class="cv-title">⚽ Comunidad HUGUS FC · 2026</div><div class="cv-stat-row"><div class="cv-stat"><div class="cv-stat-num">1ª</div><div class="cv-stat-label">Temporada</div></div><div class="cv-stat"><div class="cv-stat-num">11</div><div class="cv-stat-label">Jugadores</div></div></div><div class="cv-stat-row"><div class="cv-stat"><div class="cv-stat-num">100%</div><div class="cv-stat-label">Compromiso</div></div><div class="cv-stat"><div class="cv-stat-num">∞</div><div class="cv-stat-label">Pasión</div></div></div><div class="cv-divider"></div><div class="cv-badge-row"><span class="cv-badge">Kit Oficial</span><span class="cv-badge">Merchandising</span><span class="cv-badge">Noticias</span><span class="cv-badge">WhatsApp</span><span class="cv-badge">Descuentos</span></div></div>
         </div>
     </section>
 
@@ -642,12 +644,8 @@
             <h2 class="stit">ÚNETE A <span class="g">HUGUS FC</span></h2>
             <p class="sdesc">¿Quieres ser parte del equipo, patrocinar o simplemente saber más? Contáctanos.</p>
             <div class="contact-grid reveal">
-                <a href="https://wa.me/51935419810" target="_blank" class="contact-card-link">
-                    <div class="contact-card" style="border-color:rgba(37,211,102,.15)"><div class="contact-icon" style="background:#25D366"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div><div class="contact-title">WhatsApp</div><div class="contact-val" style="color:#25D366">+51 935 419 810</div><div class="contact-sub">Respuesta rápida</div></div>
-                </a>
-                <a href="mailto:lg_hugusfc@hotmail.com" class="contact-card-link">
-                    <div class="contact-card"><div class="contact-icon" style="background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.3)"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--gold)"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div><div class="contact-title">Email</div><div class="contact-val" style="color:var(--gold)">LG_HUGUSFC@hotmail.com</div><div class="contact-sub">Para consultas formales</div></div>
-                </a>
+                <a href="https://wa.me/51935419810" target="_blank" class="contact-card-link"><div class="contact-card" style="border-color:rgba(37,211,102,.15)"><div class="contact-icon" style="background:#25D366"><svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div><div class="contact-title">WhatsApp</div><div class="contact-val" style="color:#25D366">+51 935 419 810</div><div class="contact-sub">Respuesta rápida</div></div></a>
+                <a href="mailto:lg_hugusfc@hotmail.com" class="contact-card-link"><div class="contact-card"><div class="contact-icon" style="background:rgba(201,162,39,.15);border:1px solid rgba(201,162,39,.3)"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--gold)"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div><div class="contact-title">Email</div><div class="contact-val" style="color:var(--gold)">LG_HUGUSFC@hotmail.com</div><div class="contact-sub">Para consultas formales</div></div></a>
                 <div class="contact-card"><div class="contact-icon" style="background:rgba(27,58,45,.5);border:1px solid rgba(201,162,39,.2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="var(--gold)"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div><div class="contact-title">Ubicación</div><div class="contact-val" style="color:var(--cream)">Caserío El Colorado</div><div class="contact-sub">Nuestra casa</div></div>
             </div>
         </div>
@@ -659,7 +657,7 @@
         <div class="footer-inner">
             <div class="footer-top">
                 <div><div class="fb-name">HUGUS FC</div><div class="fb-lema">Dios · Familia · Fútbol</div><p class="fb-desc">Club de fútbol fundado en Abril 2026 en el Caserío El Colorado. Pasión, disciplina y orgullo en cada partido.</p></div>
-                <div class="footer-col"><h4>Club</h4><ul><li><a href="#nosotros">Historia</a></li><li><a href="#valores">Valores</a></li><li><a href="#kit">Kit Oficial</a></li><li><a href="#galeria">Galería</a></li><li><a href="#calendario">Calendario</a></li><li><a href="#noticias">Noticias</a></li><li><a href="#comunidad">Comunidad</a></li></ul></div>
+                <div class="footer-col"><h4>Club</h4><ul><li><a href="#nosotros">Historia</a></li><li><a href="#valores">Valores</a></li><li><a href="#kit">Kit Oficial</a></li><li><a href="#galeria">Galería</a></li><li><a href="#calendario">Calendario</a></li><li><a href="#comunidad">Comunidad</a></li></ul></div>
                 <div class="footer-col"><h4>Contacto</h4><p>📱 <a href="https://wa.me/51935419810" target="_blank">+51 935 419 810</a><br><br>✉️ <a href="mailto:lg_hugusfc@hotmail.com">LG_HUGUSFC@hotmail.com</a><br><br>📍 C. El Colorado, Perú</p></div>
             </div>
             <div class="footer-bottom"><div class="footer-cr">© 2026 <span>HUGUS FC</span> — Todos los derechos reservados</div><div class="footer-cr">Fundado por <span>Hugo Laban Guerrero</span> · Est. Abril 2026</div></div>
@@ -669,26 +667,26 @@
     <!-- MODAL AUTH -->
     <div class="modal-overlay" id="authOverlay">
         <div class="auth-modal">
-            <button class="modal-close-btn" id="btnCerrarAuth">×</button>
+            <button class="modal-close-btn" onclick="cerrarAuth()">×</button>
             <div class="auth-header"><div class="auth-escudo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="auth-club-name">HUGUS FC</div><div class="auth-club-lema">Dios · Familia · Fútbol</div></div>
-            <div class="auth-tabs"><button class="auth-tab active" id="tab-login">Iniciar Sesión</button><button class="auth-tab" id="tab-registro">Registrarse</button></div>
+            <div class="auth-tabs"><button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Iniciar Sesión</button><button class="auth-tab" id="tab-registro" onclick="switchTab('registro')">Registrarse</button></div>
             <div class="auth-body">
                 <div class="auth-error" id="authError"></div>
                 <div id="form-login">
                     <div class="auth-form-group"><label>Correo electrónico</label><input type="email" id="loginEmail" placeholder="admin@hugusfc.com"></div>
                     <div class="auth-form-group"><label>Contraseña</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
-                    <button class="btn-auth-submit" id="btnLogin">⚽ Ingresar</button>
+                    <button class="btn-auth-submit" onclick="loginUser()">⚽ Ingresar</button>
                     <div class="auth-divider">o continúa con</div>
-                    <button class="btn-google" id="btnGoogleLogin"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continuar con Google</button>
-                    <p class="auth-switch">¿No tienes cuenta? <a id="linkToRegister">Regístrate aquí</a></p>
+                    <button class="btn-google" onclick="loginWithGoogle()"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Continuar con Google</button>
+                    <p class="auth-switch">¿No tienes cuenta? <a onclick="switchTab('registro')">Regístrate aquí</a></p>
                 </div>
                 <div id="form-registro" style="display:none">
                     <div class="auth-name-row"><div class="auth-form-group"><label>Nombre</label><input type="text" id="regNombre" placeholder="Tu nombre"></div><div class="auth-form-group"><label>Apellido</label><input type="text" id="regApellido" placeholder="Tu apellido"></div></div>
                     <div class="auth-form-group"><label>Correo electrónico</label><input type="email" id="regEmail" placeholder="tu@correo.com"></div>
                     <div class="auth-form-group"><label>Contraseña</label><input type="password" id="regPassword" placeholder="Mínimo 8 caracteres"></div>
                     <div class="auth-form-group"><label>¿Cómo te enteraste de HUGUS FC?</label><input type="text" id="regReferido" placeholder="Amigo, redes, etc."></div>
-                    <button class="btn-auth-submit" id="btnRegister">⚽ Unirme a la Comunidad</button>
-                    <p class="auth-switch">¿Ya tienes cuenta? <a id="linkToLogin">Inicia sesión</a></p>
+                    <button class="btn-auth-submit" onclick="registerUser()">⚽ Unirme a la Comunidad</button>
+                    <p class="auth-switch">¿Ya tienes cuenta? <a onclick="switchTab('login')">Inicia sesión</a></p>
                 </div>
             </div>
         </div>
@@ -702,7 +700,7 @@
                     <div class="shop-header-escudo"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div>
                     <div><div class="shop-header-title">TIENDA OFICIAL</div><div class="shop-header-sub">HUGUS FC · 2026</div></div>
                 </div>
-                <button class="shop-close-btn" id="btnCerrarTienda">×</button>
+                <button class="shop-close-btn" onclick="cerrarTienda()">×</button>
             </div>
             <div class="shop-body">
                 <div class="shop-welcome"><div class="shop-welcome-icon">🛒</div><p>Bienvenido a la <strong>Tienda Oficial de HUGUS FC</strong>. Todos nuestros productos son de alta calidad y despachados directamente. Haz tu pedido por WhatsApp.</p></div>
@@ -729,7 +727,7 @@
     <!-- MODAL PERFIL -->
     <div class="modal-overlay" id="perfilOverlay">
         <div class="perfil-modal">
-            <button class="modal-close-btn" id="btnCerrarPerfil">×</button>
+            <button class="modal-close-btn" onclick="cerrarPerfil()">×</button>
             <div class="perfil-header">
                 <div class="perfil-avatar-circle" id="perfilAvatar">H</div>
                 <div class="perfil-nombre" id="perfilNombre">Hincha HUGUS</div>
@@ -741,7 +739,7 @@
                 <div class="perfil-info-row"><span class="perfil-info-label">Tipo de Cuenta</span><span class="perfil-info-val" id="perfilTipo">Hincha</span></div>
                 <div class="perfil-info-row"><span class="perfil-info-label">Miembro desde</span><span class="perfil-info-val" id="perfilFecha">Abril 2026</span></div>
                 <div class="perfil-stats"><div class="perfil-stat"><div class="perfil-stat-num">⚽</div><div class="perfil-stat-label">Partidos esta temporada</div></div><div class="perfil-stat"><div class="perfil-stat-num">🏆</div><div class="perfil-stat-label">Temporada 2026</div></div></div>
-                <button class="btn-perfil-cerrar" id="btnPerfilCerrar">Cerrar Perfil</button>
+                <button class="btn-perfil-cerrar" onclick="cerrarPerfil()">Cerrar Perfil</button>
             </div>
         </div>
     </div>
@@ -749,233 +747,200 @@
     <!-- MODAL ADMIN PANEL -->
     <div class="modal-overlay" id="adminOverlay">
         <div class="admin-modal">
-            <div class="admin-header"><div class="admin-header-title"><span>⚙️</span> Panel de Administración</div><button class="admin-close-btn" id="btnCerrarAdmin">×</button></div>
-            <div class="admin-tabs">
-                <button class="admin-tab-btn active" data-tab="partidos">📅 Partidos</button>
-                <button class="admin-tab-btn" data-tab="noticias">📰 Noticias</button>
-            </div>
+            <div class="admin-header"><div class="admin-header-title"><span>⚙️</span> Panel de Administración</div><button class="admin-close-btn" onclick="cerrarAdminPanel()">×</button></div>
             <div class="admin-body">
-                <div id="adminPartidosTab" class="admin-tab-content">
-                    <div class="admin-section-title">📋 Gestionar Partidos</div>
-                    <div class="admin-form" id="adminFormContainer">
-                        <div class="admin-form-grid">
-                            <div class="admin-form-group"><label>Fecha</label><input type="date" id="adminFecha"></div>
-                            <div class="admin-form-group"><label>Hora</label><input type="time" id="adminHora" value="15:00"></div>
-                            <div class="admin-form-group"><label>Rival</label><input type="text" id="adminRival" placeholder="Nombre del equipo rival"></div>
-                            <div class="admin-form-group"><label>Lugar</label><input type="text" id="adminLugar" placeholder="Cancha / Estadio"></div>
-                            <div class="admin-form-group"><label>Competencia</label><input type="text" id="adminCompetencia" placeholder="Ej: Partido Oficial 2026"></div>
-                            <div class="admin-form-group"><label>¿Local?</label><select id="adminEsLocal"><option value="true">Sí - Local</option><option value="false">No - Visitante</option></select></div>
-                            <div class="admin-form-group"><label>Estado</label><select id="adminEstado"><option value="proximo">Próximo</option><option value="jugado">Jugado</option></select></div>
-                            <div class="admin-form-group" id="golesHUGUSGroup" style="display:none"><label>Goles HUGUS</label><input type="number" id="adminGolesHUGUS" placeholder="0" min="0" readonly></div>
-                            <div class="admin-form-group" id="golesRivalGroup" style="display:none"><label>Goles Rival</label><input type="number" id="adminGolesRival" placeholder="0" min="0" readonly></div>
-                        </div>
-                        <div id="adminGolesEditor" style="display:none; margin-top:20px;">
-                            <h4 style="font-family:'Bebas Neue'; color:var(--gold); margin-bottom:12px;">⚽ Goles del Partido</h4>
-                            <div id="adminGolesList"></div>
-                            <button class="btn-admin-small" id="btnAgregarGol" style="margin-top:8px;">+ Agregar Gol</button>
-                        </div>
-                        <div class="admin-form-actions">
-                            <button class="btn-admin btn-admin-save" id="btnGuardarPartido">💾 Guardar Partido</button>
-                            <button class="btn-admin btn-admin-cancel" id="btnCancelarEdicion" style="display:none">Cancelar Edición</button>
-                        </div>
-                        <input type="hidden" id="adminEditId" value="">
+                <div class="admin-section-title">📋 Gestionar Partidos</div>
+                <div class="admin-form" id="adminFormContainer">
+                    <div class="admin-form-grid">
+                        <div class="admin-form-group"><label>Fecha</label><input type="date" id="adminFecha"></div>
+                        <div class="admin-form-group"><label>Hora</label><input type="time" id="adminHora" value="15:00"></div>
+                        <div class="admin-form-group"><label>Rival</label><input type="text" id="adminRival" placeholder="Nombre del equipo rival"></div>
+                        <div class="admin-form-group"><label>Lugar</label><input type="text" id="adminLugar" placeholder="Cancha / Estadio"></div>
+                        <div class="admin-form-group"><label>Competencia</label><input type="text" id="adminCompetencia" placeholder="Ej: Partido Oficial 2026"></div>
+                        <div class="admin-form-group"><label>¿Local?</label><select id="adminEsLocal"><option value="true">Sí - Local</option><option value="false">No - Visitante</option></select></div>
+                        <div class="admin-form-group"><label>Estado</label><select id="adminEstado" onchange="toggleResultadoFields()"><option value="proximo">Próximo</option><option value="jugado">Jugado</option></select></div>
+                        <div class="admin-form-group" id="golesHUGUSGroup" style="display:none"><label>Goles HUGUS</label><input type="number" id="adminGolesHUGUS" placeholder="0" min="0" readonly></div>
+                        <div class="admin-form-group" id="golesRivalGroup" style="display:none"><label>Goles Rival</label><input type="number" id="adminGolesRival" placeholder="0" min="0" readonly></div>
                     </div>
-                    <div class="admin-section-title" style="margin-top:30px;">📅 Partidos Registrados</div>
-                    <div class="admin-table-wrap">
-                        <table class="admin-table">
-                            <thead><tr><th>Fecha</th><th>Hora</th><th>Rival</th><th>Lugar</th><th>Local</th><th>Estado</th><th>Resultado</th><th>Goles</th><th>Acciones</th></tr></thead>
-                            <tbody id="adminPartidosTableBody"></tbody>
-                        </table>
+                    <!-- Editor de goles detallado -->
+                    <div id="adminGolesEditor" style="display:none; margin-top:20px;">
+                        <h4 style="font-family:'Bebas Neue'; color:var(--gold); margin-bottom:12px;">⚽ Goles del Partido</h4>
+                        <div id="adminGolesList"></div>
+                        <button class="btn-admin-small" onclick="agregarGolAdmin()" style="margin-top:8px;">+ Agregar Gol</button>
                     </div>
+                    <div class="admin-form-actions">
+                        <button class="btn-admin btn-admin-save" id="btnGuardarPartido" onclick="guardarPartido()">💾 Guardar Partido</button>
+                        <button class="btn-admin btn-admin-cancel" id="btnCancelarEdicion" onclick="cancelarEdicion()" style="display:none">Cancelar Edición</button>
+                    </div>
+                    <input type="hidden" id="adminEditId" value="">
                 </div>
-                <div id="adminNoticiasTab" class="admin-tab-content" style="display:none;">
-                    <div class="admin-section-title">📰 Gestionar Noticias</div>
-                    <div class="admin-news-form">
-                        <div class="admin-form-grid">
-                            <div class="admin-form-group"><label>Título</label><input type="text" id="newsTitulo" placeholder="Título de la noticia"></div>
-                            <div class="admin-form-group"><label>Imagen (URL)</label><input type="text" id="newsImagen" placeholder="https://... (opcional)"></div>
-                            <div class="admin-form-group" style="grid-column:span 2;"><label>Contenido</label><textarea id="newsContenido" rows="3" style="width:100%; background:rgba(0,0,0,.4); border:1px solid rgba(201,162,39,.25); color:white; padding:10px;"></textarea></div>
-                        </div>
-                        <div class="admin-form-actions">
-                            <button class="btn-admin btn-admin-save" id="btnGuardarNoticia">📝 Publicar Noticia</button>
-                            <input type="hidden" id="newsEditId" value="">
-                        </div>
-                    </div>
-                    <div class="admin-section-title" style="margin-top:30px;">📋 Noticias Publicadas</div>
-                    <div class="admin-table-wrap">
-                        <table class="admin-table">
-                            <thead><tr><th>Título</th><th>Fecha</th><th>Acciones</th></tr></thead>
-                            <tbody id="adminNoticiasTableBody"></tbody>
-                        </table>
-                    </div>
+                <div class="admin-section-title" style="margin-top:30px;">📅 Partidos Registrados</div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead><tr><th>Fecha</th><th>Hora</th><th>Rival</th><th>Lugar</th><th>Local</th><th>Estado</th><th>Resultado</th><th>Goles</th><th>Acciones</th></tr></thead>
+                        <tbody id="adminPartidosTableBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Elementos PWA -->
-    <button id="installBubble" class="install-bubble">📲 Instalar App</button>
-    <div id="updatePopup" style="display:none; position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:#C9A227; color:#080C09; padding:14px 20px; border-radius:999px; font-weight:900; z-index:99999; box-shadow:0 10px 30px rgba(0,0,0,.5);">
-        Nueva actualización disponible
-        <button onclick="actualizarApp()" style="margin-left:10px; background:#080C09; color:#C9A227; border:none; padding:8px 12px; border-radius:20px; font-weight:bold;">Actualizar</button>
-    </div>
-    <div id="offlinePopup" style="display:none; position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:12px 18px; border:1px solid #C9A227; border-radius:999px; z-index:99999;">
-        ⚠️ Estás sin internet, usando modo offline
-    </div>
-    <button onclick="activarNotificaciones()" style="position:fixed; bottom:150px; right:20px; background:#C9A227; color:#080C09; border:none; border-radius:50px; padding:12px 18px; z-index:9999; font-weight:bold;">
-        🔔 Notificaciones
-    </button>
-
     <!-- SCRIPTS -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyASwd9Gl54ao5Hv77N6d_sO_66s-8vgUYU",
-            authDomain: "hugus-fc.firebaseapp.com",
-            projectId: "hugus-fc",
-            storageBucket: "hugus-fc.firebasestorage.app",
-            messagingSenderId: "890781937251",
-            appId: "1:890781937251:web:a3af993352b986be7b5256",
-            measurementId: "G-GY82L3YPT0"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const googleProvider = new GoogleAuthProvider();
-
+    <script>
+        // ========== CONSTANTES Y DATOS ==========
+        const USERS_KEY = 'hugusfc_users';
+        const SESSION_KEY = 'hugusfc_session';
         const PARTIDOS_KEY = 'hugusfc_partidos';
+        const ADMIN_EMAIL = 'admin@hugusfc.com';
+        const ADMIN_PASSWORD = 'admin2026';
+        const MATCH_DURATION_MIN = 50;
+
+        // ========== FUNCIONES DE ALMACENAMIENTO ==========
+        function getUsers() { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
+        function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+        function getSession() { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); }
+        function saveSession(u) { localStorage.setItem(SESSION_KEY, JSON.stringify(u)); }
+        function clearSession() { localStorage.removeItem(SESSION_KEY); }
         function getPartidos() { return JSON.parse(localStorage.getItem(PARTIDOS_KEY) || '[]'); }
         function savePartidos(p) { localStorage.setItem(PARTIDOS_KEY, JSON.stringify(p)); }
-        if (getPartidos().length === 0) {
-            savePartidos([
-                { id: 1717000000000, fecha: '2026-05-24', hora: '15:00', rival: 'EL COLORADO FC', lugar: 'Cancha El Colorado', competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: 3, golesRival: 4, estado: 'jugado', goles: [{ jugador: 'Carlos Pérez', minuto: 12, equipo: 'HUGUS' }, { jugador: 'Luis Díaz', minuto: 25, equipo: 'RIVAL' }, { jugador: 'Carlos Pérez', minuto: 44, equipo: 'HUGUS' }, { jugador: 'Juan Rojas', minuto: 58, equipo: 'RIVAL' }, { jugador: 'Andrés Soto', minuto: 67, equipo: 'HUGUS' }, { jugador: 'Miguel Torres', minuto: 81, equipo: 'RIVAL' }, { jugador: 'Luis Díaz', minuto: 89, equipo: 'RIVAL' }] },
-                { id: 1717000000001, fecha: '2026-05-31', hora: '14:00', rival: 'EQUIPO HORMIGUEROS', lugar: 'Hormigueros', competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: null, golesRival: null, estado: 'proximo', goles: [] },
-                { id: 1717000000002, fecha: '2026-06-07', hora: '16:00', rival: 'Equipo 1', lugar: 'Por definir', competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: null, golesRival: null, estado: 'proximo', goles: [] },
-                { id: 1717000000003, fecha: '2026-06-21', hora: '15:30', rival: 'Equipo 2', lugar: 'Por definir', competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: null, golesRival: null, estado: 'proximo', goles: [] }
-            ]);
+
+        // ========== INICIALIZACIÓN ==========
+        function asegurarAdmin() {
+            let users = getUsers();
+            const adminIndex = users.findIndex(u => u.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
+            if (adminIndex === -1) {
+                users.push({ nombre:'Admin', apellido:'HUGUS', email:ADMIN_EMAIL, password:ADMIN_PASSWORD, referido:'Sistema', esAdmin:true, fechaRegistro:'2026-04-01' });
+                saveUsers(users);
+            } else if (users[adminIndex].password !== ADMIN_PASSWORD) {
+                users[adminIndex].password = ADMIN_PASSWORD;
+                saveUsers(users);
+            }
         }
 
-        let currentUser = null;
+        function inicializarPartidos() {
+            let partidos = getPartidos();
+            if (partidos.length === 0) {
+                partidos = [
+                    { 
+                        id: 1717000000000, fecha: '2026-05-24', hora: '15:00', rival: 'EL COLORADO FC', lugar: 'Cancha El Colorado', 
+                        competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: 3, golesRival: 4, estado: 'jugado',
+                        goles: [
+                            { jugador: 'Carlos Pérez', minuto: 12, equipo: 'HUGUS' },
+                            { jugador: 'Luis Díaz', minuto: 25, equipo: 'RIVAL' },
+                            { jugador: 'Carlos Pérez', minuto: 44, equipo: 'HUGUS' },
+                            { jugador: 'Juan Rojas', minuto: 58, equipo: 'RIVAL' },
+                            { jugador: 'Andrés Soto', minuto: 67, equipo: 'HUGUS' },
+                            { jugador: 'Miguel Torres', minuto: 81, equipo: 'RIVAL' },
+                            { jugador: 'Luis Díaz', minuto: 89, equipo: 'RIVAL' }
+                        ]
+                    },
+                    { id: 1717000000001, fecha: '2026-05-31', hora: '14:00', rival: 'EQUIPO HORMIGUEROS', lugar: 'Hormigueros', competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: null, golesRival: null, estado: 'proximo', goles: [] },
+                    { id: 1717000000002, fecha: '2026-06-07', hora: '16:00', rival: 'Equipo 1', lugar: 'Por definir', competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: null, golesRival: null, estado: 'proximo', goles: [] },
+                    { id: 1717000000003, fecha: '2026-06-21', hora: '15:30', rival: 'Equipo 2', lugar: 'Por definir', competencia: 'Partido Oficial 2026', esLocal: true, golesHUGUS: null, golesRival: null, estado: 'proximo', goles: [] }
+                ];
+                savePartidos(partidos);
+            }
+        }
+
+        asegurarAdmin();
+        inicializarPartidos();
+
+        // ========== UI SEGÚN SESIÓN ==========
         function updateUIForLoggedInUser(user) {
             document.getElementById('btnAcceder').style.display = 'none';
             document.getElementById('userMenuContainer').style.display = 'block';
-            document.getElementById('userAvatarBtn').textContent = (user.nombre || 'H').charAt(0).toUpperCase();
-            document.getElementById('adminLinkBtn').style.display = (user.rol === 'admin') ? 'flex' : 'none';
-            document.getElementById('mobAccederBtn').textContent = '⚽ ' + (user.nombre || 'Hincha');
+            document.getElementById('userAvatarBtn').textContent = user.nombre.charAt(0).toUpperCase();
+            document.getElementById('adminLinkBtn').style.display = (user.esAdmin || user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) ? 'flex' : 'none';
+            const mobBtn = document.getElementById('mobAccederBtn');
+            if(mobBtn) { mobBtn.textContent = '⚽ ' + user.nombre + ' (Tienda)'; mobBtn.onclick = () => { closeMenu(); abrirTienda(); }; }
         }
         function updateUIForLoggedOut() {
             document.getElementById('btnAcceder').style.display = 'inline-flex';
             document.getElementById('userMenuContainer').style.display = 'none';
             document.getElementById('adminLinkBtn').style.display = 'none';
-            document.getElementById('mobAccederBtn').textContent = '⚽ Acceder / Registrarse';
+            const mobBtn = document.getElementById('mobAccederBtn');
+            if(mobBtn) { mobBtn.textContent = '⚽ Acceder / Registrarse'; mobBtn.onclick = () => { closeMenu(); abrirAuth(); }; }
         }
-        onAuthStateChanged(auth, async (firebaseUser) => {
-            if (firebaseUser) {
-                const userDoc = await getDoc(doc(db, "usuarios", firebaseUser.uid));
-                if (userDoc.exists()) {
-                    currentUser = { uid: firebaseUser.uid, email: firebaseUser.email, ...userDoc.data() };
-                } else {
-                    currentUser = { uid: firebaseUser.uid, email: firebaseUser.email, nombre: firebaseUser.displayName || 'Hincha', apellido: '', rol: 'usuario', fechaRegistro: new Date().toISOString().split('T')[0] };
-                    await setDoc(doc(db, "usuarios", firebaseUser.uid), currentUser);
-                }
-                updateUIForLoggedInUser(currentUser);
-            } else {
-                currentUser = null;
-                updateUIForLoggedOut();
-            }
-        });
+        (function initSession() {
+            const session = getSession();
+            if (session?.email) {
+                const user = getUsers().find(u => u.email.toLowerCase() === session.email.toLowerCase());
+                if (user) updateUIForLoggedInUser(user);
+                else { clearSession(); updateUIForLoggedOut(); }
+            } else updateUIForLoggedOut();
+        })();
 
-        function showAuthError(msg) {
-            const el = document.getElementById('authError');
-            el.textContent = msg;
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 4000);
-        }
-        document.getElementById('btnLogin').addEventListener('click', async () => {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                document.getElementById('authOverlay').classList.remove('active');
-            } catch (e) { showAuthError(e.message); }
-        });
-        document.getElementById('btnRegister').addEventListener('click', async () => {
+        // ========== AUTENTICACIÓN ==========
+        function showAuthError(msg) { const el = document.getElementById('authError'); el.textContent = msg; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 4000); }
+        function registerUser() {
             const nombre = document.getElementById('regNombre').value.trim();
             const apellido = document.getElementById('regApellido').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
-            const referido = document.getElementById('regReferido').value.trim();
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, "usuarios", cred.user.uid), {
-                    nombre, apellido, email, referido, rol: email === 'admin@hugusfc.com' ? 'admin' : 'usuario', fechaRegistro: new Date().toISOString().split('T')[0]
-                });
-                document.getElementById('authOverlay').classList.remove('active');
-            } catch (e) { showAuthError(e.message); }
-        });
-        document.getElementById('btnGoogleLogin').addEventListener('click', async () => {
-            try {
-                await signInWithPopup(auth, googleProvider);
-                document.getElementById('authOverlay').classList.remove('active');
-            } catch (e) { showAuthError(e.message); }
-        });
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            await signOut(auth);
-            document.getElementById('userDropdown').classList.remove('active');
-        });
+            if (!nombre || !apellido || !email || !password) { showAuthError('Todos los campos son obligatorios.'); return; }
+            if (password.length < 8) { showAuthError('La contraseña debe tener al menos 8 caracteres.'); return; }
+            const users = getUsers();
+            if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) { showAuthError('Este correo ya está registrado.'); return; }
+            const newUser = { nombre, apellido, email, password, referido: document.getElementById('regReferido').value.trim(), esAdmin:false, fechaRegistro: new Date().toISOString().split('T')[0] };
+            users.push(newUser); saveUsers(users); saveSession(newUser); updateUIForLoggedInUser(newUser);
+            cerrarAuth(); ['regNombre','regApellido','regEmail','regPassword','regReferido'].forEach(id => document.getElementById(id).value = '');
+            abrirPerfil();
+        }
+        function loginUser() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            if (!email || !password) { showAuthError('Ingresa tu correo y contraseña.'); return; }
+            const users = getUsers();
+            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+            if (!user) { showAuthError('Correo no registrado.'); return; }
+            if (user.password !== password) { showAuthError('Contraseña incorrecta.'); return; }
+            saveSession(user); updateUIForLoggedInUser(user);
+            cerrarAuth(); document.getElementById('loginEmail').value = ''; document.getElementById('loginPassword').value = '';
+            abrirPerfil();
+        }
+        function loginWithGoogle() {
+            const demoUser = { nombre:'Hincha', apellido:'HUGUS', email:'hincha@hugusfc.com', password:'google', esAdmin:false, fechaRegistro:new Date().toISOString().split('T')[0], referido:'Google' };
+            const users = getUsers();
+            if (!users.find(u => u.email.toLowerCase() === demoUser.email.toLowerCase())) { users.push(demoUser); saveUsers(users); }
+            saveSession(demoUser); updateUIForLoggedInUser(demoUser);
+            cerrarAuth(); abrirPerfil();
+        }
+        function logout() { clearSession(); updateUIForLoggedOut(); document.getElementById('userDropdown').classList.remove('active'); cerrarTienda(); cerrarPerfil(); cerrarAdminPanel(); }
+        function entrarComunidad() { getSession()?.email ? abrirTienda() : abrirAuth(); }
 
-        document.getElementById('tab-login').addEventListener('click', () => {
-            document.getElementById('form-login').style.display = 'block';
-            document.getElementById('form-registro').style.display = 'none';
-            document.getElementById('tab-login').classList.add('active');
-            document.getElementById('tab-registro').classList.remove('active');
-        });
-        document.getElementById('tab-registro').addEventListener('click', () => {
-            document.getElementById('form-login').style.display = 'none';
-            document.getElementById('form-registro').style.display = 'block';
-            document.getElementById('tab-registro').classList.add('active');
-            document.getElementById('tab-login').classList.remove('active');
-        });
-        document.getElementById('linkToRegister').addEventListener('click', () => document.getElementById('tab-registro').click());
-        document.getElementById('linkToLogin').addEventListener('click', () => document.getElementById('tab-login').click());
-        document.getElementById('btnAcceder').addEventListener('click', () => document.getElementById('authOverlay').classList.add('active'));
-        document.getElementById('mobAccederBtn').addEventListener('click', () => document.getElementById('authOverlay').classList.add('active'));
-        document.getElementById('btnCerrarAuth').addEventListener('click', () => document.getElementById('authOverlay').classList.remove('active'));
-        document.getElementById('authOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) document.getElementById('authOverlay').classList.remove('active'); });
+        document.getElementById('userAvatarBtn').addEventListener('click', e => { e.stopPropagation(); document.getElementById('userDropdown').classList.toggle('active'); });
+        document.addEventListener('click', e => { if (!document.getElementById('userMenuContainer').contains(e.target)) document.getElementById('userDropdown').classList.remove('active'); });
 
-        document.getElementById('perfilBtn').addEventListener('click', () => {
-            if (!currentUser) return document.getElementById('authOverlay').classList.add('active');
-            document.getElementById('perfilAvatar').textContent = (currentUser.nombre||'H').charAt(0).toUpperCase();
-            document.getElementById('perfilNombre').textContent = currentUser.nombre + ' ' + (currentUser.apellido||'');
-            document.getElementById('perfilRol').textContent = currentUser.rol === 'admin' ? '⭐ Administrador' : 'Hincha Oficial';
-            document.getElementById('perfilFullName').textContent = currentUser.nombre + ' ' + (currentUser.apellido||'');
-            document.getElementById('perfilEmail').textContent = currentUser.email;
-            document.getElementById('perfilTipo').textContent = currentUser.rol === 'admin' ? 'Administrador' : 'Hincha';
-            document.getElementById('perfilFecha').textContent = currentUser.fechaRegistro || 'Abril 2026';
-            document.getElementById('perfilOverlay').classList.add('active');
-            document.getElementById('userDropdown').classList.remove('active');
-        });
-        document.getElementById('btnCerrarPerfil').addEventListener('click', () => document.getElementById('perfilOverlay').classList.remove('active'));
-        document.getElementById('btnPerfilCerrar').addEventListener('click', () => document.getElementById('perfilOverlay').classList.remove('active'));
-        document.getElementById('perfilOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) document.getElementById('perfilOverlay').classList.remove('active'); });
+        // ========== PERFIL ==========
+        function abrirPerfil() {
+            const session = getSession(); if (!session?.email) { abrirAuth(); return; }
+            const user = getUsers().find(u => u.email.toLowerCase() === session.email.toLowerCase()); if (!user) return;
+            document.getElementById('perfilAvatar').textContent = user.nombre.charAt(0).toUpperCase();
+            document.getElementById('perfilNombre').textContent = user.nombre + ' ' + (user.apellido||'');
+            document.getElementById('perfilRol').textContent = (user.esAdmin || user.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()) ? '⭐ Administrador' : 'Hincha Oficial';
+            document.getElementById('perfilFullName').textContent = user.nombre + ' ' + (user.apellido||'');
+            document.getElementById('perfilEmail').textContent = user.email;
+            document.getElementById('perfilTipo').textContent = (user.esAdmin || user.email.toLowerCase()===ADMIN_EMAIL.toLowerCase()) ? 'Administrador' : 'Hincha';
+            document.getElementById('perfilFecha').textContent = user.fechaRegistro || 'Abril 2026';
+            document.getElementById('perfilOverlay').classList.add('active'); document.body.style.overflow='hidden';
+        }
+        function cerrarPerfil() { document.getElementById('perfilOverlay').classList.remove('active'); document.body.style.overflow=''; }
+        document.getElementById('perfilOverlay').addEventListener('click', e => { if(e.target === e.currentTarget) cerrarPerfil(); });
 
-        document.getElementById('tiendaBtn').addEventListener('click', () => {
-            document.getElementById('shopOverlay').classList.add('active');
-            document.getElementById('userDropdown').classList.remove('active');
-        });
-        document.getElementById('btnCerrarTienda').addEventListener('click', () => document.getElementById('shopOverlay').classList.remove('active'));
-        document.getElementById('shopOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) document.getElementById('shopOverlay').classList.remove('active'); });
-        document.getElementById('btnComunidad').addEventListener('click', () => {
-            if (currentUser) document.getElementById('shopOverlay').classList.add('active');
-            else document.getElementById('authOverlay').classList.add('active');
-        });
-
+        // ========== ADMIN ==========
         let adminEditandoId = null;
         let golesTemporales = [];
+
+        function abrirAdminPanel() {
+            const session = getSession(); if (!session?.email) { abrirAuth(); return; }
+            const user = getUsers().find(u => u.email.toLowerCase() === session.email.toLowerCase());
+            if (!user || (!user.esAdmin && user.email.toLowerCase()!==ADMIN_EMAIL.toLowerCase())) { alert('No tienes permisos de administrador.'); return; }
+            document.getElementById('adminOverlay').classList.add('active'); document.body.style.overflow='hidden';
+            cargarTablaPartidos(); cancelarEdicion();
+        }
+        function cerrarAdminPanel() { document.getElementById('adminOverlay').classList.remove('active'); document.body.style.overflow=''; actualizarCalendarioUI(); actualizarResultados(); }
+        document.getElementById('adminOverlay').addEventListener('click', e => { if(e.target === e.currentTarget) cerrarAdminPanel(); });
+
         function toggleResultadoFields() {
             const estado = document.getElementById('adminEstado').value;
             const esJugado = estado === 'jugado';
@@ -983,7 +948,7 @@
             document.getElementById('golesRivalGroup').style.display = esJugado ? 'flex' : 'none';
             document.getElementById('adminGolesEditor').style.display = esJugado ? 'block' : 'none';
         }
-        document.getElementById('adminEstado').addEventListener('change', toggleResultadoFields);
+
         function cancelarEdicion() {
             adminEditandoId = null;
             document.getElementById('adminEditId').value = '';
@@ -998,7 +963,7 @@
             renderAdminGoles();
             toggleResultadoFields();
         }
-        document.getElementById('btnCancelarEdicion').addEventListener('click', cancelarEdicion);
+
         function editarPartido(id) {
             const p = getPartidos().find(x => x.id === id); if(!p) return;
             adminEditandoId = id;
@@ -1007,34 +972,41 @@
             document.getElementById('adminRival').value = p.rival; document.getElementById('adminLugar').value = p.lugar;
             document.getElementById('adminCompetencia').value = p.competencia; document.getElementById('adminEsLocal').value = p.esLocal?'true':'false';
             document.getElementById('adminEstado').value = p.estado;
+            // Copiar goles existentes
             golesTemporales = p.goles ? JSON.parse(JSON.stringify(p.goles)) : [];
             renderAdminGoles();
             toggleResultadoFields();
             document.getElementById('btnGuardarPartido').textContent = '✏️ Actualizar Partido';
             document.getElementById('btnCancelarEdicion').style.display = 'inline-flex';
+            document.getElementById('adminFormContainer').scrollIntoView({behavior:'smooth'});
         }
+
         function agregarGolAdmin() {
             golesTemporales.push({ jugador: '', minuto: '', equipo: 'HUGUS' });
             renderAdminGoles();
         }
-        document.getElementById('btnAgregarGol').addEventListener('click', agregarGolAdmin);
+
+        function eliminarGolAdmin(index) {
+            golesTemporales.splice(index, 1);
+            renderAdminGoles();
+        }
+
         function renderAdminGoles() {
             const container = document.getElementById('adminGolesList');
             if (!container) return;
             container.innerHTML = golesTemporales.map((g, i) => `
                 <div class="admin-gol-row">
-                    <input type="text" placeholder="Jugador" value="${g.jugador}" onchange="window._golChange(${i}, 'jugador', this.value)" style="flex:2;">
-                    <input type="number" placeholder="Min." value="${g.minuto}" onchange="window._golChange(${i}, 'minuto', this.value)" style="width:70px;">
-                    <select onchange="window._golChange(${i}, 'equipo', this.value)">
+                    <input type="text" placeholder="Jugador" value="${g.jugador}" onchange="golesTemporales[${i}].jugador = this.value" style="flex:2;">
+                    <input type="number" placeholder="Min." value="${g.minuto}" onchange="golesTemporales[${i}].minuto = this.value" style="width:70px;">
+                    <select onchange="golesTemporales[${i}].equipo = this.value">
                         <option value="HUGUS" ${g.equipo === 'HUGUS' ? 'selected' : ''}>HUGUS</option>
                         <option value="RIVAL" ${g.equipo === 'RIVAL' ? 'selected' : ''}>RIVAL</option>
                     </select>
-                    <button class="btn-admin-small delete" onclick="window._eliminarGol(${i})">🗑️</button>
+                    <button class="btn-admin-small delete" onclick="eliminarGolAdmin(${i})">🗑️</button>
                 </div>
             `).join('');
-            window._golChange = (i, key, val) => { golesTemporales[i][key] = val; };
-            window._eliminarGol = (i) => { golesTemporales.splice(i, 1); renderAdminGoles(); };
         }
+
         function guardarPartido() {
             const fecha = document.getElementById('adminFecha').value;
             const hora = document.getElementById('adminHora').value;
@@ -1043,13 +1015,16 @@
             const competencia = document.getElementById('adminCompetencia').value.trim();
             const esLocal = document.getElementById('adminEsLocal').value === 'true';
             const estado = document.getElementById('adminEstado').value;
+            
             if(!fecha || !rival || !lugar || !competencia) { alert('Completa todos los campos obligatorios.'); return; }
+            
             let partido = {
                 fecha, hora, rival, lugar, competencia, esLocal, estado,
                 goles: estado === 'jugado' ? golesTemporales.filter(g => g.jugador.trim() && g.minuto) : [],
                 golesHUGUS: estado === 'jugado' ? golesTemporales.filter(g => g.equipo === 'HUGUS' && g.jugador.trim() && g.minuto).length : null,
                 golesRival: estado === 'jugado' ? golesTemporales.filter(g => g.equipo === 'RIVAL' && g.jugador.trim() && g.minuto).length : null
             };
+            
             let partidos = getPartidos();
             if (adminEditandoId) {
                 const idx = partidos.findIndex(p => p.id === adminEditandoId);
@@ -1064,7 +1039,7 @@
             actualizarResultados();
             cancelarEdicion();
         }
-        document.getElementById('btnGuardarPartido').addEventListener('click', guardarPartido);
+
         function eliminarPartido(id) {
             if(!confirm('¿Eliminar partido?')) return;
             let partidos = getPartidos().filter(p => p.id !== id);
@@ -1074,6 +1049,7 @@
             actualizarResultados();
             if(adminEditandoId === id) cancelarEdicion();
         }
+
         function cargarTablaPartidos() {
             const partidos = getPartidos(), tbody = document.getElementById('adminPartidosTableBody');
             if (!tbody) return;
@@ -1087,126 +1063,28 @@
                     <td>${fechaFormateada}</td><td>${p.hora}</td><td>${p.rival}</td><td>${p.lugar}</td>
                     <td>${p.esLocal?'🏠 Local':'✈️ Visitante'}</td><td>${badge}</td><td>${resultado}</td>
                     <td style="max-width:180px; white-space:normal;">${golesTexto}</td>
-                    <td><button class="btn-admin-edit" data-id="${p.id}">✏️</button><button class="btn-admin-delete" data-id="${p.id}">🗑️</button></td>
+                    <td><button class="btn-admin-edit" onclick="editarPartido(${p.id})">✏️</button><button class="btn-admin-delete" onclick="eliminarPartido(${p.id})">🗑️</button></td>
                 </tr>`;
             }).join('');
-            document.querySelectorAll('.btn-admin-edit').forEach(btn => btn.addEventListener('click', () => editarPartido(Number(btn.dataset.id))));
-            document.querySelectorAll('.btn-admin-delete').forEach(btn => btn.addEventListener('click', () => eliminarPartido(Number(btn.dataset.id))));
         }
 
-        async function cargarNoticias() {
-            const grid = document.getElementById('noticiasGrid');
-            if (!grid) return;
-            try {
-                const querySnapshot = await getDocs(collection(db, "noticias"));
-                const noticias = [];
-                querySnapshot.forEach(doc => noticias.push({ id: doc.id, ...doc.data() }));
-                noticias.sort((a,b) => (b.fecha || '').localeCompare(a.fecha || ''));
-                if (noticias.length === 0) {
-                    grid.innerHTML = '<p style="color:var(--grey); text-align:center; grid-column:1/-1; padding:40px;">No hay noticias aún.</p>';
-                    return;
-                }
-                grid.innerHTML = noticias.map(n => `
-                    <div class="noticia-card">
-                        ${n.imagen ? `<img src="${n.imagen}" class="noticia-img" alt="${n.titulo}">` : '<div class="noticia-img">📰</div>'}
-                        <div class="noticia-body">
-                            <div class="noticia-fecha">${new Date(n.fecha).toLocaleDateString('es-PE', {day:'2-digit', month:'short', year:'numeric'})}</div>
-                            <div class="noticia-titulo">${n.titulo}</div>
-                            <div class="noticia-resumen">${n.contenido}</div>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (e) {
-                grid.innerHTML = '<p style="color:var(--grey); text-align:center;">Error al cargar noticias.</p>';
-            }
-        }
-        async function cargarAdminNoticias() {
-            const tbody = document.getElementById('adminNoticiasTableBody');
-            if (!tbody) return;
-            try {
-                const querySnapshot = await getDocs(collection(db, "noticias"));
-                const noticias = [];
-                querySnapshot.forEach(doc => noticias.push({ id: doc.id, ...doc.data() }));
-                noticias.sort((a,b) => (b.fecha || '').localeCompare(a.fecha || ''));
-                tbody.innerHTML = noticias.map(n => `
-                    <tr>
-                        <td>${n.titulo}</td>
-                        <td>${new Date(n.fecha).toLocaleDateString('es-PE')}</td>
-                        <td>
-                            <button class="btn-admin-edit-news" data-id="${n.id}" data-titulo="${n.titulo}" data-contenido="${n.contenido}" data-imagen="${n.imagen || ''}">✏️</button>
-                            <button class="btn-admin-delete-news" data-id="${n.id}">🗑️</button>
-                        </td>
-                    </tr>
-                `).join('') || '<tr><td colspan="3" class="admin-no-data">No hay noticias.</td></tr>';
-                document.querySelectorAll('.btn-admin-edit-news').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        document.getElementById('newsEditId').value = btn.dataset.id;
-                        document.getElementById('newsTitulo').value = btn.dataset.titulo;
-                        document.getElementById('newsContenido').value = btn.dataset.contenido;
-                        document.getElementById('newsImagen').value = btn.dataset.imagen || '';
-                        document.getElementById('btnGuardarNoticia').textContent = '✏️ Actualizar Noticia';
-                    });
-                });
-                document.querySelectorAll('.btn-admin-delete-news').forEach(btn => {
-                    btn.addEventListener('click', async () => {
-                        if (!confirm('¿Eliminar esta noticia?')) return;
-                        await deleteDoc(doc(db, "noticias", btn.dataset.id));
-                        cargarAdminNoticias();
-                        cargarNoticias();
-                    });
-                });
-            } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="3" class="admin-no-data">Error al cargar.</td></tr>';
-            }
-        }
-        document.getElementById('btnGuardarNoticia').addEventListener('click', async () => {
-            const titulo = document.getElementById('newsTitulo').value.trim();
-            const contenido = document.getElementById('newsContenido').value.trim();
-            const imagen = document.getElementById('newsImagen').value.trim();
-            if (!titulo || !contenido) { alert('Título y contenido son obligatorios'); return; }
-            const editId = document.getElementById('newsEditId').value;
-            try {
-                if (editId) {
-                    await updateDoc(doc(db, "noticias", editId), { titulo, contenido, imagen, fecha: new Date().toISOString() });
-                } else {
-                    await addDoc(collection(db, "noticias"), {
-                        titulo, contenido, imagen, fecha: new Date().toISOString(),
-                        autor: currentUser?.email || 'admin'
-                    });
-                }
-                document.getElementById('newsTitulo').value = '';
-                document.getElementById('newsContenido').value = '';
-                document.getElementById('newsImagen').value = '';
-                document.getElementById('newsEditId').value = '';
-                document.getElementById('btnGuardarNoticia').textContent = '📝 Publicar Noticia';
-                cargarAdminNoticias();
-                cargarNoticias();
-            } catch (e) { alert('Error: ' + e.message); }
-        });
-
-        document.querySelectorAll('.admin-tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const tab = btn.dataset.tab;
-                document.getElementById('adminPartidosTab').style.display = tab === 'partidos' ? 'block' : 'none';
-                document.getElementById('adminNoticiasTab').style.display = tab === 'noticias' ? 'block' : 'none';
-                if (tab === 'noticias') cargarAdminNoticias();
+        // ========== LIVE MATCH ==========
+        function actualizarEstadoPartidosEnVivo() {
+            const partidos = getPartidos(), ahora = Date.now(); let cambios = false;
+            partidos.forEach(p => {
+                const inicio = new Date(p.fecha + 'T' + p.hora + ':00').getTime();
+                const fin = inicio + MATCH_DURATION_MIN * 60000;
+                if (p.estado === 'proximo' && ahora >= inicio && ahora < fin) { p.estado = 'en_vivo'; cambios = true; }
+                else if (p.estado === 'en_vivo' && ahora >= fin) { p.estado = 'jugado'; if (p.golesHUGUS === null) { p.golesHUGUS = 0; p.golesRival = 0; } cambios = true; }
             });
-        });
+            if (cambios) { savePartidos(partidos); actualizarCalendarioUI(); cargarTablaPartidos(); }
+        }
+        setInterval(actualizarEstadoPartidosEnVivo, 10000);
+        actualizarEstadoPartidosEnVivo();
 
-        document.getElementById('adminLinkBtn').addEventListener('click', () => {
-            if (currentUser && currentUser.rol === 'admin') {
-                document.getElementById('adminOverlay').classList.add('active');
-                cargarTablaPartidos();
-                cargarAdminNoticias();
-                cancelarEdicion();
-            }
-            document.getElementById('userDropdown').classList.remove('active');
-        });
-        document.getElementById('btnCerrarAdmin').addEventListener('click', () => document.getElementById('adminOverlay').classList.remove('active'));
-        document.getElementById('adminOverlay').addEventListener('click', (e) => { if (e.target === e.currentTarget) document.getElementById('adminOverlay').classList.remove('active'); });
-
+        // ========== UI CALENDARIO ==========
+        function actualizarCalendarioUI() { /* ... (código existente) ... */ }
+        // (Se mantiene la implementación anterior completa)
         function actualizarCalendarioUI() {
             const partidos = getPartidos();
             const proximos = partidos.filter(p => p.estado === 'proximo').sort((a,b) => new Date(a.fecha+'T'+a.hora)-new Date(b.fecha+'T'+b.hora));
@@ -1241,6 +1119,7 @@
             actualizarFichaPartido(primerPartido);
             actualizarCountdownTarget(primerPartido);
         }
+
         function actualizarFichaPartido(partido) {
             const fichaCard = document.getElementById('fichaCard'), fichaTitulo = document.getElementById('fichaTitulo'), fichaDesc = document.getElementById('fichaDesc');
             if (!fichaCard) return;
@@ -1255,7 +1134,7 @@
             const fechaLarga = dias[fechaObj.getUTCDay()] + ' ' + fechaObj.getUTCDate() + ' de ' + meses[fechaObj.getUTCMonth()] + ' 2026';
             fichaTitulo.innerHTML = 'HUGUS FC <span class="g">VS</span> ' + partido.rival;
             fichaDesc.textContent = 'Información completa del encuentro oficial de HUGUS FC.';
-            const esJugado = partido.estado === 'jugado';
+            const esJugado = partido.estado === 'jugado', esEnVivo = partido.estado === 'en_vivo';
             const golesDetalle = (esJugado && partido.goles && partido.goles.length) ? `
                 <div class="ficha-info-item" style="grid-column:span 2;">
                     <div class="ficha-info-label">⚽ GOLES</div>
@@ -1264,8 +1143,22 @@
                     </ul>
                 </div>` : '';
             const resultadoHTML = (esJugado && partido.golesHUGUS !== null) ? `<div class="ficha-info-item" style="grid-column:span 2;text-align:center;background:linear-gradient(135deg,rgba(201,162,39,.15),rgba(201,162,39,.05));border-color:rgba(201,162,39,.4)"><div class="ficha-info-label">🏆 RESULTADO FINAL</div><div class="ficha-info-val" style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--gold)">HUGUS FC ${partido.golesHUGUS} - ${partido.golesRival} ${partido.rival}</div></div>` : '';
-            fichaCard.innerHTML = `<div class="ficha-header"><div class="ficha-teams"><div class="ficha-team"><div class="ficha-emblem"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="ficha-teamname">HUGUS FC</div></div><div class="ficha-vs">VS</div><div class="ficha-team"><div class="ficha-emblem"><span class="ficha-emblem-txt">${rivalIniciales}</span></div><div class="ficha-teamname">${partido.rival}</div></div></div></div><div class="ficha-body"><div class="ficha-info-grid"><div class="ficha-info-item"><div class="ficha-info-label">📅 Fecha</div><div class="ficha-info-val">${fechaLarga}</div></div><div class="ficha-info-item"><div class="ficha-info-label">⏰ Hora</div><div class="ficha-info-val">${partido.hora}</div></div><div class="ficha-info-item"><div class="ficha-info-label">📍 Lugar</div><div class="ficha-info-val">${partido.lugar}</div></div><div class="ficha-info-item"><div class="ficha-info-label">🏆 Competencia</div><div class="ficha-info-val">${partido.competencia}</div></div>${resultadoHTML}${golesDetalle}</div><div class="previa-box"><div class="previa-title">${esJugado ? 'Resumen del Partido' : 'Previa del Partido'}</div><p class="previa-txt">${esJugado ? 'HUGUS FC disputó un importante encuentro frente a ' + partido.rival + '.' : 'HUGUS FC disputará un importante encuentro frente a ' + partido.rival + ' este ' + fechaLarga + ' a las ' + partido.hora + '.'}</p></div></div>`;
+            const liveScoreHTML = (esEnVivo && partido.golesHUGUS !== null) ? `<div class="ficha-info-item" style="grid-column:span 2;text-align:center;background:rgba(231,76,60,.1);border-color:rgba(231,76,60,.4)"><div class="ficha-info-label">🔴 MARCADOR EN VIVO</div><div class="ficha-info-val" style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#e74c3c">HUGUS ${partido.golesHUGUS} - ${partido.golesRival} ${partido.rival}</div></div>` : '';
+            const liveAdminPanel = (esEnVivo && (getSession()?.email && getUsers().find(u => u.email.toLowerCase()===getSession().email.toLowerCase())?.esAdmin)) ? `<div class="live-admin-panel"><h3>🎮 Actualizar Marcador en Vivo</h3><div class="live-score-inputs"><input type="number" id="liveGolesHUGUS" value="${partido.golesHUGUS||0}" min="0"> <span style="color:var(--white)">-</span> <input type="number" id="liveGolesRival" value="${partido.golesRival||0}" min="0"> <button onclick="guardarGolesEnVivo(${partido.id})">Guardar Goles</button></div></div>` : '';
+            fichaCard.innerHTML = `<div class="ficha-header"><div class="ficha-teams"><div class="ficha-team"><div class="ficha-emblem"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="ficha-teamname">HUGUS FC</div></div><div class="ficha-vs">VS</div><div class="ficha-team"><div class="ficha-emblem"><span class="ficha-emblem-txt">${rivalIniciales}</span></div><div class="ficha-teamname">${partido.rival}</div></div></div></div><div class="ficha-body"><div class="ficha-info-grid"><div class="ficha-info-item"><div class="ficha-info-label">📅 Fecha</div><div class="ficha-info-val">${fechaLarga}</div></div><div class="ficha-info-item"><div class="ficha-info-label">⏰ Hora</div><div class="ficha-info-val">${partido.hora}</div></div><div class="ficha-info-item"><div class="ficha-info-label">📍 Lugar</div><div class="ficha-info-val">${partido.lugar}</div></div><div class="ficha-info-item"><div class="ficha-info-label">🏆 Competencia</div><div class="ficha-info-val">${partido.competencia}</div></div>${resultadoHTML}${liveScoreHTML}${golesDetalle}</div><div class="previa-box"><div class="previa-title">${esJugado ? 'Resumen del Partido' : (esEnVivo ? 'Partido en Juego' : 'Previa del Partido')}</div><p class="previa-txt">${esJugado ? 'HUGUS FC disputó un importante encuentro frente a ' + partido.rival + '.' : (esEnVivo ? 'El partido está en juego. Sigue el marcador en vivo.' : 'HUGUS FC disputará un importante encuentro frente a ' + partido.rival + ' este ' + fechaLarga + ' a las ' + partido.hora + '.')}</p></div>${liveAdminPanel}</div>`;
         }
+
+        function guardarGolesEnVivo(id) {
+            const session = getSession(); if (!session?.email) return;
+            const user = getUsers().find(u => u.email.toLowerCase() === session.email.toLowerCase());
+            if (!user || (!user.esAdmin && user.email.toLowerCase()!==ADMIN_EMAIL.toLowerCase())) { alert('Solo el administrador puede modificar el marcador.'); return; }
+            const golesHUGUS = parseInt(document.getElementById('liveGolesHUGUS').value || '0');
+            const golesRival = parseInt(document.getElementById('liveGolesRival').value || '0');
+            let partidos = getPartidos(); const idx = partidos.findIndex(p => p.id === id);
+            if(idx >= 0) { partidos[idx].golesHUGUS = golesHUGUS; partidos[idx].golesRival = golesRival; savePartidos(partidos); actualizarCalendarioUI(); }
+        }
+
+        // ========== RESULTADOS ==========
         function actualizarResultados() {
             const partidos = getPartidos().filter(p => p.estado === 'jugado').sort((a,b) => new Date(b.fecha+'T'+b.hora) - new Date(a.fecha+'T'+a.hora));
             const grid = document.getElementById('resultadosGrid');
@@ -1277,21 +1170,37 @@
             grid.innerHTML = partidos.map(p => {
                 const fechaObj = new Date(p.fecha+'T12:00:00');
                 const fechaFormat = fechaObj.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' });
-                const golesHTML = (p.goles && p.goles.length) ? `<ul class="goles-lista">${p.goles.map(g => `<li><span class="gol-minuto">${g.minuto}'</span> <span class="gol-jugador">${g.jugador}</span> <span class="gol-equipo">${g.equipo}</span></li>`).join('')}</ul>` : '<p style="color:var(--grey); font-size:0.8rem;">Sin detalle de goles.</p>';
-                return `<div class="resultado-card">
-                    <div class="resultado-header">
-                        <div class="resultado-equipo"><div class="resultado-escudo-peq"><img src="imag/escudo_hugusfc.png" alt="HUGUS"></div><span class="resultado-nombre">HUGUS</span></div>
-                        <div class="resultado-marcador">${p.golesHUGUS} - ${p.golesRival}</div>
-                        <div class="resultado-equipo"><span class="resultado-nombre">${p.rival}</span><div class="resultado-escudo-peq" style="background:#222;"><span style="font-family:'Bebas Neue'; color:var(--gold);">${p.rival.substring(0,2).toUpperCase()}</span></div></div>
+                const golesHTML = (p.goles && p.goles.length) ? `<ul class="goles-lista">${p.goles.map(g => `
+                    <li><span class="gol-minuto">${g.minuto}'</span> <span class="gol-jugador">${g.jugador}</span> <span class="gol-equipo">${g.equipo}</span></li>
+                `).join('')}</ul>` : '<p style="color:var(--grey); font-size:0.8rem;">Sin detalle de goles.</p>';
+                return `
+                    <div class="resultado-card">
+                        <div class="resultado-header">
+                            <div class="resultado-equipo">
+                                <div class="resultado-escudo-peq"><img src="imag/escudo_hugusfc.png" alt="HUGUS"></div>
+                                <span class="resultado-nombre">HUGUS</span>
+                            </div>
+                            <div class="resultado-marcador">${p.golesHUGUS} - ${p.golesRival}</div>
+                            <div class="resultado-equipo">
+                                <span class="resultado-nombre">${p.rival}</span>
+                                <div class="resultado-escudo-peq" style="background:#222;"><span style="font-family:'Bebas Neue'; color:var(--gold);">${p.rival.substring(0,2).toUpperCase()}</span></div>
+                            </div>
+                        </div>
+                        <div class="resultado-body">
+                            <div class="resultado-fecha">${fechaFormat} · ${p.hora} · ${p.lugar}</div>
+                            ${golesHTML}
+                        </div>
                     </div>
-                    <div class="resultado-body"><div class="resultado-fecha">${fechaFormat} · ${p.hora} · ${p.lugar}</div>${golesHTML}</div>
-                </div>`;
+                `;
             }).join('');
         }
+
+        // ========== COUNTDOWN ==========
         function actualizarCountdownTarget(partido) {
             if (!partido) { window.countdownTarget = null; }
-            else if (partido.estado === 'en_vivo') { window.countdownTarget = new Date(partido.fecha + 'T' + partido.hora + ':00').getTime() + 50*60000; }
+            else if (partido.estado === 'en_vivo') { window.countdownTarget = new Date(partido.fecha + 'T' + partido.hora + ':00').getTime() + MATCH_DURATION_MIN * 60000; }
             else { window.countdownTarget = new Date(partido.fecha + 'T' + partido.hora + ':00').getTime(); }
+            updateCountdown();
         }
         function updateCountdown() {
             const target = window.countdownTarget; const now = Date.now(); let diff = target ? Math.max(target - now, 0) : 0;
@@ -1300,122 +1209,83 @@
             document.getElementById("min").textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
             document.getElementById("seg").textContent = String(Math.floor((diff%60000)/1000)).padStart(2,"0");
         }
+        window.countdownTarget = null;
         setInterval(updateCountdown, 1000);
+
+        // ========== INICIALIZACIÓN FINAL ==========
         actualizarCalendarioUI();
         actualizarResultados();
-        cargarNoticias();
 
+        // ========== MODALES Y NAV ==========
+        function abrirAuth() { document.getElementById('authOverlay').classList.add('active'); document.body.style.overflow='hidden'; }
+        function cerrarAuth() { document.getElementById('authOverlay').classList.remove('active'); document.body.style.overflow=''; document.getElementById('authError').classList.remove('show'); }
+        function abrirTienda() { document.getElementById('shopOverlay').classList.add('active'); document.body.style.overflow='hidden'; }
+        function cerrarTienda() { document.getElementById('shopOverlay').classList.remove('active'); document.body.style.overflow=''; }
+        function switchTab(t) {
+            document.getElementById('authError').classList.remove('show');
+            if(t==='login') { document.getElementById('form-login').style.display='block'; document.getElementById('form-registro').style.display='none'; document.getElementById('tab-login').classList.add('active'); document.getElementById('tab-registro').classList.remove('active'); }
+            else { document.getElementById('form-login').style.display='none'; document.getElementById('form-registro').style.display='block'; document.getElementById('tab-login').classList.remove('active'); document.getElementById('tab-registro').classList.add('active'); }
+        }
+        document.getElementById('authOverlay').addEventListener('click', e => { if(e.target === e.currentTarget) cerrarAuth(); });
+        document.getElementById('shopOverlay').addEventListener('click', e => { if(e.target === e.currentTarget) cerrarTienda(); });
+        document.addEventListener('keydown', e => { if(e.key==='Escape') { cerrarAuth(); cerrarTienda(); cerrarPerfil(); cerrarAdminPanel(); } });
+
+        /* PRELOADER */
+        window.addEventListener('load', () => { setTimeout(() => document.getElementById('preloader').classList.add('hide'), 2000); });
+        /* NAV SCROLL */
+        window.addEventListener('scroll', () => { document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY>50); document.getElementById('btt').classList.toggle('show', window.scrollY>400); }, {passive:true});
         const ham = document.getElementById('ham'), mob = document.getElementById('mobMenu');
         ham.addEventListener('click', () => { ham.classList.toggle('active'); mob.classList.toggle('open'); });
-        document.querySelectorAll('.mob-menu a').forEach(link => link.addEventListener('click', () => { ham.classList.remove('active'); mob.classList.remove('open'); }));
-
-        window.addEventListener('load', () => { setTimeout(() => document.getElementById('preloader').classList.add('hide'), 2000); });
-        window.addEventListener('scroll', () => { document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY>50); });
+        function closeMenu() { ham.classList.remove('active'); mob.classList.remove('open'); }
+        /* COUNTERS */
         function animateCounters() { document.querySelectorAll('[data-target]').forEach(el => { const t=+el.getAttribute('data-target'); let c=0; const step=Math.max(1,Math.floor(t/60)); const timer=setInterval(()=>{ c=Math.min(c+step,t); el.textContent=c+(t===100?'%':''); if(c>=t)clearInterval(timer); },25); }); }
         const statsObs = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting){ animateCounters(); statsObs.disconnect(); } }); },{threshold:.3});
         const statsEl = document.querySelector('.statsbar'); if(statsEl) statsObs.observe(statsEl);
+        /* REVEAL */
         const revealObs = new IntersectionObserver(entries=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }); },{threshold:.08,rootMargin:'0px 0px -40px 0px'});
         document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>revealObs.observe(el));
+        /* NAV ACTIVE */
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-links a');
-        window.addEventListener('scroll', () => { let cur=''; sections.forEach(s=>{ if(window.scrollY >= s.offsetTop-120) cur=s.getAttribute('id'); }); navLinks.forEach(a=>{ a.classList.toggle('active', a.getAttribute('href')==='#'+cur); }); });
+        window.addEventListener('scroll', () => { let cur=''; sections.forEach(s=>{ if(window.scrollY >= s.offsetTop-120) cur=s.getAttribute('id'); }); navLinks.forEach(a=>{ a.classList.toggle('active', a.getAttribute('href')==='#'+cur); }); },{passive:true});
+        document.addEventListener('click', e => { if(mob.classList.contains('open') && !mob.contains(e.target) && !ham.contains(e.target)) closeMenu(); });
+
+        if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("Service Worker registrado"))
+        .catch(error => console.log(error));
+        }
 
         let deferredPrompt;
-        const installBubble = document.getElementById('installBubble');
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            if (window.innerWidth <= 1024) installBubble.classList.add('show');
-        });
-        installBubble.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') installBubble.classList.remove('show');
-                deferredPrompt = null;
-            }
-        });
-        window.addEventListener('appinstalled', () => installBubble.classList.remove('show'));
+        const installBubble = document.getElementById("installBubble");
 
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                const CACHE_NAME = 'hugusfc-v1';
-                const urlsToCache = [
-                    '/',
-                    'index.html',
-                    'imag/escudo_hugusfc.png',
-                    'imag/kit_oficial.png'
-                ];
-                self.addEventListener('install', event => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
-                    );
-                });
-                self.addEventListener('fetch', event => {
-                    event.respondWith(
-                        caches.match(event.request).then(response => response || fetch(event.request))
-                    );
-                });
-                self.addEventListener('activate', event => {
-                    event.waitUntil(
-                        caches.keys().then(keys => Promise.all(
-                            keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-                        ))
-                    );
-                });
-            `;
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl).then(reg => {
-                reg.addEventListener('updatefound', () => {
-                    const newWorker = reg.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            document.getElementById('updatePopup').style.display = 'block';
-                        }
-                    });
-                });
-            }).catch(err => console.error('SW error', err));
-            const manifest = {
-                name: 'HUGUS FC',
-                short_name: 'HUGUS FC',
-                start_url: '/',
-                display: 'standalone',
-                background_color: '#0f150f',
-                theme_color: '#C9A227',
-                icons: [
-                    { src: 'imag/logo.png', sizes: '192x192', type: 'image/png' },
-                    { src: 'imag/logo.png', sizes: '512x512', type: 'image/png' }
-                ]
-            };
-            const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-            const manifestUrl = URL.createObjectURL(manifestBlob);
-            const link = document.createElement('link');
-            link.rel = 'manifest';
-            link.href = manifestUrl;
-            document.head.appendChild(link);
+        window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        if (window.innerWidth <= 1024) {
+            installBubble.classList.add("show");
         }
-        window.actualizarApp = () => location.reload();
+        });
 
-        function updateOnlineStatus() {
-            document.getElementById('offlinePopup').style.display = navigator.onLine ? 'none' : 'block';
+        installBubble.addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+
+        const choiceResult = await deferredPrompt.userChoice;
+
+        if (choiceResult.outcome === "accepted") {
+            installBubble.classList.remove("show");
         }
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-        updateOnlineStatus();
 
-        window.activarNotificaciones = async () => {
-            if (!('Notification' in window)) return alert('Tu navegador no soporta notificaciones');
-            const permiso = await Notification.requestPermission();
-            if (permiso === 'granted') {
-                new Notification('HUGUS FC', {
-                    body: 'Notificaciones activadas correctamente ⚽',
-                    icon: '/imag/logo.png'
-                });
-            } else {
-                alert('Permiso denegado');
-            }
-        };
+        deferredPrompt = null;
+        });
+
+        window.addEventListener("appinstalled", () => {
+        installBubble.classList.remove("show");
+        });
+
     </script>
 </body>
 </html>
