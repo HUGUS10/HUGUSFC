@@ -783,6 +783,8 @@
         </div>
     </div>
 
+    <script type="module" src="partidos.js"></script>
+
     <!-- SCRIPTS -->
     <script>
         // ========== CONSTANTES Y DATOS ==========
@@ -1283,6 +1285,110 @@
         window.addEventListener("appinstalled", () => {
         installBubble.classList.remove("show");
         });
+
+        <div id="updatePopup" style="
+        display:none;
+        position:fixed;
+        bottom:90px;
+        left:50%;
+        transform:translateX(-50%);
+        background:#C9A227;
+        color:#080C09;
+        padding:14px 20px;
+        border-radius:999px;
+        font-weight:900;
+        z-index:99999;
+        box-shadow:0 10px 30px rgba(0,0,0,.5);
+        ">
+        Nueva actualización disponible
+        <button onclick="actualizarApp()" style="
+            margin-left:10px;
+            background:#080C09;
+            color:#C9A227;
+            border:none;
+            padding:8px 12px;
+            border-radius:20px;
+            font-weight:bold;
+        ">Actualizar</button>
+        </div>
+
+        let newWorker;
+
+        if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js").then(reg => {
+            reg.addEventListener("updatefound", () => {
+            newWorker = reg.installing;
+
+            newWorker.addEventListener("statechange", () => {
+                if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                document.getElementById("updatePopup").style.display = "block";
+                }
+            });
+            });
+        });
+        }
+
+        function actualizarApp() {
+        window.location.reload();
+        }
+
+        <div id="offlinePopup" style="
+        display:none;
+        position:fixed;
+        bottom:20px;
+        left:50%;
+        transform:translateX(-50%);
+        background:#111;
+        color:#fff;
+        padding:12px 18px;
+        border:1px solid #C9A227;
+        border-radius:999px;
+        z-index:99999;
+        ">
+        ⚠️ Estás sin internet, usando modo offline
+        </div>
+
+        function updateOnlineStatus() {
+        document.getElementById("offlinePopup").style.display =
+            navigator.onLine ? "none" : "block";
+        }
+
+        window.addEventListener("online", updateOnlineStatus);
+        window.addEventListener("offline", updateOnlineStatus);
+        updateOnlineStatus();
+
+        <button onclick="activarNotificaciones()" style="
+        position:fixed;
+        bottom:150px;
+        right:20px;
+        background:#C9A227;
+        color:#080C09;
+        border:none;
+        border-radius:50px;
+        padding:12px 18px;
+        z-index:9999;
+        font-weight:bold;
+        ">
+        🔔 Notificaciones
+        </button>
+
+        async function activarNotificaciones() {
+        if (!("Notification" in window)) {
+            alert("Tu navegador no soporta notificaciones");
+            return;
+        }
+
+        const permiso = await Notification.requestPermission();
+
+        if (permiso === "granted") {
+            new Notification("HUGUS FC", {
+            body: "Notificaciones activadas correctamente ⚽",
+            icon: "/imag/logo.png"
+            });
+        } else {
+            alert("Permiso denegado");
+        }
+        }
 
     </script>
 </body>
