@@ -9,6 +9,7 @@
     <meta name="author" content="HUGUS FC">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0f150f">
+    <link rel="manifest" href="manifest.json">
     <link rel="canonical" href="https://hugusfc.online/">
     <link rel="icon" type="image/png" sizes="32x32" href="/imag/logo.png">
     <link rel="apple-touch-icon" href="/imag/logo.png">
@@ -1214,6 +1215,13 @@
         const navLinks = document.querySelectorAll('.nav-links a');
         window.addEventListener('scroll', () => { let cur=''; sections.forEach(s=>{ if(window.scrollY >= s.offsetTop-120) cur=s.getAttribute('id'); }); navLinks.forEach(a=>{ a.classList.toggle('active', a.getAttribute('href')==='#'+cur); }); },{passive:true});
         document.addEventListener('click', e => { if(mob.classList.contains('open') && !mob.contains(e.target) && !ham.contains(e.target)) closeMenu(); });
+
+        if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("Service Worker registrado"))
+        .catch(error => console.log(error));
+        }
+
     </script>
 </body>
 </html>
