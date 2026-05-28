@@ -20,6 +20,9 @@
     <meta property="og:url" content="https://hugusfc.online/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <button id="installBubble" class="install-bubble">
+    📲 Instalar App
+    </button>
     <style>
         :root {
             --cream: #E8E0CC; --cream2: #F2EDD8; --green: #1B3A2D; --green2: #2A5940; --green3: #0F2318;
@@ -143,6 +146,35 @@
         .fl { font-family:'Barlow Condensed',sans-serif; font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); font-weight:600; }
         .fv { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:.95rem; color:var(--white); text-align:right; }
         .fv.g { color:var(--gold); }
+
+        .install-bubble {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #C9A227;
+        color: #080C09;
+        border: none;
+        padding: 14px 22px;
+        border-radius: 999px;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-weight: 900;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        box-shadow: 0 10px 30px rgba(0,0,0,.45);
+        z-index: 9999;
+        display: none;
+        }
+
+        .install-bubble.show {
+        display: block;
+        }
+
+        @media (min-width: 1025px) {
+        .install-bubble {
+            display: none !important;
+        }
+        }
 
         /* Valores */
         .valores-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:52px; }
@@ -1221,6 +1253,36 @@
         .then(() => console.log("Service Worker registrado"))
         .catch(error => console.log(error));
         }
+
+        let deferredPrompt;
+        const installBubble = document.getElementById("installBubble");
+
+        window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        if (window.innerWidth <= 1024) {
+            installBubble.classList.add("show");
+        }
+        });
+
+        installBubble.addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+
+        const choiceResult = await deferredPrompt.userChoice;
+
+        if (choiceResult.outcome === "accepted") {
+            installBubble.classList.remove("show");
+        }
+
+        deferredPrompt = null;
+        });
+
+        window.addEventListener("appinstalled", () => {
+        installBubble.classList.remove("show");
+        });
 
     </script>
 </body>
