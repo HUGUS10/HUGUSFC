@@ -1,31 +1,34 @@
-const CACHE_NAME = "hugusfc-v3";
-
-const FILES_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/imag/logo.png",
-  "/imag/escudo_hugusfc.png"
+const CACHE_NAME = 'hugusfc-v1';
+const urlsToCache = [
+    '/',
+    '/index.html',
+    '/css/styles.css',
+    '/js/auth.js',
+    '/js/partidos.js',
+    '/js/noticias.js',
+    '/js/main.js',
+    '/imag/logo.png',
+    '/imag/escudo_hugusfc.png',
+    '/imag/kit_oficial.png'
 ];
 
-self.addEventListener("install", event => {
-  self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
-  );
+self.addEventListener('install', event => {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                return cache.addAll(urlsToCache);
+            })
+    );
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)))
-    )
-  );
-  self.clients.claim();
-});
-
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
-  );
+self.addEventListener('fetch', event => {
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request);
+            })
+    );
 });
