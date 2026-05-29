@@ -1,4 +1,5 @@
-const CACHE_NAME = 'hugusfc-v1.0.0';  // Cambia este número cuando actualices la web
+const CACHE_NAME = 'hugusfc-v1.0.1';  // ✅ CAMBIADO: incrementa la versión para que los dispositivos descarguen los nuevos archivos (Firestore, etc.)
+
 const urlsToCache = [
   '/',
   '/index.html',
@@ -18,7 +19,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
-  self.skipWaiting(); // Fuerza la activación inmediata
+  self.skipWaiting(); // Toma el control inmediatamente
 });
 
 self.addEventListener('activate', event => {
@@ -29,14 +30,14 @@ self.addEventListener('activate', event => {
       })
     ))
   );
-  self.clients.claim(); // Toma control de todos los clientes
+  self.clients.claim(); // Activa el SW en todas las pestañas
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        // Si la red responde, actualiza la caché con la nueva respuesta
+        // Estrategia "network first": actualiza la caché con la respuesta de red
         const responseToCache = response.clone();
         caches.open(CACHE_NAME).then(cache => {
           cache.put(event.request, responseToCache);
@@ -44,7 +45,7 @@ self.addEventListener('fetch', event => {
         return response;
       })
       .catch(() => {
-        // Si la red falla, sirve desde caché
+        // Si falla la red, sirve desde caché (offline)
         return caches.match(event.request);
       })
   );
