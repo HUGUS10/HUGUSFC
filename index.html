@@ -1775,12 +1775,53 @@
         // ═══════════════════════════════════════════
         // PWA — INSTALL
         // ═══════════════════════════════════════════
-        if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').then(()=>console.log('SW registrado')).catch(e=>console.log(e));
+        // PWA - INSTALL (código corregido)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => {
+                    console.log('✅ Service Worker registrado:', reg);
+                    // Detectar nuevas versiones
+                    reg.onupdatefound = () => {
+                        const installingWorker = reg.installing;
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed') {
+                                if (navigator.serviceWorker.controller) {
+                                    // Hay una nueva versión, recargar
+                                    showToast('🔄 Nueva versión disponible. Actualizando...', 'info');
+                                    setTimeout(() => window.location.reload(), 1500);
+                                } else {
+                                    console.log('📱 App instalada por primera vez');
+                                }
+                            }
+                        };
+                    };
+                })
+                .catch(err => console.error('❌ Error al registrar SW:', err));
+        }
+
         let deferredPrompt;
-        const ib=document.getElementById('installBubble');
-        window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); deferredPrompt=e; if(window.innerWidth<=1024) ib.classList.add('show'); });
-        ib.addEventListener('click', async()=>{ if(!deferredPrompt) return; deferredPrompt.prompt(); const r=await deferredPrompt.userChoice; if(r.outcome==='accepted') ib.classList.remove('show'); deferredPrompt=null; });
-        window.addEventListener('appinstalled',()=>ib.classList.remove('show'));
+        const installBtn = document.getElementById('installBubble');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (window.innerWidth <= 1024) {
+                installBtn.classList.add('show');
+            }
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') installBtn.classList.remove('show');
+            deferredPrompt = null;
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.classList.remove('show');
+            console.log('✅ App instalada correctamente');
+        });
 
         // ═══════════════════════════════════════════
         // INICIALIZAR
