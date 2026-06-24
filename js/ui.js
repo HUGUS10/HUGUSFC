@@ -1,305 +1,190 @@
-// Función para mostrar un toast (notificación)
+// ============================================================
+// HUGUS FC · ui.js — Preloader, Nav, Reveal, Toast, PWA
+// ============================================================
+
+/* ── TOAST ── */
 function showToast(msg, type = 'success') {
-  const container = document.getElementById('toastContainer');
-  if (!container) return;
-
-  const toast = document.createElement('div');
-  toast.className = 'toast ' + type;
-  toast.textContent = msg;
-  container.appendChild(toast);
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => toast.classList.add('show'));
-  });
-
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 350);
-  }, 3000);
+  const c = document.getElementById('toastContainer');
+  if (!c) return;
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  c.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 350); }, 3200);
 }
 
-// Función para abrir el modal de autenticación
-function abrirAuth() {
-  document.getElementById('authOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-// Función para cerrar el modal de autenticación
-function cerrarAuth() {
-  document.getElementById('authOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-  document.getElementById('authError').classList.remove('show');
-}
-
-// Función para abrir el modal de la tienda
-function abrirTienda() {
-  document.getElementById('shopOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-// Función para cerrar el modal de la tienda
-function cerrarTienda() {
-  document.getElementById('shopOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// Función para abrir el modal de perfil
-function abrirPerfil() {
-  const session = getSession();
-  if (!session?.email) {
-    abrirAuth();
-    return;
+/* ── PRELOADER ── */
+let _pct = 0, _pageReady = false;
+(function initPreloader() {
+  const fill    = document.getElementById('preFill');
+  const pctEl   = document.getElementById('prePercent');
+  const statusEl= document.getElementById('preStatus');
+  const statuses = [
+    'Cargando escudo del club…',
+    'Conectando con Firebase…',
+    'Preparando calendario…',
+    'Casi listo…',
+    '¡Bienvenido a HUGUS FC!'
+  ];
+  let sIdx = 0;
+  function paint(v) {
+    v = Math.max(0, Math.min(100, Math.round(v)));
+    if (fill)  fill.style.width = v + '%';
+    if (pctEl) pctEl.textContent = v + '%';
+    const newS = statuses[Math.min(Math.floor(v / 22), statuses.length - 1)];
+    if (statusEl && statusEl.textContent !== newS) statusEl.textContent = newS;
   }
+  const tick = setInterval(() => {
+    if (_pageReady) return;
+    const step = _pct < 65 ? 5 : _pct < 88 ? 2 : 0.6;
+    _pct = Math.min(94, _pct + step);
+    paint(_pct);
+  }, 120);
 
-  const user = getUsers().find(u => u.email.toLowerCase() === session.email.toLowerCase());
-  if (!user) return;
-
-  document.getElementById('perfilAvatar').textContent = user.nombre.charAt(0).toUpperCase();
-  document.getElementById('perfilNombre').textContent = user.nombre + ' ' + (user.apellido || '');
-  document.getElementById('perfilRol').textContent = esAdmin(user) ? '⭐ Administrador' : 'Hincha Oficial';
-  document.getElementById('perfilFullName').textContent = user.nombre + ' ' + (user.apellido || '');
-  document.getElementById('perfilEmail').textContent = user.email;
-  document.getElementById('perfilTipo').textContent = esAdmin(user) ? 'Administrador' : 'Hincha';
-  document.getElementById('perfilFecha').textContent = user.fechaRegistro || 'Abril 2026';
-
-  document.getElementById('perfilOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-// Función para cerrar el modal de perfil
-function cerrarPerfil() {
-  document.getElementById('perfilOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// Función para abrir el panel de administración
-function abrirAdminPanel() {
-  const session = getSession();
-  if (!session?.email) {
-    abrirAuth();
-    return;
-  }
-
-  const user = getUsers().find(u => u.email.toLowerCase() === session.email.toLowerCase());
-  if (!esAdmin(user)) {
-    showToast('Sin permisos de administrador', 'error');
-    return;
-  }
-
-  document.getElementById('adminOverlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-  cargarTablaPartidos();
-  cargarTablaNoticiasAdmin();
-  cancelarEdicion();
-}
-
-// Función para cerrar el panel de administración
-function cerrarAdminPanel() {
-  document.getElementById('adminOverlay').classList.remove('active');
-  document.body.style.overflow = '';
-  actualizarCalendarioUI();
-  actualizarResultados();
-}
-
-// Función para cambiar entre pestañas de autenticación
-function switchTab(tab) {
-  document.getElementById('authError').classList.remove('show');
-  const isLogin = tab === 'login';
-
-  document.getElementById('form-login').style.display = isLogin ? 'block' : 'none';
-  document.getElementById('form-registro').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('tab-login').classList.toggle('active', isLogin);
-  document.getElementById('tab-registro').classList.toggle('active', !isLogin);
-}
-
-// Función para cerrar el menú móvil
-function closeMenu() {
-  const ham = document.getElementById('ham');
-  const mobMenu = document.getElementById('mobMenu');
-  ham.classList.remove('active');
-  mobMenu.classList.remove('open');
-}
-
-// Función para animar los contadores de estadísticas
-function animateCounters() {
-  document.querySelectorAll('[data-target]').forEach(el => {
-    const target = +el.getAttribute('data-target');
-    let current = 0;
-    const step = Math.max(1, Math.floor(target / 60));
-    const timer = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = current + (target === 100 ? '%' : '');
-      if (current >= target) clearInterval(timer);
-    }, 25);
-  });
-}
-
-// Inicializar el IntersectionObserver para las animaciones de reveal
-const revObs = new IntersectionObserver(
-  (entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  window.addEventListener('load', () => {
+    _pageReady = true;
+    clearInterval(tick);
+    const done = setInterval(() => {
+      _pct = Math.min(100, _pct + 4);
+      paint(_pct);
+      if (_pct >= 100) {
+        clearInterval(done);
+        setTimeout(() => {
+          const pre = document.getElementById('preloader');
+          if (pre) pre.classList.add('hide');
+          document.body.classList.remove('loading');
+        }, 480);
       }
-    });
-  },
-  { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-);
+    }, 30);
+  });
+})();
 
-// Aplicar el IntersectionObserver a todos los elementos con clase reveal
-document.querySelectorAll('.reveal, .reveal-l, .reveal-r').forEach(el => revObs.observe(el));
-
-// Inicializar el IntersectionObserver para los contadores
-const statsObs = new IntersectionObserver(
-  (entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        animateCounters();
-        statsObs.disconnect();
-      }
-    });
-  },
-  { threshold: 0.3 }
-);
-
-const statsEl = document.querySelector('.statsbar');
-if (statsEl) statsObs.observe(statsEl);
-
-// Inicializar el menú móvil
-const ham = document.getElementById('ham');
-const mobMenu = document.getElementById('mobMenu');
-ham.addEventListener('click', () => {
-  ham.classList.toggle('active');
-  mobMenu.classList.toggle('open');
-});
-
-// Cerrar el menú móvil al hacer clic fuera de él
-document.addEventListener('click', (e) => {
-  if (mobMenu.classList.contains('open') && !mobMenu.contains(e.target) && !ham.contains(e.target)) {
-    closeMenu();
-  }
-});
-
-// Inicializar el botón de "Volver arriba"
-const btt = document.getElementById('btt');
+/* ── NAV SCROLL ── */
+const _nav = document.getElementById('mainNav');
 window.addEventListener('scroll', () => {
-  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
-  if (btt) btt.classList.toggle('show', window.scrollY > 400);
+  if (_nav) _nav.classList.toggle('scrolled', window.scrollY > 60);
+  const btt = document.getElementById('btt');
+  if (btt) btt.classList.toggle('show', window.scrollY > 420);
 }, { passive: true });
 
-// Inicializar el preloader
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    document.getElementById('preloader').classList.add('hide');
-  }, 2000);
+/* ── NAV ACTIVE LINK ── */
+const _sections  = document.querySelectorAll('section[id]');
+const _navLinks  = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  _sections.forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.getAttribute('id'); });
+  _navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+}, { passive: true });
+
+/* ── HAMBURGER ── */
+const _ham   = document.getElementById('ham');
+const _mobM  = document.getElementById('mobMenu');
+if (_ham) {
+  _ham.addEventListener('click', () => {
+    _ham.classList.toggle('active');
+    _mobM.classList.toggle('open');
+  });
+}
+document.addEventListener('click', e => {
+  if (_mobM && _mobM.classList.contains('open') && !_mobM.contains(e.target) && !_ham.contains(e.target))
+    closeMenu();
 });
+function closeMenu() {
+  if (_ham)  _ham.classList.remove('active');
+  if (_mobM) _mobM.classList.remove('open');
+}
 
-// Inicializar el PWA Install Bubble
-const installBubble = document.getElementById('installBubble');
-let deferredPrompt;
+/* ── USER DROPDOWN ── */
+const _avatarBtn  = document.getElementById('userAvatarBtn');
+const _userDrop   = document.getElementById('userDropdown');
+if (_avatarBtn) {
+  _avatarBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    _userDrop.classList.toggle('active');
+  });
+}
+document.addEventListener('click', () => { if (_userDrop) _userDrop.classList.remove('active'); });
 
-window.addEventListener('beforeinstallprompt', (e) => {
+/* ── REVEAL ANIMATIONS ── */
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.07, rootMargin: '0px 0px -35px 0px' });
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r,.reveal-up').forEach(el => revObs.observe(el));
+
+/* ── STATS COUNTER ── */
+function animateCounters() {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const t = +el.getAttribute('data-target');
+    let c = 0;
+    const step = Math.max(1, Math.floor(t / 55));
+    const timer = setInterval(() => {
+      c = Math.min(c + step, t);
+      el.textContent = c + (t === 100 ? '%' : '');
+      if (c >= t) clearInterval(timer);
+    }, 22);
+  });
+}
+const _sObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { animateCounters(); _sObs.disconnect(); } });
+}, { threshold: 0.3 });
+const _sb = document.querySelector('.statsbar');
+if (_sb) _sObs.observe(_sb);
+
+/* ── PWA ── */
+let _deferredPrompt = null;
+const _installBanner = document.getElementById('installBanner');
+const _updateBanner  = document.getElementById('updateBanner');
+
+window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
-  deferredPrompt = e;
-  if (window.innerWidth <= 1024) {
-    installBubble.classList.add('show');
+  _deferredPrompt = e;
+  if (!localStorage.getItem('hugusInstallClosed') && _installBanner) _installBanner.classList.add('show');
+});
+
+async function instalarApp() {
+  if (_deferredPrompt) {
+    _deferredPrompt.prompt();
+    await _deferredPrompt.userChoice;
+    _deferredPrompt = null;
+    if (_installBanner) _installBanner.classList.remove('show');
+    showToast('📲 Instalación iniciada');
+  } else {
+    showToast('📲 En Chrome: menú ⋮ → Agregar a pantalla principal');
   }
-});
+}
+function cerrarInstallBanner() {
+  localStorage.setItem('hugusInstallClosed', '1');
+  if (_installBanner) _installBanner.classList.remove('show');
+}
+function cerrarUpdateBanner() { if (_updateBanner) _updateBanner.classList.remove('show'); }
+function actualizarAhora() {
+  if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n))).finally(() => location.reload());
+  else location.reload();
+}
+function forzarActualizacion() { showToast('🔄 Buscando actualización…'); setTimeout(actualizarAhora, 700); }
 
-installBubble.addEventListener('click', async () => {
-  if (!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const result = await deferredPrompt.userChoice;
-  if (result.outcome === 'accepted') {
-    installBubble.classList.remove('show');
-  }
-  deferredPrompt = null;
-});
-
-window.addEventListener('appinstalled', () => {
-  if (installBubble) installBubble.classList.remove('show');
-});
-
-// Registrar el Service Worker
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-      .then(registration => {
-        console.log('ServiceWorker registrado:', registration.scope);
-      })
-      .catch(error => {
-        console.error('Error al registrar el ServiceWorker:', error);
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        nw?.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller && _updateBanner)
+            _updateBanner.classList.add('show');
+        });
       });
+    } catch (e) { console.warn('SW no registrado:', e); }
   });
 }
 
-// Inicializar todo al cargar el DOM
-document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar el menú de usuario
-  document.getElementById('userAvatarBtn').addEventListener('click', (e) => {
-    e.stopPropagation();
-    document.getElementById('userDropdown').classList.toggle('active');
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!document.getElementById('userMenuContainer').contains(e.target)) {
-      document.getElementById('userDropdown').classList.remove('active');
-    }
-  });
-
-  // Inicializar el menú de usuario en móviles
-  const mobAccederBtn = document.getElementById('mobAccederBtn');
-  if (mobAccederBtn) {
-    mobAccederBtn.addEventListener('click', () => {
-      closeMenu();
-      abrirAuth();
-    });
+/* ── ESCAPE PARA CERRAR MODALES ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    cerrarAuth && cerrarAuth();
+    cerrarTienda && cerrarTienda();
+    cerrarPerfil && cerrarPerfil();
+    cerrarAdminPanel && cerrarAdminPanel();
   }
-
-  // Inicializar el modal de autenticación
-  document.getElementById('authOverlay').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) cerrarAuth();
-  });
-
-  // Inicializar el modal de la tienda
-  document.getElementById('shopOverlay').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) cerrarTienda();
-  });
-
-  // Inicializar el modal de perfil
-  document.getElementById('perfilOverlay').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) cerrarPerfil();
-  });
-
-  // Inicializar el panel de administración
-  document.getElementById('adminOverlay').addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) cerrarAdminPanel();
-  });
-
-  // Cerrar modales con la tecla Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      cerrarAuth();
-      cerrarTienda();
-      cerrarPerfil();
-      cerrarAdminPanel();
-    }
-  });
-
-  // Inicializar el nav active link
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-      if (window.scrollY >= section.offsetTop - 120) {
-        current = section.getAttribute('id');
-      }
-    });
-
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-    });
-  }, { passive: true });
 });

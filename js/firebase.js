@@ -1,48 +1,29 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
-
 const firebaseConfig = {
   apiKey: "AIzaSyASwd9Gl54ao5Hv77N6d_sO_66s-8vgUYU",
   authDomain: "hugus-fc.firebaseapp.com",
   projectId: "hugus-fc",
   storageBucket: "hugus-fc.firebasestorage.app",
   messagingSenderId: "890781937251",
-  appId: "1:890781937251:web:a3af993352b986be7b5256",
-  measurementId: "G-GY82L3YPT0"
+  appId: "1:890781937251:web:a3af993352b986be7b5256"
 };
-// Inicializar Firebase
+
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+
+const db      = firebase.firestore();
+const auth    = firebase.auth();
 const storage = firebase.storage();
 
-// Función para iniciar sesión con Google
-function loginWithGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider)
-    .then((result) => {
-      const user = result.user;
-      saveSession({ email: user.email, nombre: user.displayName, foto: user.photoURL });
-      updateUIForLoggedInUser({ email: user.email, nombre: user.displayName, foto: user.photoURL });
-      cerrarAuth();
-      showToast(`¡Bienvenido, ${user.displayName}!`);
-    })
-    .catch((error) => {
-      showToast("Error al iniciar sesión con Google: " + error.message, "error");
-    });
-}
+const COL = { PARTIDOS:'partidos', NOTICIAS:'noticias', TABLA:'tabla', USUARIOS:'usuarios' };
+const ADMIN_EMAILS = ['admin@hugusfc.com'];
+const ADMIN_PASSWORD = 'admin2026';
+const MATCH_DURATION_MIN = 50;
 
-// Función para subir imágenes a Firebase Storage
-function uploadImageToFirebase(file, path) {
-  const storageRef = storage.ref();
-  const fileRef = storageRef.child(path);
-  return fileRef.put(file)
-    .then((snapshot) => {
-      return snapshot.ref.getDownloadURL();
-    })
-    .catch((error) => {
-      console.error("Error al subir la imagen:", error);
-      throw error;
-    });
+function esAdmin(user) {
+  if (!user) return false;
+  const s = getSession();
+  if (s && s.esAdmin) return true;
+  return ADMIN_EMAILS.includes(user.email);
 }
+function getSession()     { const s = sessionStorage.getItem('hugus_session'); return s ? JSON.parse(s) : null; }
+function saveSession(d)   { sessionStorage.setItem('hugus_session', JSON.stringify(d)); }
+function clearSession()   { sessionStorage.removeItem('hugus_session'); }
