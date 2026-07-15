@@ -17,6 +17,9 @@
   <!-- Color navegador móvil -->
   <meta name="theme-color" content="#070F21">
 
+  <!-- PWA: Manifest (permite instalar la web como app) -->
+  <link rel="manifest" href="./manifest.json">
+
   <!-- FAVICON HUGUS FC -->
   <link rel="icon" type="image/png" sizes="16x16" href="./imag/logo.png">
   <link rel="icon" type="image/png" sizes="32x32" href="./imag/logo.png">
@@ -25,6 +28,9 @@
 
   <!-- Icono Apple -->
   <link rel="apple-touch-icon" href="./imag/logo.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="HUGUS FC">
 
   <!-- Logo para compartir -->
   <meta property="og:title" content="HUGUS FC | Web Oficial">
@@ -589,11 +595,6 @@
     .nav-item.active .nav-label {
       opacity: 1;
     }
-
-    /* ============================================================
-       SECCIONES DE INICIO (hero, stats, etc.) - se mantienen igual
-       ============================================================ */
-    /* ... (todo el resto del CSS es el mismo, lo omito por brevedad pero está en el código completo) ... */
 
     /* ---------- HERO ---------- */
     .hero {
@@ -1298,6 +1299,7 @@
         <li><a href="plantilla.html">Plantilla</a></li>
         <li><a href="tienda.html">Tienda</a></li>
         <li><a href="noticias.html">Noticias</a></li>
+        <li><a href="campo.html">Campo</a></li>
         <li><a href="comunidad.html">Comunidad</a></li>
       </ul>
 
@@ -1316,7 +1318,7 @@
     <ul>
       <li><a href="tabla.html">Tabla</a></li>
       <li><a href="plantilla.html">Plantilla</a></li>
-      <li><a href="calendario.html">Campo</a></li> <!-- "Campo" apunta a Partidos (calendario) -->
+      <li><a href="campo.html">Campo</a></li> <!-- "Campo" apunta al mapa/ubicación de la cancha (campo.html) -->
       <li><a href="comunidad.html">Comunidad</a></li>
     </ul>
     <!-- Aquí se renderiza dinámicamente según sesión -->
@@ -1479,7 +1481,7 @@
         <div class="contacto-card">
           <span class="contacto-icon">📍</span>
           <div class="contacto-titulo">Ubicación</div>
-          <div class="contacto-valor">El Colorado, La Libertad</div>
+          <div class="contacto-valor"><a href="campo.html">El Colorado, La Libertad</a></div>
         </div>
       </div>
     </div>
@@ -1499,14 +1501,14 @@
             <li>Avisos de actualización</li>
             <li>Diseño responsive para celular</li>
           </ul>
-          <button class="btn-p" onclick="showToast('Instala la app desde tu navegador', 'success')">📲 Instalar App</button>
+          <button class="btn-p btn-install-app" onclick="installApp()">📲 Instalar App</button>
         </div>
         <div class="app-install-phone">
           <div class="app-phone-mock">
             <img src="imag/logo.png" alt="App HUGUS" onerror="this.src='https://placehold.co/56/0D1B3A/EDE5CC?text=H'">
             <h4>HUGUS FC</h4>
             <p>Tu club en el celular: partidos, tienda, comunidad y noticias.</p>
-            <button class="btn-p" onclick="showToast('Instala la app desde tu navegador', 'success')">Instalar</button>
+            <button class="btn-p btn-install-app" onclick="installApp()">Instalar</button>
           </div>
         </div>
       </div>
@@ -1521,7 +1523,7 @@
         <div class="fb-name">HUGUS FC</div>
         <div class="fb-lema">Dios · Familia · Fútbol</div>
         <p class="fb-desc">Club de fútbol fundado en Abril 2026 en el Caserío El Colorado, La Libertad, Perú. Pasión, disciplina y orgullo en cada partido.</p>
-        <button class="footer-install-btn" onclick="showToast('Instala la app desde tu navegador', 'success')">📲 Instalar App</button>
+        <button class="footer-install-btn btn-install-app" onclick="installApp()">📲 Instalar App</button>
       </div>
       <div class="footer-col">
         <h4>Club</h4>
@@ -1533,6 +1535,7 @@
           <li><a href="tabla.html">Tabla</a></li>
           <li><a href="noticias.html">Noticias</a></li>
           <li><a href="calendario.html">Calendario</a></li>
+          <li><a href="campo.html">Cómo llegar</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1540,7 +1543,7 @@
         <p>
           📱 <a href="https://wa.me/51935419810" target="_blank">+51 935 419 810</a><br>
           ✉️ <a href="mailto:lg_hugusfc@hotmail.com">LG_HUGUSFC@hotmail.com</a><br>
-          📍 C. El Colorado, La Libertad, Perú
+          📍 <a href="campo.html">C. El Colorado, La Libertad, Perú</a>
         </p>
       </div>
     </div>
@@ -1743,6 +1746,86 @@
     // INICIALIZAR UI DE AUTENTICACIÓN
     // ============================================================
     updateAuthUI();
+
+    // ============================================================
+    // PWA — INSTALAR APP (beforeinstallprompt real)
+    // ============================================================
+    let deferredPrompt = null;
+    const installButtons = document.querySelectorAll('.btn-install-app');
+
+    // Chrome/Edge/Android disparan este evento cuando la web es instalable
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    function installApp() {
+      const isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+
+      if (isStandalone) {
+        showToast('✅ Ya tienes HUGUS FC instalado', 'success');
+        return;
+      }
+
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            showToast('✅ ¡Instalando HUGUS FC!', 'success');
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        // iOS Safari y navegadores sin soporte del evento: instrucciones manuales
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        if (isIOS) {
+          showToast('📲 En Safari: toca Compartir → "Añadir a pantalla de inicio"', 'success');
+        } else {
+          showToast('📲 Usa el menú ⋮ de tu navegador → "Instalar app" o "Añadir a pantalla principal"', 'success');
+        }
+      }
+    }
+
+    window.addEventListener('appinstalled', () => {
+      showToast('✅ ¡HUGUS FC se instaló en tu dispositivo!', 'success');
+      deferredPrompt = null;
+    });
+
+    // ============================================================
+    // PWA — SERVICE WORKER + AUTO-ACTUALIZACIÓN
+    // Cuando subas cambios al sitio (sube también service-worker.js
+    // con CACHE_VERSION incrementado), esto hace que tanto la web
+    // como la app instalada se refresquen solas.
+    // ============================================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js').then((reg) => {
+          // revisa si hay una versión nueva cada hora
+          setInterval(() => reg.update(), 60 * 60 * 1000);
+
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            if (!newWorker) return;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                showToast('🔄 Nueva versión disponible, actualizando…', 'success');
+                newWorker.postMessage('SKIP_WAITING');
+              }
+            });
+          });
+        }).catch((err) => console.log('Error registrando el Service Worker:', err));
+      });
+
+      // cuando el SW nuevo toma el control, recarga la página una sola vez
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+    }
   </script>
 </body>
 </html>
