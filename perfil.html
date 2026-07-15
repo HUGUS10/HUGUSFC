@@ -16,7 +16,7 @@
 
   <style>
     /* ============================================================
-       HUGUS FC — PALETA DE COLORES (misma que el resto del sitio)
+       HUGUS FC — PALETA DE COLORES (misma que el sitio)
        ============================================================ */
     :root {
       --cream: #EDE5CC;
@@ -138,9 +138,7 @@
       animation: spin 1.1s linear infinite;
     }
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
     .pre-logo {
       width: 100px;
@@ -275,6 +273,59 @@
       flex-shrink: 0;
     }
 
+    /* ===== ESTILOS PARA EL PERFIL EN EL HEADER ===== */
+    .user-profile-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--ff-cond);
+    }
+    .user-profile-nav .user-avatar-small {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      border: 2px solid rgba(201, 162, 39, 0.4);
+      text-decoration: none;
+      transition: transform .2s;
+    }
+    .user-profile-nav .user-avatar-small:hover {
+      transform: scale(1.08);
+    }
+    .user-profile-nav .user-name {
+      color: var(--cream);
+      font-size: .85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .user-profile-nav .user-name:hover {
+      color: var(--gold);
+    }
+    .user-profile-nav .btn-logout {
+      background: rgba(184, 48, 37, 0.2);
+      border: 1px solid rgba(184, 48, 37, 0.3);
+      color: #e58a80;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .user-profile-nav .btn-logout:hover {
+      background: rgba(184, 48, 37, 0.4);
+    }
+
     .btn-nav-acceder {
       font-family: var(--ff-cond);
       font-size: .78rem;
@@ -364,9 +415,6 @@
       letter-spacing: .05em;
       text-transform: uppercase;
     }
-    .mob-menu li a.active {
-      color: var(--gold);
-    }
     .mob-acceder {
       margin: 24px 24px 0;
       padding: 15px;
@@ -379,8 +427,8 @@
       letter-spacing: .08em;
       text-transform: uppercase;
       display: block;
-      cursor: pointer;
       border: none;
+      cursor: pointer;
     }
 
     /* ---------- BOTTOM NAV (móvil) ---------- */
@@ -478,7 +526,7 @@
     }
 
     /* ============================================================
-       CONTENIDO DE PERFIL MEJORADO
+       CONTENIDO DE PERFIL
        ============================================================ */
     .profile-section {
       padding: 130px 0 60px;
@@ -805,99 +853,39 @@
 
     /* ---------- RESPONSIVE ---------- */
     @media (max-width:1024px) {
-      .nav-links {
-        display: none;
-      }
-      .hamburger {
-        display: flex;
-      }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
       #mainNav {
         background: linear-gradient(120deg, var(--red-dark), var(--red));
         border-bottom: 1px solid rgba(201, 162, 39, .3);
       }
-      #mainNav.scrolled {
-        background: var(--red-dark);
-      }
+      #mainNav.scrolled { background: var(--red-dark); }
     }
 
     @media (max-width:720px) {
-      body {
-        padding-bottom: 80px;
-      }
-      .bottom-nav {
-        display: flex;
-      }
-      .profile-section {
-        padding: 110px 0 40px;
-      }
-      .profile-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-      .profile-card {
-        padding: 30px 20px;
-      }
-      .profile-avatar {
-        width: 90px;
-        height: 90px;
-        font-size: 3rem;
-      }
-      .profile-name {
-        font-size: 1.8rem;
-      }
-      .profile-info-grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-      .stats-card {
-        padding: 30px 20px;
-      }
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      .stat-number {
-        font-size: 1.8rem;
-      }
-      .btn-action {
-        padding: 12px 16px;
-        font-size: .8rem;
-      }
-      .footer-inner {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
+      body { padding-bottom: 80px; }
+      .bottom-nav { display: flex; }
+      .profile-section { padding: 110px 0 40px; }
+      .profile-grid { grid-template-columns: 1fr; gap: 30px; }
+      .profile-card { padding: 30px 20px; }
+      .profile-avatar { width: 90px; height: 90px; font-size: 3rem; }
+      .profile-name { font-size: 1.8rem; }
+      .profile-info-grid { grid-template-columns: 1fr; gap: 8px; }
+      .stats-card { padding: 30px 20px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .stat-number { font-size: 1.8rem; }
+      .btn-action { padding: 12px 16px; font-size: .8rem; }
+      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
     }
 
     @media (max-width:480px) {
-      .profile-avatar {
-        width: 80px;
-        height: 80px;
-        font-size: 2.5rem;
-      }
-      .profile-name {
-        font-size: 1.5rem;
-      }
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-      .stat-number {
-        font-size: 1.6rem;
-      }
-      .nav-icon-wrapper {
-        width: 38px;
-        height: 38px;
-        font-size: 1rem;
-      }
-      .nav-item .nav-label {
-        font-size: .5rem;
-      }
-      .nav-icon-circle {
-        width: 58px;
-        height: 58px;
-        font-size: 2rem;
-      }
+      .profile-avatar { width: 80px; height: 80px; font-size: 2.5rem; }
+      .profile-name { font-size: 1.5rem; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-number { font-size: 1.6rem; }
+      .nav-icon-wrapper { width: 38px; height: 38px; font-size: 1rem; }
+      .nav-item .nav-label { font-size: .5rem; }
+      .nav-icon-circle { width: 58px; height: 58px; font-size: 2rem; }
     }
   </style>
 </head>
@@ -924,24 +912,21 @@
         </div>
         <span class="nav-brand-text">HUGUS FC</span>
       </a>
-
       <ul class="nav-links">
         <li><a href="index.html">Inicio</a></li>
-        <li><a href="noticias.html">Noticias</a></li>
         <li><a href="calendario.html">Partidos</a></li>
         <li><a href="resultados.html">Resultados</a></li>
         <li><a href="tabla.html">Tabla</a></li>
         <li><a href="plantilla.html">Plantilla</a></li>
         <li><a href="tienda.html">Tienda</a></li>
+        <li><a href="noticias.html">Noticias</a></li>
         <li><a href="perfil.html" class="active">Perfil</a></li>
       </ul>
-
       <div class="nav-right">
-        <button class="btn-nav-acceder" id="btnAcceder">Cerrar sesión</button>
+        <!-- Aquí se renderiza dinámicamente según sesión -->
+        <div id="authSection"></div>
         <button class="hamburger" id="hamBtn" aria-label="Menu">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
@@ -951,15 +936,16 @@
   <div class="mob-menu" id="mobMenu">
     <ul>
       <li><a href="index.html">Inicio</a></li>
-      <li><a href="noticias.html">Noticias</a></li>
       <li><a href="calendario.html">Partidos</a></li>
       <li><a href="resultados.html">Resultados</a></li>
       <li><a href="tabla.html">Tabla</a></li>
       <li><a href="plantilla.html">Plantilla</a></li>
       <li><a href="tienda.html">Tienda</a></li>
+      <li><a href="noticias.html">Noticias</a></li>
       <li><a href="perfil.html" class="active">Perfil</a></li>
     </ul>
-    <button class="mob-acceder" id="mobBtnAcceder">Cerrar sesión</button>
+    <!-- Aquí se renderiza dinámicamente según sesión -->
+    <div id="mobAuthSection"></div>
   </div>
 
   <!-- CONTENIDO PRINCIPAL -->
@@ -1084,7 +1070,7 @@
     });
 
     // ============================================================
-    // AUTH (localStorage)
+    // SISTEMA DE AUTENTICACIÓN (LOCALSTORAGE)
     // ============================================================
     const USERS_KEY = 'hugus_users';
     const CURRENT_USER_KEY = 'hugus_current_user';
@@ -1099,6 +1085,57 @@
 
     function clearCurrentUser() {
       localStorage.removeItem(CURRENT_USER_KEY);
+    }
+
+    // ============================================================
+    // ACTUALIZAR HEADER SEGÚN SESIÓN (con enlaces a perfil)
+    // ============================================================
+    function updateAuthUI() {
+      const user = getCurrentUser();
+      const authSection = document.getElementById('authSection');
+      const mobAuthSection = document.getElementById('mobAuthSection');
+
+      if (!authSection) return;
+
+      if (user) {
+        const avatarLetter = user.name ? user.name.charAt(0).toUpperCase() : 'H';
+        authSection.innerHTML = `
+          <div class="user-profile-nav">
+            <a href="perfil.html" class="user-avatar-small">${avatarLetter}</a>
+            <a href="perfil.html" class="user-name">${user.name}</a>
+            <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+          </div>
+        `;
+        if (mobAuthSection) {
+          mobAuthSection.innerHTML = `
+            <div style="padding:16px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <a href="perfil.html" style="font-family:var(--ff-cond);font-weight:700;color:var(--cream);text-decoration:none;">👤 ${user.name}</a>
+              <button class="btn-logout" onclick="logout()" style="background:rgba(184,48,37,0.2);border:1px solid rgba(184,48,37,0.3);color:#e58a80;padding:4px 14px;border-radius:999px;font-size:.7rem;font-weight:700;text-transform:uppercase;cursor:pointer;">Cerrar sesión</button>
+            </div>
+          `;
+        }
+      } else {
+        authSection.innerHTML = `
+          <button class="btn-nav-acceder" onclick="window.location.href='login.html'">Acceder</button>
+        `;
+        if (mobAuthSection) {
+          mobAuthSection.innerHTML = `
+            <button class="mob-acceder" onclick="window.location.href='login.html'">Portal Socios</button>
+          `;
+        }
+      }
+    }
+
+    // ============================================================
+    // CERRAR SESIÓN
+    // ============================================================
+    function logout() {
+      clearCurrentUser();
+      updateAuthUI();
+      showToast('✅ Sesión cerrada correctamente', 'success');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 500);
     }
 
     // ============================================================
@@ -1195,8 +1232,6 @@
 
       // Asignar eventos de logout
       document.getElementById('logoutBtn').onclick = logout;
-      document.getElementById('btnAcceder').onclick = logout;
-      document.getElementById('mobBtnAcceder').onclick = logout;
     }
 
     // ============================================================
@@ -1207,17 +1242,6 @@
 
       if (!user) {
         renderProfile(null);
-        // Cambiar el botón "Cerrar sesión" por "Iniciar sesión"
-        const btnAcceder = document.getElementById('btnAcceder');
-        const mobBtnAcceder = document.getElementById('mobBtnAcceder');
-        if (btnAcceder) {
-          btnAcceder.textContent = 'Iniciar sesión';
-          btnAcceder.onclick = () => window.location.href = 'login.html';
-        }
-        if (mobBtnAcceder) {
-          mobBtnAcceder.textContent = 'Iniciar sesión';
-          mobBtnAcceder.onclick = () => window.location.href = 'login.html';
-        }
         return;
       }
 
@@ -1225,22 +1249,10 @@
     }
 
     // ============================================================
-    // CERRAR SESIÓN
+    // INICIALIZAR
     // ============================================================
-    function logout() {
-      clearCurrentUser();
-      showToast('✅ Sesión cerrada correctamente', 'success');
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 500);
-    }
-
-    // ============================================================
-    // INIT
-    // ============================================================
-    window.addEventListener('load', () => {
-      loadProfile();
-    });
+    updateAuthUI();
+    loadProfile();
   </script>
 </body>
 </html>
