@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
   <title>Tienda Oficial | HUGUS FC</title>
-  <meta name="description" content="Tienda oficial del club HUGUS FC. Camisetas, gorras, balones y más. Pedidos por WhatsApp." />
+  <meta name="description" content="Tienda oficial del club HUGUS FC. Camisetas, gorras, balones, mochilas, bufandas, termos y más. Pedidos por WhatsApp." />
   <meta name="theme-color" content="#070F21" />
   <link rel="icon" type="image/png" sizes="32x32" href="imag/logo.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="imag/logo.png" />
@@ -267,6 +267,60 @@
       gap: 14px;
       flex-shrink: 0;
     }
+
+    /* ===== ESTILOS PARA EL PERFIL EN EL HEADER ===== */
+    .user-profile-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--ff-cond);
+    }
+    .user-profile-nav .user-avatar-small {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      border: 2px solid rgba(201, 162, 39, 0.4);
+      text-decoration: none;
+      transition: transform .2s;
+    }
+    .user-profile-nav .user-avatar-small:hover {
+      transform: scale(1.08);
+    }
+    .user-profile-nav .user-name {
+      color: var(--cream);
+      font-size: .85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .user-profile-nav .user-name:hover {
+      color: var(--gold);
+    }
+    .user-profile-nav .btn-logout {
+      background: rgba(184, 48, 37, 0.2);
+      border: 1px solid rgba(184, 48, 37, 0.3);
+      color: #e58a80;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .user-profile-nav .btn-logout:hover {
+      background: rgba(184, 48, 37, 0.4);
+    }
+
     .btn-nav-acceder {
       font-family: var(--ff-cond);
       font-size: .78rem;
@@ -285,6 +339,7 @@
       filter: brightness(1.1);
       transform: translateY(-1px);
     }
+
     .hamburger {
       display: none;
       flex-direction: column;
@@ -354,21 +409,6 @@
       font-size: 1.1rem;
       letter-spacing: .05em;
       text-transform: uppercase;
-    }
-    .mob-acceder {
-      margin: 24px 24px 0;
-      padding: 15px;
-      text-align: center;
-      border-radius: 12px;
-      background: var(--gold);
-      color: var(--navy-dark);
-      font-family: var(--ff-cond);
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      display: block;
-      border: none;
-      cursor: pointer;
     }
 
     /* ---------- BOTTOM NAV (móvil) ---------- */
@@ -537,97 +577,191 @@
       margin: 0;
     }
 
+    /* Grid de productos */
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      max-width: 1000px;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
       margin: 0 auto;
     }
+
     .product-card {
-      background: rgba(22, 41, 92, .4);
+      background: rgba(22, 41, 92, 0.4);
       border-radius: var(--radius);
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: transform .3s, border-color .3s, box-shadow .3s;
-      position: relative;
+      cursor: pointer;
       display: flex;
       flex-direction: column;
     }
     .product-card:hover {
       transform: translateY(-6px);
-      border-color: rgba(201, 162, 39, .4);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, .5);
+      border-color: rgba(201, 162, 39, 0.4);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
     }
+
+    .product-img-box {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .product-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s;
+    }
+    .product-card:hover .product-img-box img {
+      transform: scale(1.04);
+    }
+
     .badge-tag {
       position: absolute;
-      top: 16px;
-      left: 16px;
+      top: 12px;
+      left: 12px;
       background: var(--gold);
       color: #000;
       padding: 4px 12px;
-      font-size: .65rem;
+      font-size: .6rem;
       font-weight: 900;
       letter-spacing: 1px;
       border-radius: 4px;
       z-index: 2;
     }
-    .product-img-box {
-      width: 100%;
-      height: 260px;
-      background: rgba(0, 0, 0, .2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .product-img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
+
     .product-details {
-      padding: 24px 24px 28px;
+      padding: 16px 16px 20px;
       flex: 1;
       display: flex;
       flex-direction: column;
+      gap: 6px;
     }
     .product-title {
       font-family: var(--ff-cond);
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: .02em;
-      margin-bottom: 6px;
+      color: var(--white);
     }
     .product-price {
       font-family: var(--ff-display);
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       color: var(--gold);
-      margin-bottom: 18px;
+      margin-top: 2px;
     }
-    .btn-wa {
+    .product-desc {
+      color: var(--grey);
+      font-size: .8rem;
+      line-height: 1.4;
+      margin: 4px 0 8px;
+    }
+
+    /* ===== MODAL DE PRODUCTO ===== */
+    .product-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(7, 15, 33, 0.92);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .product-modal-overlay.open {
+      display: flex;
+      opacity: 1;
+    }
+    .product-modal {
+      background: var(--navy);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      max-width: 480px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px 24px 28px;
+      box-shadow: var(--shadow);
+      position: relative;
+      transform: scale(0.95);
+      transition: transform .3s ease;
+    }
+    .product-modal-overlay.open .product-modal {
+      transform: scale(1);
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 1.8rem;
+      color: var(--grey);
+      cursor: pointer;
+      transition: color .2s;
+      background: none;
+      border: none;
+      padding: 4px 8px;
+    }
+    .modal-close:hover {
+      color: var(--white);
+    }
+    .modal-img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 10px;
+      background: var(--navy-light);
+      margin-bottom: 16px;
+    }
+    .modal-title {
+      font-family: var(--ff-display);
+      font-size: 1.8rem;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .modal-price {
+      font-family: var(--ff-display);
+      font-size: 1.8rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .modal-desc {
+      color: var(--grey);
+      font-size: .95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .modal-btn-wa {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 12px;
+      gap: 10px;
+      padding: 14px 24px;
       border-radius: 999px;
       font-family: var(--ff-cond);
-      font-size: .8rem;
+      font-size: 1rem;
       font-weight: 700;
-      letter-spacing: .08em;
       text-transform: uppercase;
+      letter-spacing: .08em;
       background: var(--gold);
       color: #000;
       border: none;
-      transition: background .2s, transform .2s;
-      width: 100%;
       cursor: pointer;
+      transition: transform .2s, filter .2s;
+      width: 100%;
     }
-    .btn-wa:hover {
-      background: #d4af2f;
+    .modal-btn-wa:hover {
       transform: scale(1.02);
+      filter: brightness(1.08);
     }
 
     /* ---------- FOOTER ---------- */
@@ -767,6 +901,34 @@
       to { opacity: 1; transform: none; }
     }
 
+    /* ---------- BACK TO TOP ---------- */
+    #btt {
+      position: fixed;
+      right: 20px;
+      bottom: 96px;
+      z-index: 700;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy-dark);
+      border: none;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity .25s, transform .25s, visibility .25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #btt.show {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
     /* ============================================================
        RESPONSIVE
        ============================================================ */
@@ -781,6 +943,10 @@
       .footer-inner {
         grid-template-columns: 1fr 1fr;
       }
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 18px;
+      }
     }
 
     @media (max-width:720px) {
@@ -794,29 +960,30 @@
         padding: 18px;
       }
       .products-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
       }
-      .product-img-box { height: 180px; }
-      .product-details { padding: 16px; }
-      .product-title { font-size: .95rem; }
-      .product-price { font-size: 1.2rem; }
+      .product-title { font-size: .9rem; }
+      .product-price { font-size: 1.1rem; }
+      .product-details { padding: 12px 12px 16px; }
       .footer-inner { grid-template-columns: 1fr; gap: 30px; }
       .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
       .nav-brand-logo { width: 34px; height: 34px; }
       .nav-brand-text { font-size: 1rem; }
       .nav-icon-circle { width: 64px; height: 64px; font-size: 2.2rem; }
       .nav-center { margin-top: -14px; }
+      .product-modal { padding: 18px 16px 20px; }
+      .modal-title { font-size: 1.5rem; }
+      .modal-price { font-size: 1.5rem; }
     }
 
     @media (max-width:480px) {
       .nav-icon-wrapper { width: 38px; height: 38px; font-size: 1rem; }
       .nav-item .nav-label { font-size: .5rem; }
       .nav-icon-circle { width: 58px; height: 58px; font-size: 2rem; }
-      .products-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
-      .product-img-box { height: 200px; }
-      .info-alert-text { font-size: .8rem; }
-      .store-desc { font-size: .9rem; }
+      .products-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
+      .product-title { font-size: .95rem; }
+      .product-price { font-size: 1.2rem; }
     }
   </style>
 </head>
@@ -853,7 +1020,8 @@
         <li><a href="noticias.html">Noticias</a></li>
       </ul>
       <div class="nav-right">
-        <button class="btn-nav-acceder" id="btnAcceder" onclick="window.location.href='login.html'">Acceder</button>
+        <!-- Contenedor dinámico de autenticación -->
+        <div id="authSection"></div>
         <button class="hamburger" id="hamBtn" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -872,7 +1040,8 @@
       <li><a href="tienda.html" class="active">Tienda</a></li>
       <li><a href="noticias.html">Noticias</a></li>
     </ul>
-    <button class="mob-acceder" onclick="window.location.href='login.html'">Portal Socios</button>
+    <!-- Contenedor dinámico de autenticación en móvil -->
+    <div id="mobAuthSection"></div>
   </div>
 
   <!-- CONTENIDO -->
@@ -886,7 +1055,7 @@
         <p class="store-desc">Equípate con la indumentaria oficial de tu club y lleva la pasión a todas partes. Pedidos directos y seguros vía WhatsApp.</p>
       </div>
 
-      <!-- BANNER INFORMATIVO (sin filtros ni etiquetas extra) -->
+      <!-- BANNER INFORMATIVO -->
       <div class="info-alert-box">
         <span class="info-icon-bag">🛍️</span>
         <p class="info-alert-text">¡Hola hincha del HUGUS! Explora nuestro catálogo actual de productos oficiales. Al elegir cualquier artículo, podrás personalizar tu talla y obtener productos de alta calidad.</p>
@@ -894,48 +1063,23 @@
 
       <!-- PRODUCTOS -->
       <div class="products-grid" id="productGrid">
-        <!-- Producto 1 -->
-        <div class="product-card">
-          <span class="badge-tag">MÁS VENDIDO</span>
-          <div class="product-img-box">
-            <img src="imag/kit_oficial.png" alt="Camiseta Local" class="product-img" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Camiseta'">
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">Camiseta Oficial Local (Rojo/Crema)</h3>
-            <p class="product-price">S/. 79.90</p>
-            <button class="btn-wa" onclick="ordenar('Camiseta Local Oficial')">📲 Pedir por WhatsApp</button>
-          </div>
-        </div>
-
-        <!-- Producto 2 -->
-        <div class="product-card">
-          <span class="badge-tag">NUEVO</span>
-          <div class="product-img-box">
-            <img src="imag/gorra.png" alt="Gorra" class="product-img" style="transform:scale(0.6);" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Gorra'">
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">Gorra Conmemorativa Fundador 2026</h3>
-            <p class="product-price">S/. 35.00</p>
-            <button class="btn-wa" onclick="ordenar('Gorra Conmemorativa')">📲 Pedir por WhatsApp</button>
-          </div>
-        </div>
-
-        <!-- Producto 3 -->
-        <div class="product-card">
-          <span class="badge-tag">OFERTA</span>
-          <div class="product-img-box">
-            <img src="imag/pelota.png" alt="Balón" class="product-img" style="transform:scale(0.5);" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Bal%C3%B3n'">
-          </div>
-          <div class="product-details">
-            <h3 class="product-title">Balón Oficial HUGUS FC</h3>
-            <p class="product-price">S/. 55.00</p>
-            <button class="btn-wa" onclick="ordenar('Balón Oficial')">📲 Pedir por WhatsApp</button>
-          </div>
-        </div>
+        <!-- Los productos se generan con JavaScript -->
       </div>
 
     </div>
   </section>
+
+  <!-- MODAL DE PRODUCTO -->
+  <div class="product-modal-overlay" id="productModal">
+    <div class="product-modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <img class="modal-img" id="modalImg" src="" alt="Producto">
+      <div class="modal-title" id="modalTitle">Producto</div>
+      <div class="modal-price" id="modalPrice">S/. 0.00</div>
+      <div class="modal-desc" id="modalDesc">Descripción del producto.</div>
+      <button class="modal-btn-wa" id="modalBtnWa">📲 Pedir por WhatsApp</button>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <div class="footer-strip"></div>
@@ -987,11 +1131,11 @@
       <div class="nav-icon-circle">⚽</div>
       <span class="nav-label">Partidos</span>
     </a>
-    <a href="resultados.html" class="nav-item active">
+    <a href="resultados.html" class="nav-item">
       <span class="nav-icon-wrapper"><span class="nav-icon">📊</span></span>
       <span class="nav-label">Resultados</span>
     </a>
-    <a href="tienda.html" class="nav-item">
+    <a href="tienda.html" class="nav-item active">
       <span class="nav-icon-wrapper"><span class="nav-icon">🛒</span></span>
       <span class="nav-label">Tienda</span>
     </a>
@@ -999,6 +1143,9 @@
 
   <!-- TOAST -->
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- BACK TO TOP -->
+  <button id="btt" aria-label="Ir Arriba">↑</button>
 
   <!-- ============================================================
        JAVASCRIPT
@@ -1044,13 +1191,17 @@
     }
 
     // ============================================================
-    // NAVBAR SCROLL
+    // NAVBAR SCROLL / BTT
     // ============================================================
     const nav = document.getElementById('mainNav');
+    const btt = document.getElementById('btt');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 50) nav.classList.add('scrolled');
       else nav.classList.remove('scrolled');
+      if (window.scrollY > 400) btt.classList.add('show');
+      else btt.classList.remove('show');
     });
+    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
     // ============================================================
     // MOBILE MENU
@@ -1061,7 +1212,7 @@
       hamBtn.classList.toggle('open');
       mobMenu.classList.toggle('open');
     });
-    document.querySelectorAll('.mob-menu a, .mob-acceder').forEach(link => {
+    document.querySelectorAll('.mob-menu a').forEach(link => {
       link.addEventListener('click', () => {
         hamBtn.classList.remove('open');
         mobMenu.classList.remove('open');
@@ -1069,14 +1220,252 @@
     });
 
     // ============================================================
-    // PEDIDO POR WHATSAPP
+    // SISTEMA DE AUTENTICACIÓN (LOCALSTORAGE)
     // ============================================================
-    function ordenar(producto) {
+    const USERS_KEY = 'hugus_users';
+    const CURRENT_USER_KEY = 'hugus_current_user';
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+    }
+
+    function getCurrentUser() {
+      return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || 'null');
+    }
+
+    function clearCurrentUser() {
+      localStorage.removeItem(CURRENT_USER_KEY);
+    }
+
+    // ============================================================
+    // ACTUALIZAR HEADER SEGÚN SESIÓN
+    // ============================================================
+    function updateAuthUI() {
+      const user = getCurrentUser();
+      const authSection = document.getElementById('authSection');
+      const mobAuthSection = document.getElementById('mobAuthSection');
+
+      if (!authSection) return;
+
+      if (user) {
+        const avatarLetter = user.name ? user.name.charAt(0).toUpperCase() : 'H';
+        authSection.innerHTML = `
+          <div class="user-profile-nav">
+            <a href="perfil.html" class="user-avatar-small">${avatarLetter}</a>
+            <a href="perfil.html" class="user-name">${user.name}</a>
+            <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+          </div>
+        `;
+        if (mobAuthSection) {
+          mobAuthSection.innerHTML = `
+            <div style="padding:16px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <a href="perfil.html" style="font-family:var(--ff-cond);font-weight:700;color:var(--cream);text-decoration:none;">👤 ${user.name}</a>
+              <button class="btn-logout" onclick="logout()" style="background:rgba(184,48,37,0.2);border:1px solid rgba(184,48,37,0.3);color:#e58a80;padding:4px 14px;border-radius:999px;font-size:.7rem;font-weight:700;text-transform:uppercase;cursor:pointer;">Cerrar sesión</button>
+            </div>
+          `;
+        }
+      } else {
+        authSection.innerHTML = `
+          <button class="btn-nav-acceder" onclick="window.location.href='login.html'">Acceder</button>
+        `;
+        if (mobAuthSection) {
+          mobAuthSection.innerHTML = `
+            <button class="mob-acceder" onclick="window.location.href='login.html'">Portal Socios</button>
+          `;
+        }
+      }
+    }
+
+    function logout() {
+      clearCurrentUser();
+      updateAuthUI();
+      showToast('✅ Sesión cerrada correctamente', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+
+    // ============================================================
+    // DATOS DE PRODUCTOS
+    // ============================================================
+    const productos = [
+      {
+        id: 1,
+        titulo: 'Camiseta Oficial Local',
+        precio: 'S/. 79.90',
+        desc: 'Camiseta de juego oficial temporada 2026. Colores rojo y crema, tecnología Dry-Fit, escudo bordado. Ideal para la cancha o para lucir con orgullo.',
+        img: 'imag/kit_oficial.png',
+        badge: 'MÁS VENDIDO'
+      },
+      {
+        id: 2,
+        titulo: 'Gorra Conmemorativa Fundador',
+        precio: 'S/. 35.00',
+        desc: 'Gorra ajustable con el logo de HUGUS FC bordado. Edición limitada en honor al fundador Hugo Laban Guerrero.',
+        img: 'imag/gorra.png',
+        badge: 'NUEVO'
+      },
+      {
+        id: 3,
+        titulo: 'Balón Oficial HUGUS FC',
+        precio: 'S/. 55.00',
+        desc: 'Balón de fútbol tamaño #5 con diseño oficial del club. Ideal para entrenamientos y partidos amistosos.',
+        img: 'imag/pelota.png',
+        badge: 'OFERTA'
+      },
+      {
+        id: 4,
+        titulo: 'Mochila Verde HUGUS',
+        precio: 'S/. 45.00',
+        desc: 'Mochila deportiva color verde con compartimento para laptop y detalles en dorado. Perfecta para llevar tus cosas al campo.',
+        img: 'imag/mochila_verde.png',
+        badge: ''
+      },
+      {
+        id: 5,
+        titulo: 'Mochila Roja HUGUS',
+        precio: 'S/. 45.00',
+        desc: 'Mochila deportiva color rojo intenso, resistente y cómoda. Ideal para el día a día o para tus entrenamientos.',
+        img: 'imag/mochila_roja.png',
+        badge: ''
+      },
+      {
+        id: 6,
+        titulo: 'Bufanda Oficial HUGUS',
+        precio: 'S/. 25.00',
+        desc: 'Bufanda de lana con los colores del club. Perfecta para animar en los partidos y mantenerte caliente.',
+        img: 'imag/bufanda.png',
+        badge: ''
+      },
+      {
+        id: 7,
+        titulo: 'Riñonera HUGUS FC',
+        precio: 'S/. 20.00',
+        desc: 'Riñonera práctica con el escudo del club. Ideal para llevar tus objetos personales con comodidad y estilo.',
+        img: 'imag/riñonera.png',
+        badge: ''
+      },
+      {
+        id: 8,
+        titulo: 'Termo HUGUS FC',
+        precio: 'S/. 30.00',
+        desc: 'Termo de acero inoxidable con el logo del club. Mantiene tus bebidas calientes o frías por horas.',
+        img: 'imag/termo.png',
+        badge: ''
+      },
+      {
+        id: 9,
+        titulo: 'Botella Deportiva HUGUS',
+        precio: 'S/. 18.00',
+        desc: 'Botella de agua reutilizable con diseño del club. Ideal para mantenerte hidratado durante los entrenamientos.',
+        img: 'imag/botella.png',
+        badge: ''
+      },
+      {
+        id: 10,
+        titulo: 'Peluche HUGUS FC',
+        precio: 'S/. 35.00',
+        desc: 'Peluche suave con la mascota del club. Perfecto para los más pequeños de la familia.',
+        img: 'imag/peluche.png',
+        badge: ''
+      },
+      {
+        id: 11,
+        titulo: 'Muñeco HUGUS FC',
+        precio: 'S/. 40.00',
+        desc: 'Muñeco coleccionable con la indumentaria oficial del club. Ideal para decorar tu habitación o regalar.',
+        img: 'imag/muñeco.png',
+        badge: ''
+      }
+    ];
+
+    // ============================================================
+    // RENDERIZAR PRODUCTOS
+    // ============================================================
+    function renderProductos() {
+      const grid = document.getElementById('productGrid');
+      if (!grid) return;
+
+      grid.innerHTML = '';
+      productos.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.dataset.id = p.id;
+
+        const badgeHTML = p.badge ? `<span class="badge-tag">${p.badge}</span>` : '';
+
+        card.innerHTML = `
+          <div class="product-img-box">
+            ${badgeHTML}
+            <img src="${p.img}" alt="${p.titulo}" onerror="this.src='https://placehold.co/400x400/16295C/EDE5CC?text=${p.titulo}'">
+          </div>
+          <div class="product-details">
+            <div class="product-title">${p.titulo}</div>
+            <div class="product-price">${p.precio}</div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => abrirModal(p));
+        grid.appendChild(card);
+      });
+    }
+
+    // ============================================================
+    // MODAL
+    // ============================================================
+    const modalOverlay = document.getElementById('productModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalBtn = document.getElementById('modalBtnWa');
+    let currentProduct = null;
+
+    function abrirModal(producto) {
+      currentProduct = producto;
+      modalImg.src = producto.img;
+      modalImg.alt = producto.titulo;
+      modalTitle.textContent = producto.titulo;
+      modalPrice.textContent = producto.precio;
+      modalDesc.textContent = producto.desc;
+      modalBtn.textContent = `📲 Pedir ${producto.titulo} por WhatsApp`;
+      modalBtn.dataset.nombre = producto.titulo;
+      modalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModal() {
+      modalOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('modalClose').addEventListener('click', cerrarModal);
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) cerrarModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrarModal();
+    });
+
+    modalBtn.addEventListener('click', function() {
+      const producto = this.dataset.nombre || 'producto oficial';
       const waNum = "51935419810";
       const msg = encodeURIComponent(`¡Hola HUGUS FC! Deseo adquirir el producto oficial: ${producto}. Me gustaría coordinar el pago y la entrega.`);
       window.open(`https://wa.me/${waNum}?text=${msg}`, '_blank');
       showToast(`Pedido de "${producto}" iniciado por WhatsApp`, 'success');
-    }
+    });
+
+    // ============================================================
+    // INICIALIZAR UI DE AUTENTICACIÓN
+    // ============================================================
+    updateAuthUI();
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    window.addEventListener('load', () => {
+      renderProductos();
+    });
   </script>
 </body>
 </html>
