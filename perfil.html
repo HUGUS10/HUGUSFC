@@ -477,7 +477,9 @@
       opacity: 1;
     }
 
-    /* ---------- CONTENIDO DE PERFIL ---------- */
+    /* ============================================================
+       CONTENIDO DE PERFIL MEJORADO
+       ============================================================ */
     .profile-section {
       padding: 130px 0 60px;
     }
@@ -491,21 +493,35 @@
 
     /* TARJETA PRINCIPAL */
     .profile-card {
-      background: rgba(22, 41, 92, .4);
+      background: rgba(22, 41, 92, 0.5);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 40px;
       text-align: center;
-      transition: border-color .3s;
+      transition: border-color .3s, box-shadow .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--red), var(--gold));
+      opacity: 0.6;
     }
     .profile-card:hover {
-      border-color: rgba(201, 162, 39, .3);
+      border-color: rgba(201, 162, 39, 0.4);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
     }
+
     .profile-avatar {
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: var(--gold);
+      background: linear-gradient(135deg, var(--gold), #b8921f);
       color: var(--navy-dark);
       font-family: var(--ff-display);
       font-size: 4rem;
@@ -513,7 +529,7 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 18px;
-      box-shadow: 0 0 0 4px rgba(201, 162, 39, .2);
+      box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.3), 0 8px 30px rgba(0, 0, 0, 0.4);
       user-select: none;
     }
     .profile-name {
@@ -528,7 +544,7 @@
     }
     .profile-badge {
       display: inline-block;
-      background: rgba(201, 162, 39, .12);
+      background: rgba(201, 162, 39, 0.12);
       color: var(--gold);
       font-family: var(--ff-cond);
       font-size: .78rem;
@@ -536,7 +552,7 @@
       font-weight: 700;
       padding: 6px 16px;
       border-radius: 6px;
-      border: 1px solid rgba(201, 162, 39, .25);
+      border: 1px solid rgba(201, 162, 39, 0.25);
     }
     .profile-member-since {
       color: var(--grey-dim);
@@ -547,12 +563,41 @@
       color: var(--cream);
     }
 
+    /* Información adicional */
+    .profile-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 18px 0 22px;
+      text-align: left;
+    }
+    .profile-info-item {
+      background: rgba(7, 15, 33, 0.4);
+      border-radius: 8px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+    }
+    .profile-info-label {
+      font-family: var(--ff-cond);
+      font-size: .6rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--grey-dim);
+    }
+    .profile-info-value {
+      font-family: var(--ff-cond);
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--cream);
+      margin-top: 2px;
+    }
+
     /* ACCIONES */
     .profile-actions {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: 22px;
+      gap: 10px;
+      margin-top: 10px;
     }
     .btn-action {
       display: flex;
@@ -560,11 +605,11 @@
       gap: 12px;
       padding: 14px 20px;
       border-radius: 10px;
-      background: rgba(255, 255, 255, .04);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--line);
       color: var(--white);
       font-family: var(--ff-cond);
-      font-size: .9rem;
+      font-size: .85rem;
       font-weight: 500;
       text-transform: uppercase;
       letter-spacing: .04em;
@@ -573,12 +618,12 @@
       text-align: left;
     }
     .btn-action:hover {
-      background: rgba(201, 162, 39, .08);
-      border-color: rgba(201, 162, 39, .3);
+      background: rgba(201, 162, 39, 0.08);
+      border-color: rgba(201, 162, 39, 0.3);
       transform: translateX(4px);
     }
     .btn-action .icon {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       width: 28px;
       text-align: center;
     }
@@ -586,19 +631,32 @@
       color: #e58a80;
     }
     .btn-action.danger:hover {
-      background: rgba(184, 48, 37, .15);
-      border-color: rgba(184, 48, 37, .4);
+      background: rgba(184, 48, 37, 0.15);
+      border-color: rgba(184, 48, 37, 0.4);
     }
 
     /* TARJETA DE ESTADÍSTICAS */
     .stats-card {
-      background: rgba(22, 41, 92, .4);
+      background: rgba(22, 41, 92, 0.5);
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 40px;
       display: flex;
       flex-direction: column;
       gap: 24px;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .stats-card:hover {
+      border-color: rgba(201, 162, 39, 0.3);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+    .stats-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .stats-header .stag {
+      margin-bottom: 0;
     }
     .stats-grid {
       display: grid;
@@ -606,14 +664,17 @@
       gap: 16px;
     }
     .stat-item {
-      background: rgba(7, 15, 33, .5);
+      background: rgba(7, 15, 33, 0.5);
       border-radius: 10px;
-      padding: 20px;
+      padding: 20px 16px;
       text-align: center;
-      transition: background .2s;
+      transition: background .2s, transform .2s;
+      border: 1px solid transparent;
     }
     .stat-item:hover {
-      background: rgba(7, 15, 33, .7);
+      background: rgba(7, 15, 33, 0.7);
+      transform: translateY(-2px);
+      border-color: rgba(201, 162, 39, 0.15);
     }
     .stat-number {
       font-family: var(--ff-display);
@@ -628,6 +689,7 @@
       color: var(--grey);
       margin-top: 4px;
     }
+
     .stats-divider {
       height: 1px;
       background: var(--line);
@@ -643,11 +705,36 @@
       gap: 12px;
       color: var(--cream);
       font-size: .9rem;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .benefit-item:last-child {
+      border-bottom: none;
     }
     .benefit-item .check {
       color: var(--gold);
       font-weight: 700;
       font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .profile-loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--grey);
+      font-family: var(--ff-cond);
+      font-size: 1.1rem;
+    }
+    .profile-loading .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--line);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
     }
 
     /* ---------- TOAST ---------- */
@@ -758,6 +845,10 @@
       .profile-name {
         font-size: 1.8rem;
       }
+      .profile-info-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
       .stats-card {
         padding: 30px 20px;
       }
@@ -842,12 +933,11 @@
         <li><a href="tabla.html">Tabla</a></li>
         <li><a href="plantilla.html">Plantilla</a></li>
         <li><a href="tienda.html">Tienda</a></li>
-        <li><a href="comunidad.html">Comunidad</a></li>
         <li><a href="perfil.html" class="active">Perfil</a></li>
       </ul>
 
       <div class="nav-right">
-        <button class="btn-nav-acceder" id="btnAcceder" onclick="window.location.href='login.html'">Acceder</button>
+        <button class="btn-nav-acceder" id="btnAcceder">Cerrar sesión</button>
         <button class="hamburger" id="hamBtn" aria-label="Menu">
           <span></span>
           <span></span>
@@ -867,10 +957,9 @@
       <li><a href="tabla.html">Tabla</a></li>
       <li><a href="plantilla.html">Plantilla</a></li>
       <li><a href="tienda.html">Tienda</a></li>
-      <li><a href="comunidad.html">Comunidad</a></li>
       <li><a href="perfil.html" class="active">Perfil</a></li>
     </ul>
-    <button class="mob-acceder" id="mobBtnAcceder" onclick="window.location.href='login.html'">Portal Socios</button>
+    <button class="mob-acceder" id="mobBtnAcceder">Cerrar sesión</button>
   </div>
 
   <!-- CONTENIDO PRINCIPAL -->
@@ -880,58 +969,11 @@
       <h2 class="stit">MI PERFIL DE <span class="g">HINCHA</span></h2>
       <p class="sdesc">Gestiona tus datos personales, consulta tus beneficios de membresía y accede de manera segura.</p>
 
-      <div class="profile-grid">
-        <!-- TARJETA DE PERFIL -->
-        <div class="profile-card">
-          <div class="profile-avatar" id="profileAvatar">H</div>
-          <h3 class="profile-name" id="userName">Cargando...</h3>
-          <p class="profile-email" id="userEmail">cargando@hugus.com</p>
-          <span class="profile-badge" id="userBadge">Socio Activo</span>
-          <p class="profile-member-since">Miembro desde <span id="memberSince">—</span></p>
-
-          <div class="profile-actions">
-            <button class="btn-action" onclick="showToast('Editar perfil próximamente', 'success')">
-              <span class="icon">✏️</span> Editar perfil
-            </button>
-            <button class="btn-action" onclick="showToast('Cambiar contraseña próximamente', 'success')">
-              <span class="icon">🔒</span> Cambiar contraseña
-            </button>
-            <button class="btn-action danger" id="logoutBtn">
-              <span class="icon">🚪</span> Cerrar sesión
-            </button>
-          </div>
-        </div>
-
-        <!-- TARJETA DE ESTADÍSTICAS -->
-        <div class="stats-card">
-          <div>
-            <div class="stag">Estadísticas</div>
-            <h3 style="font-family:var(--ff-display);font-size:1.4rem;margin:0 0 8px;">Tu actividad</h3>
-          </div>
-          <div class="stats-grid">
-            <div class="stat-item">
-              <div class="stat-number">12</div>
-              <div class="stat-label">Partidos Asistidos</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">8</div>
-              <div class="stat-label">Goles Vistos</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">4</div>
-              <div class="stat-label">Membresía (años)</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-number">5⭐</div>
-              <div class="stat-label">Nivel de Hincha</div>
-            </div>
-          </div>
-          <div class="stats-divider"></div>
-          <div class="stats-benefits">
-            <div class="benefit-item"><span class="check">✓</span> Acceso gratuito a partidos locales</div>
-            <div class="benefit-item"><span class="check">✓</span> Descuento en tienda oficial</div>
-            <div class="benefit-item"><span class="check">✓</span> Voto en asambleas anuales</div>
-          </div>
+      <div id="profileContent">
+        <!-- El contenido se carga con JavaScript -->
+        <div class="profile-loading">
+          <div class="spinner"></div>
+          <p>Cargando tu perfil...</p>
         </div>
       </div>
     </div>
@@ -960,9 +1002,9 @@
       <div class="nav-icon-circle">⚽</div>
       <span class="nav-label">Partidos</span>
     </a>
-    <a href="comunidad.html" class="nav-item">
-      <span class="nav-icon-wrapper"><span class="nav-icon">👥</span></span>
-      <span class="nav-label">Comunidad</span>
+    <a href="resultados.html" class="nav-item">
+      <span class="nav-icon-wrapper"><span class="nav-icon">📊</span></span>
+      <span class="nav-label">Resultados</span>
     </a>
     <a href="tienda.html" class="nav-item">
       <span class="nav-icon-wrapper"><span class="nav-icon">🛒</span></span>
@@ -1059,47 +1101,135 @@
       localStorage.removeItem(CURRENT_USER_KEY);
     }
 
-    // Cargar datos del usuario
-    function loadProfile() {
-      const user = getCurrentUser();
-      const nameEl = document.getElementById('userName');
-      const emailEl = document.getElementById('userEmail');
-      const badgeEl = document.getElementById('userBadge');
-      const avatarEl = document.getElementById('profileAvatar');
-      const sinceEl = document.getElementById('memberSince');
-      const btnAcceder = document.getElementById('btnAcceder');
-      const mobBtnAcceder = document.getElementById('mobBtnAcceder');
+    // ============================================================
+    // RENDERIZAR PERFIL
+    // ============================================================
+    function renderProfile(user) {
+      const container = document.getElementById('profileContent');
 
-      if (user) {
-        nameEl.textContent = user.name || 'Hincha';
-        emailEl.textContent = user.email || 'usuario@hugus.com';
-        const role = user.role || 'socio';
-        badgeEl.textContent = role === 'admin' ? 'Administrador' : 'Socio Activo Premium';
-        avatarEl.textContent = user.name ? user.name.charAt(0).toUpperCase() : 'H';
-        // Fecha de registro simulada (si no existe, usar actual)
-        const since = user.since || new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long' });
-        sinceEl.textContent = since;
-        // Cambiar botón "Acceder" a "Cerrar sesión" si estamos en perfil
-        if (btnAcceder) {
-          btnAcceder.textContent = 'Cerrar sesión';
-          btnAcceder.onclick = logout;
-        }
-        if (mobBtnAcceder) {
-          mobBtnAcceder.textContent = 'Cerrar sesión';
-          mobBtnAcceder.onclick = logout;
-        }
-        // Mostrar botón de logout en acciones
-        document.getElementById('logoutBtn').onclick = logout;
-      } else {
-        // No hay sesión, redirigir al login
-        window.location.href = 'login.html';
+      if (!user) {
+        container.innerHTML = `
+          <div class="profile-loading">
+            <p style="color:var(--grey);">👤 No has iniciado sesión.</p>
+            <button class="btn-action" style="justify-content:center;margin-top:16px;" onclick="window.location.href='login.html'">
+              <span class="icon">🔐</span> Iniciar sesión
+            </button>
+          </div>
+        `;
+        return;
       }
+
+      const avatarLetter = user.name ? user.name.charAt(0).toUpperCase() : 'H';
+      const roleLabel = user.role === 'admin' ? 'Administrador' : 'Socio Activo Premium';
+      const since = user.since || new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long' });
+      const telefono = user.telefono || 'No registrado';
+      const posicionFav = user.posicionFav || 'No definida';
+
+      container.innerHTML = `
+        <div class="profile-grid">
+          <!-- TARJETA DE PERFIL -->
+          <div class="profile-card">
+            <div class="profile-avatar" id="profileAvatar">${avatarLetter}</div>
+            <h3 class="profile-name" id="userName">${user.name || 'Hincha'}</h3>
+            <p class="profile-email" id="userEmail">${user.email || 'usuario@hugus.com'}</p>
+            <span class="profile-badge" id="userBadge">${roleLabel}</span>
+            <p class="profile-member-since">Miembro desde <span id="memberSince">${since}</span></p>
+
+            <div class="profile-info-grid">
+              <div class="profile-info-item">
+                <div class="profile-info-label">📱 Teléfono</div>
+                <div class="profile-info-value">${telefono}</div>
+              </div>
+              <div class="profile-info-item">
+                <div class="profile-info-label">⚽ Posición favorita</div>
+                <div class="profile-info-value">${posicionFav}</div>
+              </div>
+            </div>
+
+            <div class="profile-actions">
+              <button class="btn-action" onclick="showToast('Editar perfil próximamente', 'success')">
+                <span class="icon">✏️</span> Editar perfil
+              </button>
+              <button class="btn-action" onclick="showToast('Cambiar contraseña próximamente', 'success')">
+                <span class="icon">🔒</span> Cambiar contraseña
+              </button>
+              <button class="btn-action danger" id="logoutBtn">
+                <span class="icon">🚪</span> Cerrar sesión
+              </button>
+            </div>
+          </div>
+
+          <!-- TARJETA DE ESTADÍSTICAS -->
+          <div class="stats-card">
+            <div class="stats-header">
+              <div class="stag">📊 Estadísticas</div>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Partidos Asistidos</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Goles Vistos</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Membresía (años)</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">5⭐</div>
+                <div class="stat-label">Nivel de Hincha</div>
+              </div>
+            </div>
+            <div class="stats-divider"></div>
+            <div class="stats-benefits">
+              <div class="benefit-item"><span class="check">✓</span> Acceso gratuito a partidos locales</div>
+              <div class="benefit-item"><span class="check">✓</span> 15% descuento en tienda oficial</div>
+              <div class="benefit-item"><span class="check">✓</span> Voto en asambleas anuales</div>
+              <div class="benefit-item"><span class="check">✓</span> Invitación a eventos exclusivos</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Asignar eventos de logout
+      document.getElementById('logoutBtn').onclick = logout;
+      document.getElementById('btnAcceder').onclick = logout;
+      document.getElementById('mobBtnAcceder').onclick = logout;
     }
 
-    // Cerrar sesión
+    // ============================================================
+    // CARGAR PERFIL
+    // ============================================================
+    function loadProfile() {
+      const user = getCurrentUser();
+
+      if (!user) {
+        renderProfile(null);
+        // Cambiar el botón "Cerrar sesión" por "Iniciar sesión"
+        const btnAcceder = document.getElementById('btnAcceder');
+        const mobBtnAcceder = document.getElementById('mobBtnAcceder');
+        if (btnAcceder) {
+          btnAcceder.textContent = 'Iniciar sesión';
+          btnAcceder.onclick = () => window.location.href = 'login.html';
+        }
+        if (mobBtnAcceder) {
+          mobBtnAcceder.textContent = 'Iniciar sesión';
+          mobBtnAcceder.onclick = () => window.location.href = 'login.html';
+        }
+        return;
+      }
+
+      renderProfile(user);
+    }
+
+    // ============================================================
+    // CERRAR SESIÓN
+    // ============================================================
     function logout() {
       clearCurrentUser();
-      showToast('Sesión cerrada correctamente', 'success');
+      showToast('✅ Sesión cerrada correctamente', 'success');
       setTimeout(() => {
         window.location.href = 'login.html';
       }, 500);
