@@ -1167,7 +1167,6 @@
       appId: "1:1089515635232:web:3d5f7a93ba7edc9de7a0b7"
     };
 
-    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -1178,13 +1177,13 @@
     const partidoId = params.get('id');
 
     // ============================================================
-    // MESES Y DÍAS (para formatear fecha)
+    // MESES Y DÍAS
     // ============================================================
     const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
     // ============================================================
-    // RENDERIZAR FICHA DEL PARTIDO
+    // RENDERIZAR FICHA
     // ============================================================
     function renderFichaPartido(p) {
       const card = document.getElementById('fichaCard');
@@ -1199,7 +1198,7 @@
       titleEl.innerHTML = `HUGUS FC <span class="g">VS</span> ${p.rival || 'Por definir'}`;
       descEl.textContent = `Información del partido del ${fechaFormateada}.`;
 
-      // Estado del partido
+      // Estado
       const estado = p.estado || 'programado';
       const estadoLabels = {
         'programado': '📅 Programado',
@@ -1228,7 +1227,7 @@
         `;
       }
 
-      // Goleadores (si existen)
+      // Goleadores
       let goleadoresHTML = '';
       if (p.goles && p.goles.length > 0) {
         const golesList = p.goles.map(g =>
@@ -1305,12 +1304,12 @@
         </div>
       `;
 
-      // Agregar clase is-in para la animación reveal
+      // Activar animación
       card.classList.add('is-in');
     }
 
     // ============================================================
-    // CARGAR DATOS DEL PARTIDO
+    // CARGAR PARTIDO
     // ============================================================
     function cargarPartido() {
       const titleEl = document.getElementById('fichaTitulo');
@@ -1331,8 +1330,7 @@
       db.collection('partidos').doc(partidoId).get()
         .then(doc => {
           if (doc.exists) {
-            const p = doc.data();
-            renderFichaPartido(p);
+            renderFichaPartido(doc.data());
           } else {
             titleEl.innerHTML = 'Partido no encontrado';
             descEl.textContent = 'El partido que buscas no existe o ha sido eliminado.';
