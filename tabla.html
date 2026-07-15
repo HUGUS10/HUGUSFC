@@ -272,6 +272,60 @@
       gap: 14px;
       flex-shrink: 0;
     }
+
+    /* ===== ESTILOS PARA EL PERFIL EN EL HEADER ===== */
+    .user-profile-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--ff-cond);
+    }
+    .user-profile-nav .user-avatar-small {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      border: 2px solid rgba(201, 162, 39, 0.4);
+      text-decoration: none;
+      transition: transform .2s;
+    }
+    .user-profile-nav .user-avatar-small:hover {
+      transform: scale(1.08);
+    }
+    .user-profile-nav .user-name {
+      color: var(--cream);
+      font-size: .85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .user-profile-nav .user-name:hover {
+      color: var(--gold);
+    }
+    .user-profile-nav .btn-logout {
+      background: rgba(184, 48, 37, 0.2);
+      border: 1px solid rgba(184, 48, 37, 0.3);
+      color: #e58a80;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: background .2s;
+      cursor: pointer;
+    }
+    .user-profile-nav .btn-logout:hover {
+      background: rgba(184, 48, 37, 0.4);
+    }
+
     .btn-nav-acceder {
       font-family: var(--ff-cond);
       font-size: .78rem;
@@ -290,6 +344,7 @@
       filter: brightness(1.1);
       transform: translateY(-1px);
     }
+
     .hamburger {
       display: none;
       flex-direction: column;
@@ -359,21 +414,6 @@
       font-size: 1.1rem;
       letter-spacing: .05em;
       text-transform: uppercase;
-    }
-    .mob-acceder {
-      margin: 24px 24px 0;
-      padding: 15px;
-      text-align: center;
-      border-radius: 12px;
-      background: var(--gold);
-      color: var(--navy-dark);
-      font-family: var(--ff-cond);
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      display: block;
-      border: none;
-      cursor: pointer;
     }
 
     /* ---------- BOTTOM NAV (móvil) ---------- */
@@ -834,7 +874,8 @@
         <li><a href="noticias.html">Noticias</a></li>
       </ul>
       <div class="nav-right">
-        <button class="btn-nav-acceder" id="btnAcceder" onclick="window.location.href='login.html'">Acceder</button>
+        <!-- Contenedor dinámico de autenticación -->
+        <div id="authSection"></div>
         <button class="hamburger" id="hamBtn" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -853,7 +894,8 @@
       <li><a href="tienda.html">Tienda</a></li>
       <li><a href="noticias.html">Noticias</a></li>
     </ul>
-    <button class="mob-acceder" onclick="window.location.href='login.html'">Portal Socios</button>
+    <!-- Contenedor dinámico de autenticación en móvil -->
+    <div id="mobAuthSection"></div>
   </div>
 
   <!-- CONTENIDO -->
@@ -1019,12 +1061,81 @@
       hamBtn.classList.toggle('open');
       mobMenu.classList.toggle('open');
     });
-    document.querySelectorAll('.mob-menu a, .mob-acceder').forEach(link => {
+    document.querySelectorAll('.mob-menu a').forEach(link => {
       link.addEventListener('click', () => {
         hamBtn.classList.remove('open');
         mobMenu.classList.remove('open');
       });
     });
+
+    // ============================================================
+    // SISTEMA DE AUTENTICACIÓN (LOCALSTORAGE)
+    // ============================================================
+    const USERS_KEY = 'hugus_users';
+    const CURRENT_USER_KEY = 'hugus_current_user';
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+    }
+
+    function getCurrentUser() {
+      return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || 'null');
+    }
+
+    function clearCurrentUser() {
+      localStorage.removeItem(CURRENT_USER_KEY);
+    }
+
+    // ============================================================
+    // ACTUALIZAR HEADER SEGÚN SESIÓN (con enlaces a perfil)
+    // ============================================================
+    function updateAuthUI() {
+      const user = getCurrentUser();
+      const authSection = document.getElementById('authSection');
+      const mobAuthSection = document.getElementById('mobAuthSection');
+
+      if (!authSection) return;
+
+      if (user) {
+        const avatarLetter = user.name ? user.name.charAt(0).toUpperCase() : 'H';
+        authSection.innerHTML = `
+          <div class="user-profile-nav">
+            <a href="perfil.html" class="user-avatar-small">${avatarLetter}</a>
+            <a href="perfil.html" class="user-name">${user.name}</a>
+            <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+          </div>
+        `;
+        if (mobAuthSection) {
+          mobAuthSection.innerHTML = `
+            <div style="padding:16px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <a href="perfil.html" style="font-family:var(--ff-cond);font-weight:700;color:var(--cream);text-decoration:none;">👤 ${user.name}</a>
+              <button class="btn-logout" onclick="logout()" style="background:rgba(184,48,37,0.2);border:1px solid rgba(184,48,37,0.3);color:#e58a80;padding:4px 14px;border-radius:999px;font-size:.7rem;font-weight:700;text-transform:uppercase;cursor:pointer;">Cerrar sesión</button>
+            </div>
+          `;
+        }
+      } else {
+        authSection.innerHTML = `
+          <button class="btn-nav-acceder" onclick="window.location.href='login.html'">Acceder</button>
+        `;
+        if (mobAuthSection) {
+          mobAuthSection.innerHTML = `
+            <button class="mob-acceder" onclick="window.location.href='login.html'">Portal Socios</button>
+          `;
+        }
+      }
+    }
+
+    // ============================================================
+    // CERRAR SESIÓN
+    // ============================================================
+    function logout() {
+      clearCurrentUser();
+      updateAuthUI();
+      showToast('✅ Sesión cerrada correctamente', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
 
     // ============================================================
     // FIREBASE CONFIGURACIÓN
@@ -1153,6 +1264,11 @@
     document.querySelectorAll('.reveal').forEach(el => {
       observer.observe(el);
     });
+
+    // ============================================================
+    // INICIALIZAR UI DE AUTENTICACIÓN
+    // ============================================================
+    updateAuthUI();
 
     // ============================================================
     // INIT
