@@ -1,3 +1,11 @@
+
+/* ==========================================================================
+   HUGUS FC — firebase.js
+   Inicialización de Firebase (App, Firestore, Storage, Auth).
+   ⚠️ Reemplaza firebaseConfig con las credenciales reales de tu proyecto
+   (Firebase Console → Configuración del proyecto → Tus apps → SDK config).
+   ========================================================================== */
+
 const firebaseConfig = {
   apiKey: "AIzaSyASwd9Gl54ao5Hv77N6d_sO_66s-8vgUYU",
   authDomain: "hugus-fc.firebaseapp.com",
@@ -7,23 +15,27 @@ const firebaseConfig = {
   appId: "1:890781937251:web:a3af993352b986be7b5256"
 };
 
-firebase.initializeApp(firebaseConfig);
-
-const db      = firebase.firestore();
-const auth    = firebase.auth();
-const storage = firebase.storage();
-
-const COL = { PARTIDOS:'partidos', NOTICIAS:'noticias', TABLA:'tabla', USUARIOS:'usuarios' };
-const ADMIN_EMAILS = ['admin@hugusfc.com'];
-const ADMIN_PASSWORD = 'admin2026';
-const MATCH_DURATION_MIN = 50;
-
-function esAdmin(user) {
-  if (!user) return false;
-  const s = getSession();
-  if (s && s.esAdmin) return true;
-  return ADMIN_EMAILS.includes(user.email);
+// Evita reinicializar si el script se carga más de una vez
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
 }
-function getSession()     { const s = sessionStorage.getItem('hugus_session'); return s ? JSON.parse(s) : null; }
-function saveSession(d)   { sessionStorage.setItem('hugus_session', JSON.stringify(d)); }
-function clearSession()   { sessionStorage.removeItem('hugus_session'); }
+
+const db = firebase.firestore();
+const storage = firebase.storage();
+const auth = firebase.auth();
+
+// Persistencia local: mantiene la sesión entre visitas
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((err) => {
+  console.error("Error configurando persistencia de Auth:", err);
+});
+
+// Habilita caché offline de Firestore cuando el navegador lo soporta.
+// Así la web sigue mostrando datos aunque el usuario pierda conexión.
+db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
+  if (err.code === "failed-precondition") {
+    // Múltiples pestañas abiertas, la persistencia solo puede activarse en una
+    console.warn("Persistencia offline no disponible: múltiples pestañas abiertas.");
+  } else if (err.code === "unimplemented") {
+    console.warn("Este navegador no soporta persistencia offline.");
+  }
+});

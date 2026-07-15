@@ -1,52 +1,39 @@
-const CACHE_NAME = 'hugusfc-v1.0.1';  // ✅ CAMBIADO: incrementa la versión para que los dispositivos descarguen los nuevos archivos (Firestore, etc.)
-
-const urlsToCache = [
+const CACHE_NAME = 'hugus-fc-image-v2';
+const assets = [
   '/',
   '/index.html',
-  '/imag/logo.png',
-  '/imag/escudo_hugusfc.png',
-  '/imag/kit_oficial.png',
-  '/imag/kit_completo.png',
-  '/imag/pelota.png',
-  '/imag/bandera.png',
-  '/imag/camiseta.png',
-  '/imag/bandera_oficial.png',
-  '/imag/pelota_oficial.png',
-  '/imag/gorra.png'
+  '/calendario.html',
+  '/tabla.html',
+  '/tienda.html',
+  '/login.html',
+  '/css/style.css',
+  '/imag/logo.png'
 ];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(assets);
+    })
   );
-  self.skipWaiting(); // Toma el control inmediatamente
 });
 
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(key => {
-        if (key !== CACHE_NAME) return caches.delete(key);
-      })
-    ))
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
   );
-  self.clients.claim(); // Activa el SW en todas las pestañas
 });
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        // Estrategia "network first": actualiza la caché con la respuesta de red
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
-        });
-        return response;
-      })
-      .catch(() => {
-        // Si falla la red, sirve desde caché (offline)
-        return caches.match(event.request);
-      })
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
   );
 });

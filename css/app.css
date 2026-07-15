@@ -1,0 +1,239 @@
+body {
+/* Relleno */
+  padding-bottom: 80px;
+
+  /* Fondos */
+  background: #FFFFFF !important;
+
+  /* Colores y efectos */
+  color: #1a1a1a !important;}
+
+section {
+/* Fondos */
+  background: #FFFFFF !important;}
+
+.hero-title, .hero-sub, .stit, .sdesc, .about-p, .v-txt, .kit-desc, .noticia-titulo, .noticia-resumen, .match-date-big, .match-meta span, .ficha-info-val, .previa-txt, .resultado-nombre, .resultado-marcador, .contact-title, .contact-val, .fb-name, .fb-desc, .footer-cr {
+/* Colores y efectos */
+  color: #1a1a1a !important;}
+
+.g, .gold, .hero-title .g, .stit .g, .kit-h .g, .fv.g, .v-title, .quick-title, .noticia-cat, .cal-side-title, .mini-date, .vs-badge, .ficha-vs, .ficha-info-label, .previa-title, .tabla-pts, .contact-icon, .fb-lema, .footer-cr span {
+/* Colores y efectos */
+  color: var(--gold) !important;}
+
+.btn-p {
+/* Fondos */
+  background: var(--gold);
+
+  /* Colores y efectos */
+  color: var(--black);}
+
+.btn-p:hover {
+/* Fondos */
+  background: var(--gold2);}
+
+.btn-o {
+/* Bordes */
+  border-color: var(--gold);
+
+  /* Colores y efectos */
+  color: var(--gold);}
+
+.btn-o:hover {
+/* Fondos */
+  background: rgba(201,162,39,.08);}
+
+.statsbar {
+/* Fondos */
+  background: var(--gold);}
+
+.statsbar .st-n {
+/* Colores y efectos */
+  color: var(--black);}
+
+.statsbar .st-l {
+/* Colores y efectos */
+  color: rgba(0,0,0,0.5);}
+
+.quick-card, .about-card, .vcard, .player-card, .noticia-card, .match-card, .resultado-card, .ficha-card, .contact-card {
+/* Bordes */
+  border-color: rgba(201,162,39,.2) !important;
+
+  /* Fondos */
+  background: #f5f5f5 !important;}
+
+footer {
+/* Bordes */
+  border-top: 1px solid rgba(201,162,39,.2);
+
+  /* Fondos */
+  background: #f0f0f0 !important;}
+
+.footer-col li a, .footer-col p, .footer-col p a {
+/* Colores y efectos */
+  color: #555 !important;}
+
+.footer-col li a:hover, .footer-col p a:hover {
+/* Colores y efectos */
+  color: var(--gold) !important;}
+
+.bottom-nav {
+/* Posicionamiento */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  justify-content: space-around;
+
+  /* Dimensiones */
+  height: 70px;
+
+  /* Relleno */
+  padding: 6px 0 10px 0;
+
+  /* Bordes */
+  border-top: 1px solid rgba(201,162,39,.15);
+
+  /* Fondos */
+  background: #FFFFFF;
+
+  /* Colores y efectos */
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.08);}
+
+.bottom-nav .nav-item {
+/* Posicionamiento */
+  position: relative;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex-direction: column;
+  align-items: center;
+
+  /* Relleno */
+  padding: 4px 12px;
+
+  /* Tipografía */
+  text-decoration: none;
+  font-size: .65rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  /* Colores y efectos */
+  color: #888;
+
+  /* Transiciones y animaciones */
+  transition: color .2s;
+
+  /* Otras propiedades */
+  letter-spacing: .05em;}
+
+.bottom-nav .nav-item .icon {
+/* Márgenes */
+  margin-bottom: 2px;
+
+  /* Tipografía */
+  font-size: 1.6rem;
+  line-height: 1;}
+
+.bottom-nav .nav-item span {
+/* Tipografía */
+  font-size: .6rem;}
+
+.bottom-nav .nav-item.active {
+/* Colores y efectos */
+  color: var(--gold);}
+
+.bottom-nav .nav-item.cart-btn {
+/* Posicionamiento */
+  position: relative;
+  top: -18px;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  justify-content: center;
+
+  /* Dimensiones */
+  width: 56px;
+  height: 56px;
+
+  /* Márgenes */
+  margin-bottom: -10px;
+
+  /* Relleno */
+  padding: 0;
+
+  /* Bordes */
+  border-radius: 50%;
+
+  /* Fondos */
+  background: var(--gold);
+
+  /* Tipografía */
+  font-size: 1.8rem;
+
+  /* Colores y efectos */
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(201,162,39,.4);
+
+  /* Transiciones y animaciones */
+  transition: transform .2s, box-shadow .2s;}
+
+.bottom-nav .nav-item.cart-btn:hover {
+/* Colores y efectos */
+  box-shadow: 0 6px 20px rgba(201,162,39,.5);
+
+  /* Otras propiedades */
+  transform: scale(1.05);}
+
+.bottom-nav .nav-item.cart-btn .icon {
+/* Márgenes */
+  margin-bottom: 0;
+
+  /* Tipografía */
+  font-size: 2rem;}
+
+.bottom-nav .nav-item.cart-btn span {
+/* Modelo de caja */
+  display: none;}
+
+.bottom-nav .badge {
+/* Posicionamiento */
+  position: absolute;
+  top: -4px;
+  right: -4px;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  justify-content: center;
+
+  /* Dimensiones */
+  width: 18px;
+  height: 18px;
+
+  /* Bordes */
+  border-radius: 50%;
+
+  /* Fondos */
+  background: var(--red);
+
+  /* Tipografía */
+  font-size: .55rem;
+  font-weight: 700;
+
+  /* Colores y efectos */
+  color: #fff;}

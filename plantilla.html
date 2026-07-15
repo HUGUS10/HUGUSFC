@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plantilla | HUGUS FC</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <!-- NAV -->
+  <nav id="mainNav" class="top">...</nav>
+  <div class="mob-menu" id="mobMenu">...</div>
+
+  <section class="plantilla-sec" style="padding-top:100px;">
+    <div class="si">
+      <div class="stag">Temporada 2026</div>
+      <h2 class="stit">NUESTRA <span class="g">PLANTILLA</span></h2>
+      <p class="sdesc">Los guerreros que visten con orgullo la camiseta de HUGUS FC.</p>
+      <div class="plantilla-grid" id="plantillaGrid">
+        <div class="admin-no-data">Cargando plantilla...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>...</footer>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/plantilla.js"></script>
+</body>
+</html>

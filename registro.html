@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Registro | HUGUS FC</title>
+  <meta name="theme-color" content="#163327">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="imag/logo.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="imag/logo.png">
+  <link rel="apple-touch-icon" href="imag/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- Firebase Compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+
+  <style>
+    :root {
+      --cream: #EDE5CC;
+      --green: #163327;
+      --green-night: #0C1C12;
+      --navy: #0D1B3A;
+      --navy-light: #16295C;
+      --red: #B83025;
+      --gold: #C9A227;
+      --white: #F7F5EF;
+      --grey: #93A69C;
+      --grey-dim: #6C7C74;
+      --line: rgba(237,229,204,.12);
+      --shadow: 0 20px 50px -20px rgba(0,0,0,.6);
+      --radius: 14px;
+      --ff-display: 'Bebas Neue', sans-serif;
+      --ff-cond: 'Barlow Condensed', sans-serif;
+      --ff-body: 'Barlow', sans-serif;
+      --container: 1180px;
+      --nav-h: 76px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--green-night);
+      color: var(--white);
+      font-family: var(--ff-body);
+      font-weight: 300;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: 70px;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    
+    .logo-round {
+      border-radius: 50%;
+      overflow: hidden;
+      background: #FBF9F2;
+      border: 1px solid rgba(201,162,39,.5);
+      box-shadow: 0 0 0 3px rgba(12,28,18,.9), 0 0 0 5px var(--gold), 0 8px 22px -6px rgba(0,0,0,.6);
+    }
+    .logo-round img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ---------- NAV ---------- */
+    #mainNav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 900;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      background: rgba(12,28,18,.55);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: background .3s ease, border-color .3s ease, height .3s ease;
+    }
+    #mainNav.scrolled { background: rgba(12,28,18,.92); border-color: var(--line); height: 64px; }
+    .nav-i { max-width: var(--container); margin: 0 auto; padding: 0 24px; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .nav-brand-logo { width: 40px; height: 40px; }
+    .nav-brand-text { font-family: var(--ff-display); font-size: 1.25rem; letter-spacing: .05em; }
+    
+    .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 42px; height: 42px; flex-shrink: 0; border: 1px solid rgba(201,162,39,.5); border-radius: 10px; background: linear-gradient(160deg, var(--navy-light), var(--navy)); box-shadow: 0 4px 14px -4px rgba(0,0,0,.6); }
+    .hamburger span { display: block; width: 20px; height: 2px; background: var(--gold); border-radius: 2px; transition: transform .25s, opacity .25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ---------- MOBILE MENU ---------- */
+    .mob-menu { position: fixed; top: var(--nav-h); left: 0; right: 0; bottom: 0; z-index: 850; background: rgba(12,28,18,.98); backdrop-filter: blur(10px); transform: translateY(-12px); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .25s ease, transform .25s ease, visibility .25s; overflow-y: auto; padding: 20px 0 100px; }
+    .mob-menu.open { transform: translateY(0); opacity: 1; visibility: visible; pointer-events: auto; }
+    .mob-menu ul { list-style: none; margin: 0; padding: 0 24px; }
+    .mob-menu li a { display: block; padding: 16px 4px; border-bottom: 1px solid var(--line); font-family: var(--ff-cond); font-size: 1.1rem; letter-spacing: .05em; text-transform: uppercase; }
+
+    /* ---------- REGISTRO / AUTH MODAL ---------- */
+    .auth-section {
+      min-height: calc(100vh - var(--nav-h));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--nav-h) + 40px) 16px 60px;
+      background: radial-gradient(ellipse at 50% -10%, rgba(201,162,39,.14), transparent 60%), var(--green-night);
+    }
+    .auth-modal {
+      width: 100%;
+      max-width: 460px;
+      background: rgba(237,229,204,.04);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .auth-header {
+      text-align: center;
+      padding: 40px 30px 24px;
+      background: linear-gradient(160deg, rgba(201,162,39,.1), transparent 80%);
+      border-bottom: 1px solid var(--line);
+    }
+    .auth-escudo {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 14px;
+    }
+    .auth-club-name {
+      font-family: var(--ff-display);
+      font-size: 1.8rem;
+      letter-spacing: .05em;
+      color: var(--white);
+    }
+    .auth-club-lema {
+      font-family: var(--ff-cond);
+      font-size: .8rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+    .auth-body {
+      padding: 30px;
+    }
+    .auth-error {
+      background: rgba(184,48,37,0.15);
+      border: 1px solid var(--red);
+      color: #ff9e96;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      display: none;
+      font-family: var(--ff-body);
+    }
+    .auth-name-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .auth-form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .auth-form-group label {
+      font-family: var(--ff-cond);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+    .auth-form-group input {
+      background: rgba(251,249,242,.03);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--white);
+      font-family: var(--ff-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color .2s, background-color .2s;
+    }
+    .auth-form-group input:focus {
+      border-color: var(--gold);
+      background: rgba(251,249,242,.06);
+    }
+    .btn-auth-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--green-night);
+      border: none;
+      padding: 14px;
+      border-radius: 999px;
+      font-family: var(--ff-cond);
+      font-size: .9rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: transform .2s, filter .2s;
+      margin-top: 6px;
+    }
+    .btn-auth-submit:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+    .auth-switch {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--grey);
+      font-family: var(--ff-body);
+    }
+    .auth-switch a {
+      color: var(--gold);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer-strip { height: 4px; background: linear-gradient(90deg, var(--gold), var(--red), var(--green)); }
+    footer { background: var(--green-night); border-top: 1px solid var(--line); padding: 50px 0 26px; }
+    .footer-inner { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+    .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+    .footer-cr { font-size: .78rem; color: var(--grey-dim); }
+    .footer-cr span { color: var(--gold); }
+
+    /* ---------- BOTTOM NAV ---------- */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 800; display: none; background: rgba(12,28,18,.96); backdrop-filter: blur(12px); border-top: 1px solid var(--line); padding: 8px 18px calc(8px + env(safe-area-inset-bottom)); align-items: center; justify-content: space-around; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--grey); font-family: var(--ff-cond); font-size: .62rem; letter-spacing: .05em; text-transform: uppercase; }
+    .nav-icon { font-size: 1.15rem; }
+    .nav-center { margin-top: -22px; }
+    .nav-icon-circle { width: 52px; height: 52px; border-radius: 50%; background: var(--gold); color: var(--green-night); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 8px 20px rgba(201,162,39,.4); }
+
+    /* ---------- TOAST ---------- */
+    .toast-container { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 10px; width: min(360px, 90vw); }
+    .toast { background: var(--green); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 10px; padding: 14px 16px; font-size: .86rem; box-shadow: var(--shadow); animation: toast-in .3s ease; }
+    .toast.error { border-left-color: var(--red); }
+    .toast.success { border-left-color: var(--gold); }
+    @keyframes toast-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    @media (max-width: 1024px) {
+      .hamburger { display: flex; }
+      #mainNav { background: linear-gradient(120deg, var(--navy), var(--navy-light)); border-bottom: 1px solid rgba(201,162,39,.3); }
+    }
+    @media (max-width: 720px) {
+      .bottom-nav { display: flex; }
+      .footer-bottom { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVEGACIÓN SUPERIOR ===== -->
+  <nav id="mainNav">
+    <div class="nav-i">
+      <button class="hamburger" id="ham" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+      <a href="index.html#inicio" class="nav-brand">
+        <div class="nav-brand-logo logo-round"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div>
+        <span class="nav-brand-text">HUGUS FC</span>
+      </a>
+      <div style="flex-grow: 1;"></div>
+    </div>
+  </nav>
+
+  <!-- MENÚ MÓVIL -->
+  <div class="mob-menu" id="mobMenu">
+    <ul>
+      <li><a href="index.html#inicio">Inicio</a></li>
+      <li><a href="index.html#nosotros">Nosotros</a></li>
+      <li><a href="index.html#kit">Kit</a></li>
+      <li><a href="index.html#galeria">Galería</a></li>
+      <li><a href="calendario.html">Calendario</a></li>
+      <li><a href="noticias.html">Noticias</a></li>
+      <li><a href="tabla.html">Tabla</a></li>
+      <li><a href="resultados.html">Resultados</a></li>
+      <li><a href="index.html#comunidad">Comunidad</a></li>
+      <li><a href="index.html#contacto">Contacto</a></li>
+    </ul>
+  </div>
+
+  <!-- ===== CONTENIDO ===== -->
+  <section class="auth-section">
+    <div class="auth-modal">
+      <div class="auth-header">
+        <div class="auth-escudo logo-round"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div>
+        <div class="auth-club-name">HUGUS FC</div>
+        <div class="auth-club-lema">Dios · Familia · Fútbol</div>
+      </div>
+      <div class="auth-body">
+        <div class="auth-error" id="authError"></div>
+        
+        <div class="auth-name-row">
+          <div class="auth-form-group">
+            <label for="regNombre">Nombre</label>
+            <input type="text" id="regNombre" placeholder="Tu nombre">
+          </div>
+          <div class="auth-form-group">
+            <label for="regApellido">Apellido</label>
+            <input type="text" id="regApellido" placeholder="Tu apellido">
+          </div>
+        </div>
+
+        <div class="auth-form-group">
+          <label for="regEmail">Correo electrónico</label>
+          <input type="email" id="regEmail" placeholder="tu@correo.com">
+        </div>
+
+        <div class="auth-form-group">
+          <label for="regPassword">Contraseña</label>
+          <input type="password" id="regPassword" placeholder="Mínimo 8 caracteres">
+        </div>
+
+        <div class="auth-form-group">
+          <label for="regReferido">¿Cómo te enteraste del club?</label>
+          <input type="text" id="regReferido" placeholder="Amigo, redes, etc.">
+        </div>
+
+        <button class="btn-auth-submit" id="btnRegistro" onclick="registerUser()">⚽ Unirme a la Comunidad</button>
+        <p class="auth-switch">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer-strip"></div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-bottom">
+        <div class="footer-cr">© <span id="footerYear">2026</span> <span>HUGUS FC</span> — Todos los derechos reservados</div>
+        <div class="footer-cr">Fundado por <span>Hugo Laban Guerrero</span> · Est. Abril 2026</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- BARRA INFERIOR -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="index.html#inicio" class="nav-item"><span class="nav-icon">🏠</span><span class="nav-label">Inicio</span></a>
+    <a href="tienda.html" class="nav-item nav-center"><span class="nav-icon-circle">🛒</span><span class="nav-label">Tienda</span></a>
+    <a href="perfil.html" class="nav-item"><span class="nav-icon">👤</span><span class="nav-label">Perfil</span></a>
+  </nav>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+
+  <script>
+    let db = null;
+    let auth = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        db = firebase.firestore();
+        auth = firebase.auth();
+
+        // Si ya hay sesión iniciada, enviar directamente al perfil
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            window.location.href = 'perfil.html';
+          }
+        });
+      } catch (err) {
+        console.error("Error al inicializar Firebase:", err);
+      }
+    });
+
+    // Función global para Toasts de advertencia o éxito
+    function showToast(msg, type = "") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+      const t = document.createElement("div");
+      t.className = "toast" + (type ? " " + type : "");
+      t.textContent = msg;
+      container.appendChild(t);
+      setTimeout(() => {
+        t.style.opacity = "0";
+        t.style.transform = "translateY(10px)";
+        setTimeout(() => t.remove(), 300);
+      }, 3500);
+    }
+
+    // Comportamiento básico del menú responsive
+    const mainNav = document.getElementById("mainNav");
+    window.addEventListener("scroll", () => {
+      mainNav.classList.toggle("scrolled", window.scrollY > 40);
+    }, { passive: true });
+
+    const ham = document.getElementById("ham");
+    const mobMenu = document.getElementById("mobMenu");
+    ham.addEventListener("click", () => {
+      const isOpen = mobMenu.classList.toggle("open");
+      ham.classList.toggle("open", isOpen);
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    });
+
+    mobMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+      mobMenu.classList.remove("open");
+      ham.classList.remove("open");
+      document.body.style.overflow = "";
+    }));
+
+    // ===== CONTROLADOR DE REGISTRO REAL DE USUARIOS =====
+    async function registerUser() {
+      const nombre = document.getElementById("regNombre").value.trim();
+      const apellido = document.getElementById("regApellido").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPassword").value;
+      const referido = document.getElementById("regReferido").value.trim();
+      const errorDiv = document.getElementById("authError");
+      const btnRegistro = document.getElementById("btnRegistro");
+
+      // Resetear estados
+      errorDiv.style.display = "none";
+      errorDiv.textContent = "";
+
+      // Validaciones básicas de campos
+      if (!nombre || !apellido || !email || !password) {
+        showToast("Por favor, completa todos los campos requeridos.", "error");
+        errorDiv.textContent = "Todos los campos (excepto cómo te enteraste) son obligatorios.";
+        errorDiv.style.display = "block";
+        return;
+      }
+
+      if (password.length < 8) {
+        showToast("Contraseña débil.", "error");
+        errorDiv.textContent = "La contraseña debe tener un mínimo de 8 caracteres.";
+        errorDiv.style.display = "block";
+        return;
+      }
+
+      try {
+        btnRegistro.disabled = true;
+        btnRegistro.textContent = "⚽ Procesando registro...";
+
+        // 1. Crear usuario en Auth de Firebase
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+
+        // 2. Actualizar displayName nativo en la sesión
+        await user.updateProfile({
+          displayName: nombre
+        });
+
+        // 3. Crear el formato del mes y año actual de forma legible (ej. "Julio 2026")
+        const opciones = { month: 'long', year: 'numeric' };
+        const rawFecha = new Date().toLocaleDateString('es-ES', opciones);
+        const fechaRegistroFormateada = rawFecha.charAt(0).toUpperCase() + rawFecha.slice(1);
+
+        // 4. Guardar datos adicionales en la colección "usuarios" de Firestore
+        await db.collection("usuarios").doc(user.uid).set({
+          nombre: nombre,
+          apellido: apellido,
+          email: email,
+          rol: "hincha",
+          referido: referido || "Ninguno",
+          fechaRegistro: fechaRegistroFormateada,
+          uid: user.uid
+        });
+
+        showToast("¡Registro completado! Bienvenido a la familia.", "success");
+        
+        setTimeout(() => {
+          window.location.href = "perfil.html";
+        }, 1500);
+
+      } catch (error) {
+        console.error("Error completo en el registro:", error);
+        btnRegistro.disabled = false;
+        btnRegistro.textContent = "⚽ Unirme a la Comunidad";
+
+        let userFriendlyError = "Ha ocurrido un error inesperado al intentar registrarse.";
+
+        if (error.code === "auth/email-already-in-use") {
+          userFriendlyError = "Este correo electrónico ya está registrado.";
+        } else if (error.code === "auth/invalid-email") {
+          userFriendlyError = "La dirección de correo electrónico no es válida.";
+        } else if (error.code === "auth/weak-password") {
+          userFriendlyError = "La contraseña elegida es demasiado débil.";
+        }
+
+        errorDiv.textContent = userFriendlyError;
+        errorDiv.style.display = "block";
+        showToast(userFriendlyError, "error");
+      }
+    }
+
+    document.getElementById("footerYear").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

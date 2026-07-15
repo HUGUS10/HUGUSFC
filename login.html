@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Socios | HUGUS FC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .login-section {
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .login-card {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            border: 1px solid rgba(226,174,29,0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .input-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: var(--primary-gold);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .input-text {
+            width: 100%;
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-pill);
+            padding: 12px 18px;
+            border-radius: 8px;
+            color: var(--text-white);
+            font-size: 0.9rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-text:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 10px rgba(226,174,29,0.25);
+        }
+        .btn-submit {
+            background-color: var(--primary-gold);
+            color: #000;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 900;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+        .btn-submit:hover {
+            background-color: var(--gold-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-container">
+            <img src="imag/logo.png" alt="Logo" class="loader-logo">
+            <div class="spinner"></div>
+            <div class="loader-text">Cargando Acceso</div>
+        </div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="imag/logo.png" alt="Logo" class="logo-img">
+                <span class="brand-name">HUGUS FC</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">INICIO</a></li>
+                <li><a href="calendario.html">CALENDARIO</a></li>
+                <li><a href="tabla.html">TABLA</a></li>
+                <li><a href="tienda.html">TIENDA</a></li>
+            </ul>
+            <a href="login.html" class="profile-avatar-btn">A</a>
+        </nav>
+    </header>
+
+    <main class="login-section">
+        <div class="login-card">
+            <img src="imag/logo.png" alt="Escudo HUGUS" style="width: 80px; margin-bottom: 15px;">
+            <h2 class="login-title">ÁREA DE <span>SOCIOS</span></h2>
+            <form action="#">
+                <div class="input-group">
+                    <label class="input-label">Usuario o Email</label>
+                    <input type="email" placeholder="ejemplo@hugusfc.com" class="input-text" required>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Contraseña</label>
+                    <input type="password" placeholder="••••••••" class="input-text" required>
+                </div>
+                <button type="submit" class="btn-submit">INICIAR SESIÓN</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 <span>HUGUS FC</span>. Caserío El Colorado.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+        });
+    </script>
+</body>
+</html>

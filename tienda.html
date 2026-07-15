@@ -318,8 +318,6 @@
       background: var(--gold);
       color: var(--navy-dark);
       transition: filter .2s, transform .2s;
-      border: none;
-      cursor: pointer;
     }
     .btn-nav-acceder:hover {
       filter: brightness(1.1);
@@ -413,7 +411,6 @@
       text-transform: uppercase;
       display: block;
       cursor: pointer;
-      border: none;
     }
 
     /* ---------- BOTTOM NAV (móvil) ---------- */
@@ -1494,13 +1491,6 @@
       margin: 0 auto 20px;
       font-family: var(--ff-display);
     }
-    .perfil-info p {
-      margin: 10px 0;
-      font-size: 1rem;
-    }
-    .perfil-info strong {
-      color: var(--gold);
-    }
 
     /* ---------- ADMIN ---------- */
     .admin-panel {
@@ -1922,12 +1912,10 @@
         <li><a data-section="plantilla">Plantilla</a></li>
         <li><a data-section="tienda">Tienda</a></li>
         <li><a data-section="comunidad">Comunidad</a></li>
-        <li><a data-section="login" id="navLogin">Acceder</a></li>
-        <li><a data-section="perfil" id="navPerfil" style="display:none;">Perfil</a></li>
       </ul>
 
       <div class="nav-right">
-        <button class="btn-nav-acceder" id="btnAcceder" data-section="login">Acceder</button>
+        <a class="btn-nav-acceder" data-section="login">Acceder</a>
         <button class="hamburger" id="hamBtn" aria-label="Menu">
           <span></span>
           <span></span>
@@ -1948,10 +1936,8 @@
       <li><a data-section="plantilla">Plantilla</a></li>
       <li><a data-section="tienda">Tienda</a></li>
       <li><a data-section="comunidad">Comunidad</a></li>
-      <li><a data-section="login" id="mobLogin">Acceder</a></li>
-      <li><a data-section="perfil" id="mobPerfil" style="display:none;">Perfil</a></li>
     </ul>
-    <button class="mob-acceder" id="mobBtnAcceder" data-section="login">Portal Socios</button>
+    <a class="mob-acceder" data-section="login">Portal Socios</a>
   </div>
 
   <!-- ============================================================
@@ -2037,7 +2023,7 @@
             <p class="about-p">No somos solo un equipo en la cancha; somos una gran familia que cree firmemente en que el deporte es la mejor herramienta para formar grandes ciudadanos. Con nuestro lema grabado en el pecho, nos esforzamos en cada entrenamiento y dejamos el alma en cada partido.</p>
           </div>
           <div class="about-img-wrap">
-            <img src="imag/kit_oficial.png" alt="Kit oficial HUGUS FC" onerror="this.src='https://placehold.co/600x400/16295C/EDE5CC?text=Kit+Oficial'">
+            <img src="kit.png" alt="Kit oficial HUGUS FC" onerror="this.src='https://placehold.co/600x400/16295C/EDE5CC?text=Kit+Oficial'">
           </div>
         </div>
       </div>
@@ -2093,7 +2079,9 @@
     <section>
       <div class="si">
         <div class="reveal"><div class="stag">Actualidad Club</div><h2 class="stit">Últimas Noticias</h2><p class="sdesc">Enterate de las novedades, fichajes y comunicados oficiales del Hugus FC.</p></div>
-        <div class="noticias-grid reveal" id="noticiasGrid"></div>
+        <div class="noticias-grid reveal" id="noticiasGrid">
+          <!-- Se llena con JS -->
+        </div>
       </div>
     </section>
   </div>
@@ -2154,19 +2142,24 @@
     </section>
   </div>
 
-  <!-- SECCIÓN: TIENDA -->
+  <!-- SECCIÓN: TIENDA (completa) -->
   <div id="section-tienda" class="section-hidden">
     <section>
       <div class="si">
+        <!-- Header -->
         <div class="store-header">
           <span class="store-sub-gold">Productos del Colorado</span>
           <h1 class="store-main-title">TIENDA OFICIAL <span>HUGUS FC</span></h1>
           <p class="store-desc">Equípate con la indumentaria oficial de tu club y lleva la pasión a todas partes. Pedidos directos y seguros vía WhatsApp.</p>
         </div>
+
+        <!-- Banner informativo -->
         <div class="info-alert-box">
           <span class="info-icon-bag">🛍️</span>
           <p class="info-alert-text">¡Hola hincha del HUGUS! Explora nuestro catálogo actual de productos oficiales. Al elegir cualquier artículo, podrás personalizar tu talla y cantidad antes de enviar el pedido automático a nuestro equipo de ventas por WhatsApp.</p>
         </div>
+
+        <!-- Filtros -->
         <div class="filter-container">
           <button class="pill-btn active" data-filter="all">Todos los productos</button>
           <button class="pill-btn outline" data-filter="indumentaria">Indumentaria</button>
@@ -2174,11 +2167,13 @@
           <button class="pill-btn outline" data-filter="equipamiento">Equipamiento</button>
           <button class="pill-btn outline" data-filter="membresia">Membresía</button>
         </div>
+
+        <!-- Productos -->
         <div class="products-grid" id="productGrid">
           <div class="product-card" data-category="indumentaria">
             <span class="badge-tag">MÁS VENDIDO</span>
             <div class="product-img-box">
-              <img src="imag/camiseta.png" alt="Camiseta Local" class="product-img" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Camiseta'">
+              <img src="imag/camiseta_presentacion.png" alt="Camiseta Local" class="product-img" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Camiseta'">
             </div>
             <div class="product-details">
               <h3 class="product-title">Camiseta Oficial Local (Rojo/Crema)</h3>
@@ -2186,10 +2181,11 @@
               <button class="pill-btn active" onclick="ordenar('Camiseta Local Oficial')">Pedir por WhatsApp</button>
             </div>
           </div>
+
           <div class="product-card" data-category="accesorios">
             <span class="badge-tag">NUEVO</span>
             <div class="product-img-box">
-              <img src="imag/gorra.png" alt="Gorra" class="product-img" style="transform:scale(0.6);" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Gorra'">
+              <img src="imag/logo.png" alt="Gorra" class="product-img" style="transform:scale(0.6);" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Gorra'">
             </div>
             <div class="product-details">
               <h3 class="product-title">Gorra Conmemorativa Fundador 2026</h3>
@@ -2197,10 +2193,11 @@
               <button class="pill-btn active" onclick="ordenar('Gorra Conmemorativa')">Pedir por WhatsApp</button>
             </div>
           </div>
+
           <div class="product-card" data-category="equipamiento">
             <span class="badge-tag">OFERTA</span>
             <div class="product-img-box">
-              <img src="imag/pelota.png" alt="Balón" class="product-img" style="transform:scale(0.5);" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Bal%C3%B3n'">
+              <img src="imag/logo.png" alt="Balón" class="product-img" style="transform:scale(0.5);" onerror="this.src='https://placehold.co/300x260/16295C/EDE5CC?text=Bal%C3%B3n'">
             </div>
             <div class="product-details">
               <h3 class="product-title">Balón Oficial HUGUS FC</h3>
@@ -2330,7 +2327,7 @@
     </section>
   </div>
 
-  <!-- FOOTER -->
+  <!-- FOOTER (visible siempre) -->
   <div class="footer-strip"></div>
   <footer>
     <div class="footer-inner">
@@ -2551,7 +2548,6 @@
           document.getElementById('perfilEmail').textContent = user.email;
           document.getElementById('perfilRol').textContent = user.role === 'admin' ? 'Administrador' : 'Socio';
         } else {
-          showToast('Debes iniciar sesión', 'error');
           navigateTo('login');
         }
       }
@@ -2602,7 +2598,6 @@
       localStorage.removeItem(CURRENT_USER_KEY);
     }
 
-    // Registrar
     document.getElementById('registerForm')?.addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('regName').value.trim();
@@ -2628,7 +2623,6 @@
       navigateTo('login');
     });
 
-    // Login
     document.getElementById('loginForm')?.addEventListener('submit', function(e) {
       e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim();
@@ -2649,7 +2643,6 @@
       navigateTo('inicio');
     });
 
-    // Logout
     function logout() {
       clearCurrentUser();
       updateAuthUI();
@@ -2657,50 +2650,10 @@
       navigateTo('inicio');
     }
 
-    // ============================================================
-    // ACTUALIZAR UI SEGÚN AUTENTICACIÓN
-    // ============================================================
     function updateAuthUI() {
       const user = getCurrentUser();
-      const navLogin = document.getElementById('navLogin');
-      const navPerfil = document.getElementById('navPerfil');
-      const btnAcceder = document.getElementById('btnAcceder');
-      const mobLogin = document.getElementById('mobLogin');
-      const mobPerfil = document.getElementById('mobPerfil');
-      const mobBtnAcceder = document.getElementById('mobBtnAcceder');
-
-      if (user) {
-        // Ocultar "Acceder", mostrar "Perfil" en nav-links y móvil
-        if (navLogin) navLogin.style.display = 'none';
-        if (navPerfil) navPerfil.style.display = 'inline-block';
-        if (mobLogin) mobLogin.style.display = 'none';
-        if (mobPerfil) mobPerfil.style.display = 'block';
-
-        // Cambiar botón "Acceder" a nombre de usuario + ir a perfil
-        if (btnAcceder) {
-          btnAcceder.textContent = `👤 ${user.name}`;
-          btnAcceder.setAttribute('data-section', 'perfil');
-        }
-        if (mobBtnAcceder) {
-          mobBtnAcceder.textContent = `Mi Perfil (${user.name})`;
-          mobBtnAcceder.setAttribute('data-section', 'perfil');
-        }
-      } else {
-        // Mostrar "Acceder", ocultar "Perfil"
-        if (navLogin) navLogin.style.display = 'inline-block';
-        if (navPerfil) navPerfil.style.display = 'none';
-        if (mobLogin) mobLogin.style.display = 'block';
-        if (mobPerfil) mobPerfil.style.display = 'none';
-
-        if (btnAcceder) {
-          btnAcceder.textContent = 'Acceder';
-          btnAcceder.setAttribute('data-section', 'login');
-        }
-        if (mobBtnAcceder) {
-          mobBtnAcceder.textContent = 'Portal Socios';
-          mobBtnAcceder.setAttribute('data-section', 'login');
-        }
-      }
+      // No hay elementos específicos en el nav para mostrar nombre en este diseño,
+      // pero podrías añadirlos si quieres.
     }
 
     // ============================================================
@@ -2829,7 +2782,7 @@
       renderResultados();
       renderPlantilla();
       setupScrollAnimations();
-      updateAuthUI(); // Actualizar la interfaz según sesión
+      updateAuthUI();
       // Mostrar inicio por defecto
       navigateTo('inicio');
     });

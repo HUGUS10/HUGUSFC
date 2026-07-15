@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ficha del Partido | HUGUS FC</title>
+  <link rel="icon" href="/imag/logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+</head>
+<body>
+  <!-- NAV (igual que antes) -->
+  <nav id="mainNav" class="top">...</nav>
+  <div class="mob-menu" id="mobMenu">...</div>
+
+  <section class="ficha-sec" style="padding-top:100px;">
+    <div class="si">
+      <div class="stag">Partido Oficial</div>
+      <h2 class="stit" id="fichaTitulo">Cargando...</h2>
+      <p class="sdesc" id="fichaDesc">Información completa del encuentro.</p>
+      <div class="ficha-card reveal" id="fichaCard">
+        <div class="ficha-header" style="text-align:center;padding:40px;">
+          <p style="color:var(--grey);">Cargando ficha...</p>
+        </div>
+      </div>
+      <div style="margin-top:20px;text-align:center;">
+        <a href="calendario.html" class="btn-o">← Volver al Calendario</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>...</footer>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/partidos.js"></script>
+  <script>
+    // Obtener ID del partido desde la URL
+    const params = new URLSearchParams(window.location.search);
+    const partidoId = params.get('id');
+
+    if (partidoId) {
+      db.collection('partidos').doc(partidoId).get().then(doc => {
+        if (doc.exists) {
+          const p = doc.data();
+          // Usar la función de renderizado de ficha (que está en partidos.js)
+          renderFichaPartido(p);
+          // Actualizar título y descripción
+          document.getElementById('fichaTitulo').innerHTML = `HUGUS FC <span class="g">VS</span> ${p.rival}`;
+          document.getElementById('fichaDesc').textContent = `Detalles del partido del ${p.fecha} a las ${p.hora}.`;
+        } else {
+          document.getElementById('fichaCard').innerHTML = '<div class="ficha-header" style="text-align:center;padding:40px;"><p style="color:var(--grey);">Partido no encontrado.</p></div>';
+        }
+      }).catch(err => {
+        document.getElementById('fichaCard').innerHTML = '<div class="ficha-header" style="text-align:center;padding:40px;"><p style="color:var(--grey);">Error al cargar el partido.</p></div>';
+      });
+    } else {
+      document.getElementById('fichaCard').innerHTML = '<div class="ficha-header" style="text-align:center;padding:40px;"><p style="color:var(--grey);">No se especificó ningún partido.</p></div>';
+    }
+
+    // Función auxiliar para renderizar la ficha (copiada de partidos.js o reutilizada)
+    function renderFichaPartido(p) {
+      const card = document.getElementById('fichaCard');
+      const fo = new Date(p.fecha + 'T12:00:00');
+      const fLg = DIAS[fo.getUTCDay()] + ' ' + fo.getUTCDate() + ' de ' + MESES[fo.getUTCMonth()] + ' 2026';
+      const ri = p.rival.substring(0, 2).toUpperCase();
+
+      const esJ = p.estado === 'jugado';
+      const esE = p.estado === 'en_vivo';
+      const resHTML = (esJ && p.golesHUGUS !== undefined) ? `...` : ''; // igual que antes
+      const golesHTML = (esJ && p.goles && p.goles.length) ? `...` : '';
+
+      card.innerHTML = `
+        <div class="ficha-header">
+          <div class="ficha-teams">
+            <div class="ficha-team"><div class="ficha-emblem"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="ficha-teamname">HUGUS FC</div></div>
+            <div class="ficha-vs">VS</div>
+            <div class="ficha-team"><div class="ficha-emblem"><span class="ficha-emblem-txt">${ri}</span></div><div class="ficha-teamname">${p.rival}</div></div>
+          </div>
+        </div>
+        <div class="ficha-body">
+          <div class="ficha-info-grid">
+            <div class="ficha-info-item"><div class="ficha-info-label">📅 Fecha</div><div class="ficha-info-val">${fLg}</div></div>
+            <div class="ficha-info-item"><div class="ficha-info-label">⏰ Hora</div><div class="ficha-info-val">${p.hora}</div></div>
+            <div class="ficha-info-item"><div class="ficha-info-label">📍 Lugar</div><div class="ficha-info-val">${p.lugar || 'Por definir'}</div></div>
+            <div class="ficha-info-item"><div class="ficha-info-label">🏆 Competencia</div><div class="ficha-info-val">${p.competencia || 'Partido Oficial'}</div></div>
+            ${resHTML}${golesHTML}
+          </div>
+          <div class="previa-box">
+            <div class="previa-title">${esJ ? 'Resumen del Partido' : esE ? 'Partido en Juego' : 'Previa del Partido'}</div>
+            <p class="previa-txt">${esJ ? `HUGUS FC disputó este encuentro frente a ${p.rival}.` : esE ? 'El partido está en juego ahora mismo. Sigue el marcador en tiempo real.' : `HUGUS FC disputará un encuentro frente a ${p.rival} el ${fLg} a las ${p.hora}.`}</p>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

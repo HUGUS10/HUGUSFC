@@ -1,358 +1,546 @@
-// ============================================================
-// HUGUS FC · partidos.js — Calendario, Resultados, Admin
-// ============================================================
+/* ==========================================================================
+   HUGUS FC — partidos.js
+   Partidos (calendario, resultados, ficha, countdown) y Tabla de posiciones.
+   Público: listeners en tiempo real sobre las colecciones "partidos" y "tabla".
+   Admin: CRUD completo desde admin.html.
+   Depende de firebase.js (db) y ui.js (showToast).
+   ========================================================================== */
 
-const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const DIAS  = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const MESES_ES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 
-let _countdownTarget = null;
-let _golesTemporales = [];
-let _adminEditandoId = null;
+function formatearFecha(fechaISO) {
+  if (!fechaISO) return "Fecha por confirmar";
+  const [y, m, d] = fechaISO.split("-").map(Number);
+  if (!y || !m || !d) return fechaISO;
+  return `${d} ${MESES_ES[m - 1]} ${y}`;
+}
 
-/* ── COUNTDOWN ── */
-function updateCountdown() {
-  if (!_countdownTarget) {
-    ['dias','horas','min','seg'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent='00'; });
+function ordenarPorFechaHora(a, b) {
+  return new Date(`${a.fecha}T${a.hora || "00:00"}`) - new Date(`${b.fecha}T${b.hora || "00:00"}`);
+}
+
+/* ==========================================================================
+   PÚBLICO: Calendario + Countdown + Ficha del próximo partido
+   ========================================================================== */
+
+let countdownInterval = null;
+
+function iniciarListenersPublicos() {
+  if (typeof db === "undefined") return;
+
+  db.collection("partidos").onSnapshot(
+    (snap) => {
+      const partidos = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      renderCalendario(partidos);
+      renderResultados(partidos);
+      renderFichaProximoPartido(partidos);
+      iniciarCountdown(partidos);
+    },
+    (err) => console.error("Error escuchando partidos:", err)
+  );
+
+  db.collection("tabla").onSnapshot(
+    (snap) => {
+      const equipos = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      renderTablaPosiciones(equipos);
+    },
+    (err) => console.error("Error escuchando tabla:", err)
+  );
+}
+
+function renderCalendario(partidos) {
+  const grid = document.getElementById("calendarMainGrid");
+  if (!grid) return;
+
+  const proximos = partidos.filter((p) => p.estado === "proximo").sort(ordenarPorFechaHora);
+
+  if (!proximos.length) {
+    grid.innerHTML = `<div class="admin-no-data">No hay partidos programados por el momento.</div>`;
     return;
   }
-  const diff = Math.max(_countdownTarget - Date.now(), 0);
-  const pad = n => String(Math.floor(n)).padStart(2,'0');
-  const el = id => document.getElementById(id);
-  if(el('dias'))  el('dias').textContent  = pad(diff / 86400000);
-  if(el('horas')) el('horas').textContent = pad((diff % 86400000) / 3600000);
-  if(el('min'))   el('min').textContent   = pad((diff % 3600000) / 60000);
-  if(el('seg'))   el('seg').textContent   = pad((diff % 60000) / 1000);
-}
-setInterval(updateCountdown, 1000);
 
-/* ── LISTENER EN TIEMPO REAL ── */
-function listenPartidos() {
-  db.collection(COL.PARTIDOS).orderBy('fecha','asc').onSnapshot(snap => {
-    const partidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    actualizarCalendarioUI(partidos);
-    actualizarResultados(partidos);
-    cargarTablaPartidosAdmin(partidos);
-  }, err => console.error('Error partidos:', err));
+  grid.innerHTML = proximos
+    .map(
+      (p) => `
+    <div class="match-card">
+      <div class="match-comp">${escapeHTML(p.competencia || "Partido Oficial")}</div>
+      <div class="match-teams">${p.esLocal !== false ? "HUGUS FC" : escapeHTML(p.rival || "Rival")} <span style="color:var(--grey)">vs</span> ${p.esLocal !== false ? escapeHTML(p.rival || "Rival") : "HUGUS FC"}</div>
+      <div class="match-meta">
+        <span>📅 ${formatearFecha(p.fecha)} · ⏰ ${p.hora || "Por confirmar"}</span>
+        <span>📍 ${escapeHTML(p.lugar || "Por confirmar")}</span>
+      </div>
+    </div>`
+    )
+    .join("");
 }
 
-/* ── CALENDARIO UI ── */
-function actualizarCalendarioUI(partidos) {
-  const proximos = partidos.filter(p => p.estado === 'proximo')
-    .sort((a,b) => new Date(a.fecha+'T'+a.hora) - new Date(b.fecha+'T'+b.hora));
-  const enVivo   = partidos.find(p => p.estado === 'en_vivo');
-  const principal = enVivo || (proximos.length > 0 ? proximos[0] : null);
+function renderResultados(partidos) {
+  const grid = document.getElementById("resultadosGrid");
+  if (!grid) return;
 
-  const label = document.getElementById('nextMatchLabel');
-  if (label) label.textContent = !principal ? 'Sin partidos próximos' : enVivo ? '🔴 EN VIVO AHORA' : 'Próximo partido en';
+  const jugados = partidos.filter((p) => p.estado === "jugado").sort((a, b) => ordenarPorFechaHora(b, a));
 
-  /* Tarjeta principal */
-  let matchHTML = '';
-  if (principal) {
-    const fo = new Date(principal.fecha + 'T12:00:00');
-    const fL = DIAS[fo.getUTCDay()] + ' ' + fo.getUTCDate() + ' · ' + principal.hora;
-    const fG = fo.getUTCDate() + ' de ' + MESES[fo.getUTCMonth()] + ' 2026';
-    const live = principal.estado === 'en_vivo'
-      ? '<div class="live-pulse"><span class="live-dot"></span>EN VIVO</div>' : '';
-    matchHTML = `
-    <div class="match-card reveal">
-      <div class="match-top">
-        ${live}
-        <div class="match-comp-badge">${principal.competencia || 'Partido Oficial 2026'}</div>
-        <div class="match-teams">
-          <div class="team-block">
-            <div class="team-emblem"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div>
-            <div class="team-name">HUGUS FC</div>
-            <div class="team-city">C. El Colorado</div>
-          </div>
-          <div class="match-vs-wrap">
-            <div class="vs-badge">VS</div>
-          </div>
-          <div class="team-block">
-            <div class="team-emblem rival-emblem">
-              <span class="team-emblem-txt">${principal.rival.substring(0,2).toUpperCase()}</span>
-            </div>
-            <div class="team-name">${principal.rival}</div>
-            <div class="team-city">${principal.esLocal ? 'Visitante' : 'Local'}</div>
-          </div>
-        </div>
-      </div>
-      <div class="match-bottom">
-        <div class="match-date-big">${fL}</div>
-        <div class="match-meta">
-          <span>📅 <strong>${fG}</strong></span>
-          <span>📍 <strong>${principal.lugar || 'Por confirmar'}</strong></span>
-          <span>🏆 <strong>${principal.competencia || 'Partido Oficial'}</strong></span>
-        </div>
-        <a href="#ficha-partido" class="btn-p" style="margin-top:20px;display:block;text-align:center">Ver Ficha Completa</a>
-      </div>
-    </div>`;
-  } else {
-    matchHTML = `<div class="match-card"><div class="match-top" style="text-align:center;padding:50px 24px">
-      <div class="match-comp-badge">Sin partidos programados</div>
-      <p style="color:var(--grey);margin-top:18px;font-size:.9rem">El calendario se actualizará pronto.</p>
-    </div></div>`;
-  }
-
-  /* Partidos secundarios */
-  const side = (enVivo ? [enVivo] : []).concat(proximos.filter(p => p !== principal)).slice(0, 4);
-  const sideHTML = side.map(p => {
-    const fo = new Date(p.fecha + 'T12:00:00');
-    const fL = fo.toLocaleDateString('es-PE', { day:'2-digit', month:'short' });
-    const eq1 = p.esLocal ? 'HUGUS FC' : p.rival;
-    const eq2 = p.esLocal ? p.rival : 'HUGUS FC';
-    return `<div class="mini-match">
-      <div class="mini-date">${fL} · ${p.hora}</div>
-      <div class="mini-teams">
-        <span class="t home">${eq1}</span>
-        <span class="mini-vs">vs</span>
-        <span class="t away">${eq2}</span>
-      </div>
-      <div class="mini-comp">${p.competencia || 'Partido'}</div>
-    </div>`;
-  }).join('') || '<p class="cal-empty">Más partidos próximamente</p>';
-
-  const grid = document.getElementById('calendarMainGrid');
-  if (grid) grid.innerHTML = matchHTML + `
-    <div class="calendar-side">
-      <div class="cal-side-title">Próximos <span class="g">Partidos</span></div>
-      <div class="next-matches">${sideHTML}</div>
-    </div>`;
-
-  actualizarFichaPartido(principal);
-
-  /* Countdown target */
-  if (!principal) { _countdownTarget = null; }
-  else if (principal.estado === 'en_vivo') {
-    _countdownTarget = new Date(principal.fecha+'T'+principal.hora+':00').getTime() + MATCH_DURATION_MIN*60000;
-  } else {
-    _countdownTarget = new Date(principal.fecha+'T'+principal.hora+':00').getTime();
-  }
-  updateCountdown();
-}
-
-/* ── FICHA PARTIDO ── */
-function actualizarFichaPartido(p) {
-  const card  = document.getElementById('fichaCard');
-  const titulo = document.getElementById('fichaTitulo');
-  const desc  = document.getElementById('fichaDesc');
-  if (!p) {
-    if (titulo) titulo.innerHTML = 'HUGUS FC <span class="g">PRÓXIMAMENTE</span>';
-    if (desc)   desc.textContent = 'No hay partidos programados.';
-    if (card)   card.innerHTML = '<div class="ficha-header" style="text-align:center;padding:48px"><p style="color:var(--grey)">Calendario por definirse.</p></div>';
+  if (!jugados.length) {
+    grid.innerHTML = `<p style="color:var(--grey);font-family:'Barlow Condensed',sans-serif;letter-spacing:.14em;grid-column:1/-1;text-align:center;padding:32px">Aún no hay resultados registrados.</p>`;
     return;
   }
-  const fo  = new Date(p.fecha + 'T12:00:00');
-  const fLg = DIAS[fo.getUTCDay()] + ', ' + fo.getUTCDate() + ' de ' + MESES[fo.getUTCMonth()] + ' 2026';
-  const ri  = p.rival.substring(0,2).toUpperCase();
-  if (titulo) titulo.innerHTML = 'HUGUS FC <span class="g">VS</span> ' + p.rival;
-  if (desc)   desc.textContent = 'Información completa del encuentro oficial.';
 
-  const esJ = p.estado === 'jugado', esE = p.estado === 'en_vivo';
-  const resHTML = (esJ && p.golesHUGUS !== undefined)
-    ? `<div class="ficha-result-box"><div class="ficha-info-label">🏆 RESULTADO FINAL</div>
-       <div class="ficha-result-score">HUGUS ${p.golesHUGUS} — ${p.golesRival} ${p.rival}</div></div>` : '';
-  const golesHTML = (esJ && p.goles && p.goles.length)
-    ? `<div class="ficha-goles-box"><div class="ficha-info-label" style="margin-bottom:12px">⚽ DETALLE DE GOLES</div>
-       <ul class="goles-lista">${p.goles.map(g => `<li><span class="gol-min">${g.minuto}'</span><span class="gol-jug">${g.jugador}</span><span class="gol-eq">${g.equipo}</span></li>`).join('')}</ul></div>` : '';
+  grid.innerHTML = jugados
+    .map((p) => {
+      const gh = p.golesHUGUS ?? 0;
+      const gr = p.golesRival ?? 0;
+      const golHugus = gh >= gr;
+      return `
+    <div class="resultado-card">
+      <div class="resultado-info">
+        <div class="resultado-comp">${escapeHTML(p.competencia || "Partido Oficial")}</div>
+        <div class="resultado-teams">${p.esLocal !== false ? "HUGUS FC" : escapeHTML(p.rival || "Rival")} vs ${p.esLocal !== false ? escapeHTML(p.rival || "Rival") : "HUGUS FC"}</div>
+        <div class="resultado-fecha">📅 ${formatearFecha(p.fecha)} · 📍 ${escapeHTML(p.lugar || "—")}</div>
+      </div>
+      <div class="resultado-marcador">
+        <span class="${golHugus ? "g" : ""}">${p.esLocal !== false ? gh : gr}</span> - <span>${p.esLocal !== false ? gr : gh}</span>
+      </div>
+    </div>`;
+    })
+    .join("");
+}
 
-  if (card) card.innerHTML = `
+function renderFichaProximoPartido(partidos) {
+  const card = document.getElementById("fichaCard");
+  if (!card) return;
+
+  const proximos = partidos.filter((p) => p.estado === "proximo").sort(ordenarPorFechaHora);
+  const next = proximos[0];
+  const titulo = document.getElementById("fichaTitulo");
+  const desc = document.getElementById("fichaDesc");
+
+  if (!next) {
+    card.innerHTML = `<div class="ficha-header"><p style="color:var(--grey);font-family:'Barlow Condensed',sans-serif;">Aún no hay un próximo partido confirmado.</p></div>`;
+    if (titulo) titulo.innerHTML = `HUGUS FC <span class="g">VS</span> RIVAL`;
+    if (desc) desc.textContent = "Muy pronto anunciaremos el próximo encuentro oficial.";
+    return;
+  }
+
+  const local = next.esLocal !== false;
+  if (titulo) titulo.innerHTML = `${local ? "HUGUS FC" : escapeHTML(next.rival || "Rival")} <span class="g">VS</span> ${local ? escapeHTML(next.rival || "Rival") : "HUGUS FC"}`;
+  if (desc) desc.textContent = `${next.competencia || "Partido Oficial"} · ${formatearFecha(next.fecha)}`;
+
+  card.innerHTML = `
     <div class="ficha-header">
-      <div class="ficha-teams">
-        <div class="ficha-team">
-          <div class="ficha-emblem"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div>
-          <div class="ficha-teamname">HUGUS FC</div>
-        </div>
-        <div class="ficha-vs">VS</div>
-        <div class="ficha-team">
-          <div class="ficha-emblem rival-emblem"><span class="ficha-emblem-txt">${ri}</span></div>
-          <div class="ficha-teamname">${p.rival}</div>
-        </div>
-      </div>
+      <div class="ficha-team"><div class="ficha-team-name">${local ? "HUGUS FC" : escapeHTML(next.rival || "Rival")}</div></div>
+      <div class="ficha-vs">VS</div>
+      <div class="ficha-team"><div class="ficha-team-name">${local ? escapeHTML(next.rival || "Rival") : "HUGUS FC"}</div></div>
     </div>
     <div class="ficha-body">
-      <div class="ficha-info-grid">
-        <div class="ficha-info-item"><div class="ficha-info-label">📅 Fecha</div><div class="ficha-info-val">${fLg}</div></div>
-        <div class="ficha-info-item"><div class="ficha-info-label">⏰ Hora</div><div class="ficha-info-val">${p.hora}</div></div>
-        <div class="ficha-info-item"><div class="ficha-info-label">📍 Lugar</div><div class="ficha-info-val">${p.lugar || 'Por confirmar'}</div></div>
-        <div class="ficha-info-item"><div class="ficha-info-label">🏆 Competencia</div><div class="ficha-info-val">${p.competencia || 'Partido Oficial'}</div></div>
-      </div>
-      ${resHTML}${golesHTML}
-      <div class="previa-box">
-        <div class="previa-title">${esJ?'Resumen':esE?'En Juego':'Previa'}</div>
-        <p class="previa-txt">${esJ
-          ? 'HUGUS FC disputó este importante encuentro frente a '+p.rival+'. Consulta el marcador y los goles arriba.'
-          : esE
-            ? 'El partido está en juego ahora mismo. Sigue el marcador en tiempo real.'
-            : 'HUGUS FC disputará un encuentro frente a '+p.rival+' el '+fLg+' a las '+p.hora+'.'
-        }</p>
-      </div>
+      <div class="fact"><span class="fl">Fecha</span><span class="fv">${formatearFecha(next.fecha)}</span></div>
+      <div class="fact"><span class="fl">Hora</span><span class="fv">${next.hora || "Por confirmar"}</span></div>
+      <div class="fact"><span class="fl">Lugar</span><span class="fv">${escapeHTML(next.lugar || "Por confirmar")}</span></div>
+      <div class="fact"><span class="fl">Competencia</span><span class="fv g">${escapeHTML(next.competencia || "Partido Oficial")}</span></div>
+      <div class="fact"><span class="fl">Condición</span><span class="fv">${local ? "Local" : "Visitante"}</span></div>
     </div>`;
 }
 
-/* ── RESULTADOS ── */
-function actualizarResultados(partidos) {
-  const grid = document.getElementById('resultadosGrid');
-  if (!grid) return;
-  const jugados = partidos.filter(p => p.estado === 'jugado')
-    .sort((a,b) => new Date(b.fecha+'T'+b.hora) - new Date(a.fecha+'T'+a.hora));
-  if (!jugados.length) {
-    grid.innerHTML = '<p class="res-empty">Aún no hay partidos finalizados.</p>'; return;
+function iniciarCountdown(partidos) {
+  const proximos = partidos.filter((p) => p.estado === "proximo").sort(ordenarPorFechaHora);
+  const next = proximos[0];
+  const label = document.getElementById("nextMatchLabel");
+  const dias = document.getElementById("dias");
+  const horas = document.getElementById("horas");
+  const min = document.getElementById("min");
+  const seg = document.getElementById("seg");
+
+  if (countdownInterval) clearInterval(countdownInterval);
+  if (!dias || !horas || !min || !seg) return;
+
+  if (!next) {
+    if (label) label.textContent = "Sin partidos programados";
+    [dias, horas, min, seg].forEach((el) => (el.textContent = "00"));
+    return;
   }
-  grid.innerHTML = jugados.map(p => {
-    const f = new Date(p.fecha+'T12:00:00').toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'});
-    const win = p.golesHUGUS > p.golesRival, draw = p.golesHUGUS === p.golesRival;
-    const resColor = win ? '#2ecc71' : draw ? 'var(--gold)' : '#e74c3c';
-    const resBadge = win ? 'Victoria' : draw ? 'Empate' : 'Derrota';
-    const goles = (p.goles && p.goles.length)
-      ? `<ul class="goles-lista">${p.goles.map(g=>`<li><span class="gol-min">${g.minuto}'</span><span class="gol-jug">${g.jugador}</span><span class="gol-eq">${g.equipo}</span></li>`).join('')}</ul>`
-      : '<p class="no-goles">Sin detalle de goles</p>';
-    return `<div class="resultado-card">
-      <div class="resultado-header">
-        <div class="resultado-equipo">
-          <div class="resultado-escudo-peq"><img src="imag/escudo_hugusfc.png" alt=""></div>
-          <span class="resultado-nombre">HUGUS</span>
-        </div>
-        <div>
-          <div class="resultado-marcador" style="color:${resColor}">${p.golesHUGUS} — ${p.golesRival}</div>
-          <div class="resultado-badge" style="color:${resColor}">${resBadge}</div>
-        </div>
-        <div class="resultado-equipo right">
-          <span class="resultado-nombre">${p.rival}</span>
-          <div class="resultado-escudo-peq rival"><span>${p.rival.substring(0,2).toUpperCase()}</span></div>
-        </div>
-      </div>
-      <div class="resultado-body">
-        <div class="resultado-fecha">📅 ${f} &nbsp;⏰ ${p.hora} &nbsp;📍 ${p.lugar||'Por confirmar'}</div>
-        ${goles}
-      </div>
-    </div>`;
-  }).join('');
+
+  if (label) label.textContent = `Próximo partido vs ${next.rival || "rival"} en`;
+
+  const targetDate = new Date(`${next.fecha}T${next.hora || "00:00"}`);
+
+  const tick = () => {
+    const diff = targetDate.getTime() - Date.now();
+    if (diff <= 0) {
+      [dias, horas, min, seg].forEach((el) => (el.textContent = "00"));
+      if (label) label.textContent = "¡El partido está en curso!";
+      clearInterval(countdownInterval);
+      return;
+    }
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+    dias.textContent = String(d).padStart(2, "0");
+    horas.textContent = String(h).padStart(2, "0");
+    min.textContent = String(m).padStart(2, "0");
+    seg.textContent = String(s).padStart(2, "0");
+  };
+
+  tick();
+  countdownInterval = setInterval(tick, 1000);
 }
 
-/* ═══════════════════════════════════════════
-   ADMIN — PARTIDOS
-═══════════════════════════════════════════ */
+function renderTablaPosiciones(equipos) {
+  const tbody = document.getElementById("tablaPosicionesBody");
+  if (!tbody) return;
+
+  if (!equipos.length) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:28px;color:var(--grey)">Aún no hay equipos registrados.</td></tr>`;
+    return;
+  }
+
+  const ordenados = [...equipos].sort((a, b) => {
+    const ptsA = (a.g || 0) * 3 + (a.e || 0);
+    const ptsB = (b.g || 0) * 3 + (b.e || 0);
+    if (ptsB !== ptsA) return ptsB - ptsA;
+    const dgA = (a.gf || 0) - (a.gc || 0);
+    const dgB = (b.gf || 0) - (b.gc || 0);
+    return dgB - dgA;
+  });
+
+  tbody.innerHTML = ordenados
+    .map((eq) => {
+      const pj = eq.pj ?? (eq.g || 0) + (eq.e || 0) + (eq.p || 0);
+      const pts = (eq.g || 0) * 3 + (eq.e || 0);
+      const dg = (eq.gf || 0) - (eq.gc || 0);
+      return `
+    <tr class="${eq.esHugus ? "is-hugus" : ""}">
+      <td>${escapeHTML(eq.equipo || "—")}</td>
+      <td>${pj}</td><td>${eq.g || 0}</td><td>${eq.e || 0}</td><td>${eq.p || 0}</td>
+      <td>${eq.gf || 0}</td><td>${eq.gc || 0}</td>
+      <td>${dg > 0 ? "+" : ""}${dg}</td>
+      <td class="pts">${pts}</td>
+    </tr>`;
+    })
+    .join("");
+}
+
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+/* ==========================================================================
+   ADMIN — Partidos (CRUD)
+   ========================================================================== */
+
+let golesAdminTemp = [];
+
 function toggleResultadoFields() {
-  const j = document.getElementById('adminEstado').value === 'jugado';
-  document.getElementById('golesHUGUSGroup').style.display = j ? 'flex' : 'none';
-  document.getElementById('golesRivalGroup').style.display = j ? 'flex' : 'none';
-  document.getElementById('adminGolesEditor').style.display = j ? 'block' : 'none';
+  const estado = document.getElementById("adminEstado")?.value;
+  const golesEditor = document.getElementById("adminGolesEditor");
+  const golesHUGUSGroup = document.getElementById("golesHUGUSGroup");
+  const golesRivalGroup = document.getElementById("golesRivalGroup");
+  const jugado = estado === "jugado";
+
+  if (golesEditor) golesEditor.style.display = jugado ? "block" : "none";
+  if (golesHUGUSGroup) golesHUGUSGroup.style.display = jugado ? "block" : "none";
+  if (golesRivalGroup) golesRivalGroup.style.display = jugado ? "block" : "none";
+  if (jugado) renderGolesAdmin();
 }
 
 function agregarGolAdmin() {
-  _golesTemporales.push({ jugador:'', minuto:'', equipo:'HUGUS' });
-  renderAdminGoles();
+  golesAdminTemp.push({ jugador: "", minuto: "", equipo: "HUGUS" });
+  renderGolesAdmin();
 }
-function eliminarGolAdmin(i) {
-  _golesTemporales.splice(i,1);
-  renderAdminGoles();
+
+function quitarGolAdmin(idx) {
+  golesAdminTemp.splice(idx, 1);
+  renderGolesAdmin();
+  recalcularGolesAuto();
 }
-function renderAdminGoles() {
-  const c = document.getElementById('adminGolesList');
-  if (!c) return;
-  c.innerHTML = _golesTemporales.map((g,i) => `
-    <div class="admin-gol-row">
-      <input type="text" placeholder="Jugador" value="${g.jugador||''}" oninput="_golesTemporales[${i}].jugador=this.value" style="flex:2">
-      <input type="number" placeholder="Min" value="${g.minuto||''}" oninput="_golesTemporales[${i}].minuto=this.value" style="width:72px">
-      <select onchange="_golesTemporales[${i}].equipo=this.value">
-        <option value="HUGUS"${g.equipo==='HUGUS'?' selected':''}>HUGUS</option>
-        <option value="RIVAL"${g.equipo==='RIVAL'?' selected':''}>RIVAL</option>
+
+function actualizarGolAdmin(idx, campo, valor) {
+  if (!golesAdminTemp[idx]) return;
+  golesAdminTemp[idx][campo] = valor;
+  recalcularGolesAuto();
+}
+
+function renderGolesAdmin() {
+  const list = document.getElementById("adminGolesList");
+  if (!list) return;
+  const rival = document.getElementById("adminRival")?.value || "Rival";
+
+  list.innerHTML = golesAdminTemp
+    .map(
+      (g, i) => `
+    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center">
+      <select onchange="actualizarGolAdmin(${i},'equipo',this.value)" style="flex:1;min-width:110px;padding:9px;border-radius:8px;border:1.5px solid rgba(22,51,39,.15)">
+        <option value="HUGUS" ${g.equipo === "HUGUS" ? "selected" : ""}>HUGUS FC</option>
+        <option value="RIVAL" ${g.equipo === "RIVAL" ? "selected" : ""}>${escapeHTML(rival)}</option>
       </select>
-      <button class="btn-admin-small delete" onclick="eliminarGolAdmin(${i})">🗑</button>
-    </div>`).join('');
+      <input type="text" placeholder="Jugador" value="${escapeHTML(g.jugador || "")}" oninput="actualizarGolAdmin(${i},'jugador',this.value)" style="flex:2;min-width:140px;padding:9px;border-radius:8px;border:1.5px solid rgba(22,51,39,.15)">
+      <input type="number" placeholder="Min" min="0" max="130" value="${g.minuto || ""}" oninput="actualizarGolAdmin(${i},'minuto',this.value)" style="width:70px;padding:9px;border-radius:8px;border:1.5px solid rgba(22,51,39,.15)">
+      <button class="action-btn" onclick="quitarGolAdmin(${i})" title="Quitar gol">🗑️</button>
+    </div>`
+    )
+    .join("");
+  recalcularGolesAuto();
+}
+
+function recalcularGolesAuto() {
+  const gh = golesAdminTemp.filter((g) => g.equipo === "HUGUS").length;
+  const gr = golesAdminTemp.filter((g) => g.equipo === "RIVAL").length;
+  const golesHUGUS = document.getElementById("adminGolesHUGUS");
+  const golesRival = document.getElementById("adminGolesRival");
+  if (golesHUGUS) golesHUGUS.value = gh;
+  if (golesRival) golesRival.value = gr;
+}
+
+async function guardarPartido() {
+  const id = document.getElementById("adminEditId")?.value;
+  const estado = document.getElementById("adminEstado")?.value;
+
+  const data = {
+    fecha: document.getElementById("adminFecha")?.value || "",
+    hora: document.getElementById("adminHora")?.value || "",
+    rival: document.getElementById("adminRival")?.value.trim() || "",
+    lugar: document.getElementById("adminLugar")?.value.trim() || "",
+    competencia: document.getElementById("adminCompetencia")?.value.trim() || "Partido Oficial 2026",
+    esLocal: document.getElementById("adminEsLocal")?.value === "true",
+    estado: estado || "proximo"
+  };
+
+  if (!data.fecha || !data.rival) {
+    showToast("Completa al menos fecha y rival.", "error");
+    return;
+  }
+
+  if (estado === "jugado") {
+    data.goles = golesAdminTemp;
+    data.golesHUGUS = golesAdminTemp.filter((g) => g.equipo === "HUGUS").length;
+    data.golesRival = golesAdminTemp.filter((g) => g.equipo === "RIVAL").length;
+  }
+
+  try {
+    if (id) {
+      await db.collection("partidos").doc(id).update(data);
+      showToast("Partido actualizado", "success");
+    } else {
+      data.creado = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection("partidos").add(data);
+      showToast("Partido guardado", "success");
+    }
+    cancelarEdicion();
+    cargarPartidosAdmin();
+  } catch (err) {
+    console.error(err);
+    showToast("Error al guardar el partido", "error");
+  }
 }
 
 function cancelarEdicion() {
-  _adminEditandoId = null;
-  document.getElementById('adminEditId').value = '';
-  ['adminFecha','adminRival','adminLugar','adminCompetencia'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  const h = document.getElementById('adminHora'); if(h) h.value='15:00';
-  const el = document.getElementById('adminEsLocal'); if(el) el.value='true';
-  const es = document.getElementById('adminEstado'); if(es) es.value='proximo';
-  const btnG = document.getElementById('btnGuardarPartido');
-  if(btnG) btnG.textContent='💾 Guardar Partido';
-  const btnC = document.getElementById('btnCancelarEdicion');
-  if(btnC) btnC.style.display='none';
-  _golesTemporales = [];
-  renderAdminGoles();
+  document.getElementById("adminEditId").value = "";
+  document.getElementById("adminFecha").value = "";
+  document.getElementById("adminHora").value = "15:00";
+  document.getElementById("adminRival").value = "";
+  document.getElementById("adminLugar").value = "";
+  document.getElementById("adminCompetencia").value = "";
+  document.getElementById("adminEsLocal").value = "true";
+  document.getElementById("adminEstado").value = "proximo";
+  golesAdminTemp = [];
   toggleResultadoFields();
+  document.getElementById("btnCancelarEdicion").style.display = "none";
+  document.getElementById("btnGuardarPartido").textContent = "💾 Guardar Partido";
 }
 
-function editarPartido(id) {
-  db.collection(COL.PARTIDOS).doc(id).get().then(doc => {
+async function editarPartidoAdmin(id) {
+  try {
+    const doc = await db.collection("partidos").doc(id).get();
     if (!doc.exists) return;
     const p = doc.data();
-    _adminEditandoId = id;
-    document.getElementById('adminEditId').value      = id;
-    document.getElementById('adminFecha').value       = p.fecha;
-    document.getElementById('adminHora').value        = p.hora;
-    document.getElementById('adminRival').value       = p.rival;
-    document.getElementById('adminLugar').value       = p.lugar || '';
-    document.getElementById('adminCompetencia').value = p.competencia || '';
-    document.getElementById('adminEsLocal').value     = p.esLocal ? 'true' : 'false';
-    document.getElementById('adminEstado').value      = p.estado || 'proximo';
-    _golesTemporales = p.goles ? JSON.parse(JSON.stringify(p.goles)) : [];
-    renderAdminGoles();
+
+    document.getElementById("adminEditId").value = id;
+    document.getElementById("adminFecha").value = p.fecha || "";
+    document.getElementById("adminHora").value = p.hora || "15:00";
+    document.getElementById("adminRival").value = p.rival || "";
+    document.getElementById("adminLugar").value = p.lugar || "";
+    document.getElementById("adminCompetencia").value = p.competencia || "";
+    document.getElementById("adminEsLocal").value = String(p.esLocal !== false);
+    document.getElementById("adminEstado").value = p.estado || "proximo";
+
+    golesAdminTemp = Array.isArray(p.goles) ? [...p.goles] : [];
     toggleResultadoFields();
-    const btnG = document.getElementById('btnGuardarPartido');
-    if(btnG) btnG.textContent='✏️ Actualizar Partido';
-    const btnC = document.getElementById('btnCancelarEdicion');
-    if(btnC) btnC.style.display='inline-flex';
-    document.getElementById('adminFormContainer').scrollIntoView({ behavior:'smooth' });
-  }).catch(console.error);
+
+    document.getElementById("btnCancelarEdicion").style.display = "inline-flex";
+    document.getElementById("btnGuardarPartido").textContent = "💾 Actualizar Partido";
+    document.getElementById("adminFormContainer").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (err) {
+    console.error(err);
+    showToast("No se pudo cargar el partido", "error");
+  }
 }
 
-function eliminarPartido(id) {
-  if (!confirm('¿Eliminar este partido?')) return;
-  db.collection(COL.PARTIDOS).doc(id).delete()
-    .then(() => showToast('🗑 Partido eliminado','error'))
-    .catch(console.error);
+async function eliminarPartidoAdmin(id) {
+  if (!confirm("¿Eliminar este partido? Esta acción no se puede deshacer.")) return;
+  try {
+    await db.collection("partidos").doc(id).delete();
+    showToast("Partido eliminado", "success");
+    cargarPartidosAdmin();
+  } catch (err) {
+    console.error(err);
+    showToast("Error al eliminar el partido", "error");
+  }
 }
 
-function guardarPartido() {
-  const fecha       = document.getElementById('adminFecha').value;
-  const hora        = document.getElementById('adminHora').value;
-  const rival       = document.getElementById('adminRival').value.trim();
-  const lugar       = document.getElementById('adminLugar').value.trim();
-  const competencia = document.getElementById('adminCompetencia').value.trim();
-  const esLocal     = document.getElementById('adminEsLocal').value === 'true';
-  const estado      = document.getElementById('adminEstado').value;
-  if (!fecha||!rival||!lugar||!competencia) { showToast('Completa todos los campos','error'); return; }
-  const golesValid = _golesTemporales.filter(g => String(g.jugador).trim() && g.minuto);
+async function cargarPartidosAdmin() {
+  const tbody = document.getElementById("adminPartidosTableBody");
+  if (!tbody) return;
+  try {
+    const snap = await db.collection("partidos").orderBy("fecha", "desc").get();
+    const partidos = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+    if (!partidos.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="admin-no-data">No hay partidos registrados aún.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = partidos
+      .map((p) => {
+        const resultado = p.estado === "jugado" ? `${p.golesHUGUS ?? 0} - ${p.golesRival ?? 0}` : "—";
+        return `
+      <tr>
+        <td>${formatearFecha(p.fecha)}</td>
+        <td>${p.hora || "—"}</td>
+        <td>${escapeHTML(p.rival || "—")}</td>
+        <td>${escapeHTML(p.lugar || "—")}</td>
+        <td>${p.esLocal !== false ? "Sí" : "No"}</td>
+        <td><span class="badge-estado badge-${p.estado === "jugado" ? "jugado" : "proximo"}">${p.estado === "jugado" ? "Jugado" : "Próximo"}</span></td>
+        <td>${resultado}</td>
+        <td>
+          <button class="action-btn" onclick="editarPartidoAdmin('${p.id}')" title="Editar">✏️</button>
+          <button class="action-btn" onclick="eliminarPartidoAdmin('${p.id}')" title="Eliminar">🗑️</button>
+        </td>
+      </tr>`;
+      })
+      .join("");
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="8" class="admin-no-data">Error al cargar los partidos.</td></tr>`;
+  }
+}
+
+/* ==========================================================================
+   ADMIN — Tabla de posiciones (CRUD)
+   ========================================================================== */
+
+async function guardarEquipoTabla() {
+  const id = document.getElementById("tablaEditId")?.value;
   const data = {
-    fecha, hora, rival, lugar, competencia, esLocal, estado,
-    goles:      estado==='jugado' ? golesValid : [],
-    golesHUGUS: estado==='jugado' ? golesValid.filter(g=>g.equipo==='HUGUS').length : null,
-    golesRival: estado==='jugado' ? golesValid.filter(g=>g.equipo==='RIVAL').length : null
+    equipo: document.getElementById("tablaEquipo")?.value.trim() || "",
+    pj: Number(document.getElementById("tablaPJ")?.value) || 0,
+    g: Number(document.getElementById("tablaG")?.value) || 0,
+    e: Number(document.getElementById("tablaE")?.value) || 0,
+    p: Number(document.getElementById("tablaP")?.value) || 0,
+    gf: Number(document.getElementById("tablaGF")?.value) || 0,
+    gc: Number(document.getElementById("tablaGC")?.value) || 0,
+    esHugus: document.getElementById("tablaEsHugus")?.value === "true"
   };
-  const op = _adminEditandoId
-    ? db.collection(COL.PARTIDOS).doc(_adminEditandoId).update(data)
-    : db.collection(COL.PARTIDOS).add(data);
-  op.then(() => { showToast(_adminEditandoId?'✏️ Partido actualizado':'💾 Partido guardado'); cancelarEdicion(); })
-    .catch(e => { console.error(e); showToast('Error al guardar','error'); });
+
+  if (!data.equipo) {
+    showToast("Ingresa el nombre del equipo.", "error");
+    return;
+  }
+
+  try {
+    if (id) {
+      await db.collection("tabla").doc(id).update(data);
+      showToast("Equipo actualizado", "success");
+    } else {
+      await db.collection("tabla").add(data);
+      showToast("Equipo agregado", "success");
+    }
+    cancelarTablaEdicion();
+    cargarEquiposAdmin();
+  } catch (err) {
+    console.error(err);
+    showToast("Error al guardar el equipo", "error");
+  }
 }
 
-function cargarTablaPartidosAdmin(partidos) {
-  const render = data => {
-    const tbody = document.getElementById('adminPartidosTableBody');
-    if (!tbody) return;
-    if (!data.length) { tbody.innerHTML='<tr><td colspan="8" class="admin-no-data">No hay partidos.</td></tr>'; return; }
-    tbody.innerHTML = data.map(p => {
-      const f = new Date(p.fecha+'T12:00:00').toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'});
-      const badge = p.estado==='jugado'
-        ? '<span class="admin-badge jugado">Jugado</span>'
-        : p.estado==='en_vivo'
-          ? '<span class="admin-badge en_vivo">🔴 En Vivo</span>'
-          : '<span class="admin-badge proximo">Próximo</span>';
-      const res = p.golesHUGUS!==undefined && p.golesHUGUS!==null
-        ? `<strong style="color:var(--gold)">${p.golesHUGUS}–${p.golesRival}</strong>` : '—';
-      return `<tr><td>${f}</td><td>${p.hora}</td><td>${p.rival}</td><td>${p.lugar||'—'}</td><td>${p.esLocal?'🏠':'✈️'}</td><td>${badge}</td><td>${res}</td>
-        <td><button class="btn-admin-edit" onclick="editarPartido('${p.id}')">✏️</button>
-            <button class="btn-admin-delete" onclick="eliminarPartido('${p.id}')">🗑</button></td></tr>`;
-    }).join('');
-  };
-  if (partidos) { render(partidos); return; }
-  db.collection(COL.PARTIDOS).orderBy('fecha','asc').get()
-    .then(s => render(s.docs.map(d=>({id:d.id,...d.data()}))))
-    .catch(console.error);
+function cancelarTablaEdicion() {
+  document.getElementById("tablaEditId").value = "";
+  ["tablaEquipo"].forEach((id) => (document.getElementById(id).value = ""));
+  ["tablaPJ", "tablaG", "tablaE", "tablaP", "tablaGF", "tablaGC"].forEach((id) => (document.getElementById(id).value = "0"));
+  document.getElementById("tablaEsHugus").value = "false";
+  document.getElementById("btnCancelarTabla").style.display = "none";
 }
+
+async function editarEquipoAdmin(id) {
+  try {
+    const doc = await db.collection("tabla").doc(id).get();
+    if (!doc.exists) return;
+    const eq = doc.data();
+
+    document.getElementById("tablaEditId").value = id;
+    document.getElementById("tablaEquipo").value = eq.equipo || "";
+    document.getElementById("tablaPJ").value = eq.pj || 0;
+    document.getElementById("tablaG").value = eq.g || 0;
+    document.getElementById("tablaE").value = eq.e || 0;
+    document.getElementById("tablaP").value = eq.p || 0;
+    document.getElementById("tablaGF").value = eq.gf || 0;
+    document.getElementById("tablaGC").value = eq.gc || 0;
+    document.getElementById("tablaEsHugus").value = String(!!eq.esHugus);
+
+    document.getElementById("btnCancelarTabla").style.display = "inline-flex";
+    document.getElementById("adminTablaForm").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (err) {
+    console.error(err);
+    showToast("No se pudo cargar el equipo", "error");
+  }
+}
+
+async function eliminarEquipoAdmin(id) {
+  if (!confirm("¿Eliminar este equipo de la tabla?")) return;
+  try {
+    await db.collection("tabla").doc(id).delete();
+    showToast("Equipo eliminado", "success");
+    cargarEquiposAdmin();
+  } catch (err) {
+    console.error(err);
+    showToast("Error al eliminar el equipo", "error");
+  }
+}
+
+async function cargarEquiposAdmin() {
+  const tbody = document.getElementById("adminTablaBody");
+  if (!tbody) return;
+  try {
+    const snap = await db.collection("tabla").get();
+    const equipos = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+    if (!equipos.length) {
+      tbody.innerHTML = `<tr><td colspan="9" class="admin-no-data">No hay equipos registrados aún.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = equipos
+      .map((eq) => {
+        const pts = (eq.g || 0) * 3 + (eq.e || 0);
+        return `
+      <tr>
+        <td>${escapeHTML(eq.equipo || "—")}${eq.esHugus ? " ⭐" : ""}</td>
+        <td>${eq.pj || 0}</td><td>${eq.g || 0}</td><td>${eq.e || 0}</td><td>${eq.p || 0}</td>
+        <td>${eq.gf || 0}</td><td>${eq.gc || 0}</td><td>${pts}</td>
+        <td>
+          <button class="action-btn" onclick="editarEquipoAdmin('${eq.id}')" title="Editar">✏️</button>
+          <button class="action-btn" onclick="eliminarEquipoAdmin('${eq.id}')" title="Eliminar">🗑️</button>
+        </td>
+      </tr>`;
+      })
+      .join("");
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="9" class="admin-no-data">Error al cargar la tabla.</td></tr>`;
+  }
+}
+
+/* ---------- Auto-init en páginas públicas ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  iniciarListenersPublicos();
+});

@@ -1,190 +1,239 @@
-// ============================================================
-// HUGUS FC · ui.js — Preloader, Nav, Reveal, Toast, PWA
-// ============================================================
+/* ==========================================================================
+   HUGUS FC — ui.js
+   Interacciones globales de interfaz: nav, menú móvil, toasts, reveal on
+   scroll, preloader, instalación PWA, botón volver arriba, nav inferior activo.
+   ========================================================================== */
 
-/* ── TOAST ── */
-function showToast(msg, type = 'success') {
-  const c = document.getElementById('toastContainer');
-  if (!c) return;
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.textContent = msg;
-  c.appendChild(t);
-  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 350); }, 3200);
+/* ---------- Menú móvil ---------- */
+function toggleMenu() {
+  const ham = document.getElementById("ham");
+  const menu = document.getElementById("mobMenu");
+  if (!ham || !menu) return;
+  const open = menu.classList.toggle("open");
+  ham.classList.toggle("open", open);
+  document.body.classList.toggle("menu-open", open);
+  ham.setAttribute("aria-expanded", open ? "true" : "false");
 }
 
-/* ── PRELOADER ── */
-let _pct = 0, _pageReady = false;
-(function initPreloader() {
-  const fill    = document.getElementById('preFill');
-  const pctEl   = document.getElementById('prePercent');
-  const statusEl= document.getElementById('preStatus');
-  const statuses = [
-    'Cargando escudo del club…',
-    'Conectando con Firebase…',
-    'Preparando calendario…',
-    'Casi listo…',
-    '¡Bienvenido a HUGUS FC!'
-  ];
-  let sIdx = 0;
-  function paint(v) {
-    v = Math.max(0, Math.min(100, Math.round(v)));
-    if (fill)  fill.style.width = v + '%';
-    if (pctEl) pctEl.textContent = v + '%';
-    const newS = statuses[Math.min(Math.floor(v / 22), statuses.length - 1)];
-    if (statusEl && statusEl.textContent !== newS) statusEl.textContent = newS;
-  }
-  const tick = setInterval(() => {
-    if (_pageReady) return;
-    const step = _pct < 65 ? 5 : _pct < 88 ? 2 : 0.6;
-    _pct = Math.min(94, _pct + step);
-    paint(_pct);
-  }, 120);
-
-  window.addEventListener('load', () => {
-    _pageReady = true;
-    clearInterval(tick);
-    const done = setInterval(() => {
-      _pct = Math.min(100, _pct + 4);
-      paint(_pct);
-      if (_pct >= 100) {
-        clearInterval(done);
-        setTimeout(() => {
-          const pre = document.getElementById('preloader');
-          if (pre) pre.classList.add('hide');
-          document.body.classList.remove('loading');
-        }, 480);
-      }
-    }, 30);
-  });
-})();
-
-/* ── NAV SCROLL ── */
-const _nav = document.getElementById('mainNav');
-window.addEventListener('scroll', () => {
-  if (_nav) _nav.classList.toggle('scrolled', window.scrollY > 60);
-  const btt = document.getElementById('btt');
-  if (btt) btt.classList.toggle('show', window.scrollY > 420);
-}, { passive: true });
-
-/* ── NAV ACTIVE LINK ── */
-const _sections  = document.querySelectorAll('section[id]');
-const _navLinks  = document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll', () => {
-  let cur = '';
-  _sections.forEach(s => { if (window.scrollY >= s.offsetTop - 130) cur = s.getAttribute('id'); });
-  _navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
-}, { passive: true });
-
-/* ── HAMBURGER ── */
-const _ham   = document.getElementById('ham');
-const _mobM  = document.getElementById('mobMenu');
-if (_ham) {
-  _ham.addEventListener('click', () => {
-    _ham.classList.toggle('active');
-    _mobM.classList.toggle('open');
-  });
-}
-document.addEventListener('click', e => {
-  if (_mobM && _mobM.classList.contains('open') && !_mobM.contains(e.target) && !_ham.contains(e.target))
-    closeMenu();
-});
 function closeMenu() {
-  if (_ham)  _ham.classList.remove('active');
-  if (_mobM) _mobM.classList.remove('open');
+  const ham = document.getElementById("ham");
+  const menu = document.getElementById("mobMenu");
+  if (!ham || !menu) return;
+  menu.classList.remove("open");
+  ham.classList.remove("open");
+  document.body.classList.remove("menu-open");
 }
 
-/* ── USER DROPDOWN ── */
-const _avatarBtn  = document.getElementById('userAvatarBtn');
-const _userDrop   = document.getElementById('userDropdown');
-if (_avatarBtn) {
-  _avatarBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    _userDrop.classList.toggle('active');
+/* ---------- Menú de usuario (dropdown) ---------- */
+function toggleUserMenu() {
+  const dd = document.getElementById("userDropdown");
+  if (!dd) return;
+  dd.classList.toggle("open");
+}
+
+document.addEventListener("click", (e) => {
+  const container = document.getElementById("userMenuContainer");
+  const dd = document.getElementById("userDropdown");
+  if (!container || !dd) return;
+  if (!container.contains(e.target)) dd.classList.remove("open");
+});
+
+/* ---------- Toasts ---------- */
+function showToast(message, type = "success", duration = 3200) {
+  const container = document.getElementById("toastContainer");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(10px)";
+    toast.style.transition = "opacity .25s ease, transform .25s ease";
+    setTimeout(() => toast.remove(), 260);
+  }, duration);
+}
+
+/* ---------- Scroll: nav compacto + back to top + bottom nav activo ---------- */
+function initScrollEffects() {
+  const nav = document.getElementById("mainNav");
+  const btt = document.getElementById("btt");
+
+  const onScroll = () => {
+    const y = window.scrollY || document.documentElement.scrollTop;
+    if (nav) nav.classList.toggle("scrolled", y > 40);
+    if (btt) btt.classList.toggle("show", y > 500);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function marcarNavActivo() {
+  const page = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+  document.querySelectorAll(".bottom-nav .nav-item").forEach((item) => {
+    const href = (item.getAttribute("href") || "").toLowerCase();
+    item.classList.toggle("active", href === page || (page === "" && href === "index.html"));
   });
 }
-document.addEventListener('click', () => { if (_userDrop) _userDrop.classList.remove('active'); });
 
-/* ── REVEAL ANIMATIONS ── */
-const revObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.07, rootMargin: '0px 0px -35px 0px' });
-document.querySelectorAll('.reveal,.reveal-l,.reveal-r,.reveal-up').forEach(el => revObs.observe(el));
+/* ---------- Reveal on scroll (IntersectionObserver) ---------- */
+function initReveal() {
+  const els = document.querySelectorAll(".reveal, .reveal-l, .reveal-r");
+  if (!els.length) return;
 
-/* ── STATS COUNTER ── */
-function animateCounters() {
-  document.querySelectorAll('[data-target]').forEach(el => {
-    const t = +el.getAttribute('data-target');
-    let c = 0;
-    const step = Math.max(1, Math.floor(t / 55));
-    const timer = setInterval(() => {
-      c = Math.min(c + step, t);
-      el.textContent = c + (t === 100 ? '%' : '');
-      if (c >= t) clearInterval(timer);
-    }, 22);
+  if (!("IntersectionObserver" in window)) {
+    els.forEach((el) => el.classList.add("in"));
+    return;
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+  );
+  els.forEach((el) => io.observe(el));
+}
+
+/* ---------- Contador animado del statsbar ---------- */
+function initContadores() {
+  const nums = document.querySelectorAll(".st-n[data-target]");
+  if (!nums.length) return;
+
+  const animar = (el) => {
+    const target = parseInt(el.getAttribute("data-target"), 10) || 0;
+    const duration = 1200;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(target * eased);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    };
+    requestAnimationFrame(step);
+  };
+
+  if (!("IntersectionObserver" in window)) {
+    nums.forEach(animar);
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animar(entry.target);
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+  nums.forEach((el) => io.observe(el));
+}
+
+/* ---------- Preloader con progreso ---------- */
+function initPreloader() {
+  const preloader = document.getElementById("preloader");
+  const fill = document.getElementById("preFill");
+  const pct = document.getElementById("prePercent");
+  if (!preloader) return;
+
+  let progress = 0;
+  const tick = setInterval(() => {
+    progress = Math.min(progress + Math.random() * 18, 96);
+    if (fill) fill.style.width = progress + "%";
+    if (pct) pct.textContent = Math.round(progress) + "%";
+  }, 140);
+
+  window.addEventListener("load", () => {
+    clearInterval(tick);
+    if (fill) fill.style.width = "100%";
+    if (pct) pct.textContent = "100%";
+    setTimeout(() => {
+      preloader.classList.add("hide");
+      document.body.classList.remove("loading");
+    }, 280);
   });
 }
-const _sObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { animateCounters(); _sObs.disconnect(); } });
-}, { threshold: 0.3 });
-const _sb = document.querySelector('.statsbar');
-if (_sb) _sObs.observe(_sb);
 
-/* ── PWA ── */
-let _deferredPrompt = null;
-const _installBanner = document.getElementById('installBanner');
-const _updateBanner  = document.getElementById('updateBanner');
+/* ---------- PWA: instalación ---------- */
+let deferredPrompt = null;
 
-window.addEventListener('beforeinstallprompt', e => {
+window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
-  _deferredPrompt = e;
-  if (!localStorage.getItem('hugusInstallClosed') && _installBanner) _installBanner.classList.add('show');
+  deferredPrompt = e;
 });
 
 async function instalarApp() {
-  if (_deferredPrompt) {
-    _deferredPrompt.prompt();
-    await _deferredPrompt.userChoice;
-    _deferredPrompt = null;
-    if (_installBanner) _installBanner.classList.remove('show');
-    showToast('📲 Instalación iniciada');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      showToast("¡App instalada correctamente!", "success");
+    }
+    deferredPrompt = null;
+    return;
+  }
+
+  const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (esIOS) {
+    showToast("En iPhone: toca Compartir → 'Agregar a inicio'", "success", 4500);
   } else {
-    showToast('📲 En Chrome: menú ⋮ → Agregar a pantalla principal');
+    showToast("Tu navegador ya tiene la app instalada o no es compatible.", "error", 4000);
   }
 }
-function cerrarInstallBanner() {
-  localStorage.setItem('hugusInstallClosed', '1');
-  if (_installBanner) _installBanner.classList.remove('show');
-}
-function cerrarUpdateBanner() { if (_updateBanner) _updateBanner.classList.remove('show'); }
-function actualizarAhora() {
-  if ('caches' in window) caches.keys().then(k => k.forEach(n => caches.delete(n))).finally(() => location.reload());
-  else location.reload();
-}
-function forzarActualizacion() { showToast('🔄 Buscando actualización…'); setTimeout(actualizarAhora, 700); }
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    try {
-      const reg = await navigator.serviceWorker.register('/sw.js');
-      reg.addEventListener('updatefound', () => {
-        const nw = reg.installing;
-        nw?.addEventListener('statechange', () => {
-          if (nw.state === 'installed' && navigator.serviceWorker.controller && _updateBanner)
-            _updateBanner.classList.add('show');
-        });
-      });
-    } catch (e) { console.warn('SW no registrado:', e); }
+/* ---------- PWA: forzar actualización del Service Worker ---------- */
+async function forzarActualizacion() {
+  if (!("serviceWorker" in navigator)) {
+    showToast("Tu navegador no soporta actualizaciones automáticas.", "error");
+    return;
+  }
+  try {
+    const reg = await navigator.serviceWorker.getRegistration();
+    if (!reg) {
+      showToast("No hay una versión instalada para actualizar.", "error");
+      return;
+    }
+    await reg.update();
+    showToast("Buscando actualizaciones...", "success");
+    if (reg.waiting) {
+      reg.waiting.postMessage({ type: "SKIP_WAITING" });
+      setTimeout(() => window.location.reload(), 800);
+    } else {
+      setTimeout(() => showToast("Ya tienes la última versión.", "success"), 1200);
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("No se pudo comprobar actualizaciones.", "error");
+  }
+}
+
+/* ---------- Registro del Service Worker ---------- */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch((err) => {
+      console.warn("No se pudo registrar el Service Worker:", err);
+    });
   });
 }
 
-/* ── ESCAPE PARA CERRAR MODALES ── */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    cerrarAuth && cerrarAuth();
-    cerrarTienda && cerrarTienda();
-    cerrarPerfil && cerrarPerfil();
-    cerrarAdminPanel && cerrarAdminPanel();
-  }
+/* ---------- Init global ---------- */
+document.addEventListener("DOMContentLoaded", () => {
+  const ham = document.getElementById("ham");
+  if (ham) ham.addEventListener("click", toggleMenu);
+
+  document.querySelectorAll(".mob-menu a").forEach((a) => a.addEventListener("click", closeMenu));
+
+  initScrollEffects();
+  marcarNavActivo();
+  initReveal();
+  initContadores();
+  initPreloader();
 });

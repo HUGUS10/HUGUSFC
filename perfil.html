@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Mi Perfil | HUGUS FC</title>
+  <meta name="theme-color" content="#070F21">
+  <link rel="icon" type="image/png" sizes="32x32" href="imag/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+
+  <style>
+    :root {
+      --cream: #EDE5CC;
+      --navy-dark: #070F21;     
+      --navy: #0D1B3A;          
+      --navy-light: #16295C;    
+      --red-dark: #530E0A;      
+      --red: #B83025;           
+      --gold: #C9A227;          
+      --white: #F7F5EF;
+      --grey: #93A69C;
+      --line: rgba(237,229,204,.1);
+      --radius: 14px;
+      --ff-display: 'Bebas Neue', sans-serif;
+      --ff-cond: 'Barlow Condensed', sans-serif;
+      --ff-body: 'Barlow', sans-serif;
+      --container: 1180px;
+      --nav-h: 76px;
+    }
+
+    body { margin: 0; background: var(--navy-dark); color: var(--white); font-family: var(--ff-body); overflow-x: hidden; }
+    .si { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+    .g { color: var(--gold); }
+
+    /* SOPORTE FLOATING */
+    .support-bubble-top {
+      position: fixed; top: 92px; right: 20px; z-index: 840;
+      background: #25d366; color: #fff; padding: 10px 16px; border-radius: 999px;
+      display: flex; align-items: center; gap: 8px; text-decoration: none;
+      font-family: var(--ff-cond); font-weight: 700; font-size: .82rem; text-transform: uppercase;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); transition: transform .2s;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    /* NAV SUPERIOR */
+    #mainNav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900; height: var(--nav-h);
+      display: flex; align-items: center; background: rgba(83, 14, 10, 0.85);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(201,162,39,.25); transition: background .3s;
+    }
+    #mainNav.scrolled { background: rgba(56, 7, 5, 0.95); height: 64px; }
+    .nav-i { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-brand-logo { width: 40px; height: 40px; }
+    .logo-round { border-radius: 50%; overflow: hidden; background: #FBF9F2; border: 1px solid rgba(201,162,39,.5); }
+    .logo-round img { width: 100%; height: 100%; }
+    .nav-brand-text { font-family: var(--ff-display); font-size: 1.25rem; color: var(--white); }
+
+    /* CONTENEDOR DE PERFIL */
+    .profile-card {
+      background: var(--navy); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 40px; margin-top: 40px; display: flex; align-items: center; gap: 30px;
+    }
+    .profile-avatar {
+      width: 100px; height: 100px; border-radius: 50%; background: var(--gold); color: var(--navy-dark);
+      font-family: var(--ff-display); font-size: 3rem; display: flex; align-items: center; justify-content: center;
+    }
+    .profile-details h3 { font-family: var(--ff-display); font-size: 2.2rem; margin: 0 0 6px; }
+    .profile-details p { color: var(--grey); margin: 0 0 16px; font-size: 1rem; }
+    .badge-status {
+      display: inline-block; background: rgba(201, 162, 39, 0.15); color: var(--gold);
+      font-family: var(--ff-cond); font-size: .78rem; text-transform: uppercase; font-weight: 700;
+      padding: 6px 14px; border-radius: 6px; border: 1px solid rgba(201,162,39,0.3);
+    }
+
+    /* FOOTER */
+    .footer-strip { height: 4px; background: linear-gradient(90deg, var(--gold), var(--red), var(--navy)); }
+    footer { background: var(--navy-dark); border-top: 1px solid var(--line); padding: 60px 0 30px; }
+    .footer-inner { max-width: var(--container); margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .footer-cr { font-size: .78rem; color: var(--grey); }
+
+    /* BARRA INFERIOR DE NAVEGACIÓN MÓVIL */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 800; display: none;
+      background: rgba(7, 15, 33, 0.96); backdrop-filter: blur(12px); border-top: 1px solid var(--line);
+      padding: 8px 18px calc(8px + env(safe-area-inset-bottom)); align-items: center; justify-content: space-around;
+    }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--grey); font-family: var(--ff-cond); font-size: .62rem; letter-spacing: .05em; text-transform: uppercase; text-decoration: none; }
+    .nav-item.active { color: var(--gold); }
+    .nav-icon { font-size: 1.15rem; }
+    .nav-center { margin-top: -22px; }
+    .nav-icon-circle {
+      width: 52px; height: 52px; border-radius: 50%; background: var(--gold); color: var(--navy-dark);
+      display: flex; align-items: center; justify-content: center; font-size: 1.45rem; box-shadow: 0 8px 20px rgba(201,162,39,.4);
+      border: 2px solid var(--navy-dark);
+    }
+
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+    }
+    @media (max-width: 720px) {
+      body { padding-bottom: 75px; }
+      .bottom-nav { display: flex; }
+      .profile-card { flex-direction: column; text-align: center; padding: 30px; }
+      .support-bubble-top { top: 76px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SOPORTE -->
+  <a href="https://wa.me/51935419810?text=Hola%20HUGUS%20FC!%20Soporte%20sobre%20mi%20perfil." target="_blank" class="support-bubble-top">
+    <span>💬</span> Soporte
+  </a>
+
+  <!-- NAVEGACIÓN -->
+  <nav id="mainNav">
+    <div class="nav-i si">
+      <a href="index.html" class="nav-brand">
+        <div class="nav-brand-logo logo-round"><img src="imag/logo.png" alt="HUGUS"></div>
+        <span class="nav-brand-text">HUGUS FC</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="tienda.html">Tienda Oficial</a></li>
+        <li><a href="resultados.html">Resultados</a></li>
+        <li><a href="calendario.html">Calendario</a></li>
+        <li><a href="noticias.html">Noticias</a></li>
+      </ul>
+      <a href="login.html" class="btn-nav-acceder">Acceder</a>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <section style="padding: 130px 0 60px;">
+    <div class="si">
+      <div class="stag">Hincha Oficial</div>
+      <h2 class="stit">MI PERFIL DE <span class="g">HINCHA</span></h2>
+      <p class="sdesc">Gestiona tus datos personales, consulta tus beneficios de membresía y accede de manera segura.</p>
+
+      <div class="profile-card">
+        <div class="profile-avatar">H</div>
+        <div class="profile-details">
+          <h3 id="userName">Hugo Laban</h3>
+          <p id="userEmail">invitado_fc@hugus.com</p>
+          <span class="badge-status">Socio Activo Premium</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer-strip"></div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-cr">© 2026 <span>HUGUS FC</span> — Todos los derechos reservados</div>
+      <div class="footer-cr">Fundador por <span>Hugo Laban Guerrero</span></div>
+    </div>
+  </footer>
+
+  <!-- BARRA INFERIOR (MÓVIL) -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Inicio</span>
+    </a>
+    <a href="resultados.html" class="nav-item nav-center">
+      <span class="nav-icon-circle">⚽</span>
+      <span class="nav-label">Resultados</span>
+    </a>
+    <a href="perfil.html" class="nav-item active">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label">Perfil</span>
+    </a>
+  </nav>
+
+</body>
+</html>

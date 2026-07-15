@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario | HUGUS FC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .match-card {
+            background-color: var(--bg-card);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .match-badge {
+            background-color: var(--bg-navbar);
+            color: var(--text-white);
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 12px;
+            border: 1px solid var(--primary-gold);
+        }
+        .teams {
+            font-size: 1.4rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .teams span.vs {
+            color: var(--primary-gold);
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-container">
+            <img src="imag/logo.png" alt="Logo" class="loader-logo">
+            <div class="spinner"></div>
+            <div class="loader-text">Cargando Fixture</div>
+        </div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="imag/logo.png" alt="Logo" class="logo-img">
+                <span class="brand-name">HUGUS FC</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">INICIO</a></li>
+                <li><a href="calendario.html" class="active">CALENDARIO</a></li>
+                <li><a href="tabla.html">TABLA</a></li>
+                <li><a href="tienda.html">TIENDA</a></li>
+            </ul>
+            <a href="login.html" class="profile-avatar-btn">A</a>
+        </nav>
+    </header>
+
+    <main class="section-container">
+        <span class="store-sub-gold">Temporada Apertura 2026</span>
+        <h2 class="store-main-title">FIXTURE Y <span>PARTIDOS</span></h2>
+        <p class="store-desc">Acompaña a la escuadra dorada en cada fecha del torneo local.</p>
+
+        <div class="match-card">
+            <div>
+                <span class="match-badge">FECHA 1</span>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 5px;">Domingo 19 de Julio - 3:00 PM</p>
+                <div class="teams">
+                    HUGUS FC <span class="vs">VS</span> Deportivo Colorado
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <p style="font-weight: 900;">Estadio Municipal</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Caserío El Colorado</p>
+            </div>
+        </div>
+
+        <div class="match-card">
+            <div>
+                <span class="match-badge">FECHA 2</span>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 5px;">Domingo 26 de Julio - 4:30 PM</p>
+                <div class="teams">
+                    Real Libertad <span class="vs">VS</span> HUGUS FC
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <p style="font-weight: 900;">Estadio Libertad</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Sede Principal</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 <span>HUGUS FC</span>. Caserío El Colorado.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Noticias | HUGUS FC</title>
+  <meta name="theme-color" content="#163327">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imag/logo.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN SUPERIOR (igual que en calendario.html) -->
+  <nav id="mainNav" class="top">
+    <div class="nav-i">
+      <a href="index.html" class="nav-brand">
+        <div class="nav-brand-logo logo-round"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div>
+        <span class="nav-brand-text">HUGUS FC</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="index.html#nosotros">Nosotros</a></li>
+        <li><a href="index.html#kit">Kit</a></li>
+        <li><a href="index.html#galeria">Galería</a></li>
+        <li><a href="calendario.html">Calendario</a></li>
+        <li><a href="noticias.html">Noticias</a></li>
+        <li><a href="tabla.html">Tabla</a></li>
+        <li><a href="resultados.html">Resultados</a></li>
+        <li><a href="index.html#comunidad">Comunidad</a></li>
+        <li><a href="index.html#contacto">Contacto</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="login.html" class="btn-nav-acceder" id="btnAcceder">Acceder</a>
+        <div class="user-menu-container" id="userMenuContainer" style="display:none;">
+          <button class="user-avatar-btn" id="userAvatarBtn" onclick="toggleUserMenu()">H</button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="perfil.html" class="user-dropdown-item">👤 Mi Perfil</a>
+            <a href="tienda.html" class="user-dropdown-item">🛒 Tienda Oficial</a>
+            <a href="admin.html" class="user-dropdown-item admin-link" id="adminLinkBtn" style="display:none;">⚙️ Panel Admin</a>
+            <div class="user-dropdown-divider"></div>
+            <button class="user-dropdown-item logout" onclick="logout()">🚪 Cerrar sesión</button>
+          </div>
+        </div>
+        <button class="hamburger" id="ham"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MENÚ MÓVIL (igual) -->
+  <div class="mob-menu" id="mobMenu">
+    <ul>
+      <li><a href="index.html#inicio" onclick="closeMenu()">Inicio</a></li>
+      <li><a href="index.html#nosotros" onclick="closeMenu()">Nosotros</a></li>
+      <li><a href="index.html#kit" onclick="closeMenu()">Kit</a></li>
+      <li><a href="index.html#galeria" onclick="closeMenu()">Galería</a></li>
+      <li><a href="calendario.html" onclick="closeMenu()">Calendario</a></li>
+      <li><a href="noticias.html" onclick="closeMenu()">Noticias</a></li>
+      <li><a href="tabla.html" onclick="closeMenu()">Tabla</a></li>
+      <li><a href="resultados.html" onclick="closeMenu()">Resultados</a></li>
+      <li><a href="index.html#comunidad" onclick="closeMenu()">Comunidad</a></li>
+      <li><a href="index.html#contacto" onclick="closeMenu()">Contacto</a></li>
+    </ul>
+    <div class="mob-acceder" id="mobAccederBtn" onclick="closeMenu(); window.location.href='login.html'">⚽ Acceder / Registrarse</div>
+  </div>
+
+  <!-- ===== CONTENIDO ===== -->
+  <section class="noticias-sec" style="padding-top:100px;">
+    <div class="si">
+      <div class="stag">Novedades</div>
+      <h2 class="stit">ÚLTIMAS <span class="g">NOTICIAS</span></h2>
+      <p class="sdesc">Entérate de todo lo que pasa en HUGUS FC.</p>
+      <div class="noticias-grid" id="noticiasGrid">
+        <div class="noticias-empty">⏳ Cargando noticias...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer-strip"></div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="fb-name">HUGUS FC</div>
+          <div class="fb-lema">Dios · Familia · Fútbol</div>
+          <p class="fb-desc">Club de fútbol fundado en Abril 2026 en el Caserío El Colorado, La Libertad, Perú. Pasión, disciplina y orgullo en cada partido.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Club</h4>
+          <ul>
+            <li><a href="index.html#nosotros">Historia</a></li>
+            <li><a href="index.html#valores">Valores</a></li>
+            <li><a href="index.html#plantilla">Plantilla</a></li>
+            <li><a href="index.html#kit">Kit Oficial</a></li>
+            <li><a href="index.html#galeria">Galería</a></li>
+            <li><a href="tabla.html">Tabla</a></li>
+            <li><a href="noticias.html">Noticias</a></li>
+            <li><a href="calendario.html">Calendario</a></li>
+            <li><a href="index.html#comunidad">Comunidad</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contacto</h4>
+          <p>
+            📱 <a href="https://wa.me/51935419810" target="_blank">+51 935 419 810</a><br><br>
+            ✉️ <a href="mailto:lg_hugusfc@hotmail.com">LG_HUGUSFC@hotmail.com</a><br><br>
+            📍 C. El Colorado, La Libertad, Perú
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-cr">© 2026 <span>HUGUS FC</span> — Todos los derechos reservados</div>
+        <div class="footer-cr">Fundado por <span>Hugo Laban Guerrero</span> · Est. Abril 2026</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== BARRA INFERIOR ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="index.html" class="nav-item" id="navHome">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Inicio</span>
+    </a>
+    <a href="tienda.html" class="nav-item nav-center" id="navShop">
+      <span class="nav-icon-circle">🛒</span>
+      <span class="nav-label">Tienda</span>
+    </a>
+    <a href="perfil.html" class="nav-item" id="navProfile">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label">Perfil</span>
+    </a>
+  </nav>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/noticias.js"></script>
+</body>
+</html>

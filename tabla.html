@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla | HUGUS FC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .table-wrap {
+            background-color: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(226,174,29,0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+        th {
+            background-color: rgba(0,0,0,0.4);
+            color: var(--primary-gold);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 1px;
+            padding: 18px 20px;
+        }
+        td {
+            padding: 18px 20px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        tr.active-team {
+            background-color: rgba(226, 174, 29, 0.08);
+            font-weight: 700;
+        }
+        tr.active-team td {
+            border-bottom: 1px solid rgba(226, 174, 29, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader-container">
+            <img src="imag/logo.png" alt="Logo" class="loader-logo">
+            <div class="spinner"></div>
+            <div class="loader-text">Cargando Posiciones</div>
+        </div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="imag/logo.png" alt="Logo" class="logo-img">
+                <span class="brand-name">HUGUS FC</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">INICIO</a></li>
+                <li><a href="calendario.html">CALENDARIO</a></li>
+                <li><a href="tabla.html" class="active">TABLA</a></li>
+                <li><a href="tienda.html">TIENDA</a></li>
+            </ul>
+            <a href="login.html" class="profile-avatar-btn">A</a>
+        </nav>
+    </header>
+
+    <main class="section-container">
+        <span class="store-sub-gold">Estadísticas En Vivo</span>
+        <h2 class="store-main-title">TABLA DE <span>POSICIONES</span></h2>
+        <p class="store-desc">Sigue el puntaje acumulado y nuestra ubicación hacia la gran copa.</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Club</th>
+                        <th>PJ</th>
+                        <th>PG</th>
+                        <th>PE</th>
+                        <th>PP</th>
+                        <th>GF</th>
+                        <th>GC</th>
+                        <th>PTS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>CD El Colorado</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>6</td>
+                        <td>2</td>
+                        <td><strong>7</strong></td>
+                    </tr>
+                    <tr class="active-team">
+                        <td style="color: var(--primary-gold);">2</td>
+                        <td style="color: var(--primary-gold);">🏆 HUGUS FC</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td style="color: var(--primary-gold);"><strong>6</strong></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Real Libertad</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>3</td>
+                        <td>4</td>
+                        <td><strong>4</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 <span>HUGUS FC</span>. Caserío El Colorado.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+        });
+    </script>
+</body>
+</html>

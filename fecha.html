@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Ficha del Partido | HUGUS FC</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imag/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN SUPERIOR -->
+  <nav id="mainNav" class="top">...</nav>
+  <div class="mob-menu" id="mobMenu">...</div>
+
+  <!-- CONTENIDO -->
+  <section class="ficha-sec" style="padding-top:100px;min-height:70vh;background:var(--white);">
+    <div class="si">
+      <div class="stag">Partido Oficial</div>
+      <h2 class="stit" id="fichaTitulo">Cargando partido...</h2>
+      <p class="sdesc" id="fichaDesc">Información completa del encuentro.</p>
+      <div class="ficha-card reveal" id="fichaCard">
+        <div class="ficha-header" style="text-align:center;padding:40px;">
+          <p style="color:var(--grey);">Cargando...</p>
+        </div>
+      </div>
+      <div style="margin-top:30px;text-align:center;">
+        <a href="calendario.html" class="btn-o">← Volver al Calendario</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>...</footer>
+  <!-- BARRA INFERIOR -->
+  <nav class="bottom-nav" id="bottomNav">...</nav>
+  <!-- TOAST -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    // Obtener ID del partido desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const partidoId = urlParams.get('id');
+
+    const fichaCard = document.getElementById('fichaCard');
+    const fichaTitulo = document.getElementById('fichaTitulo');
+    const fichaDesc = document.getElementById('fichaDesc');
+
+    if (!partidoId) {
+      fichaTitulo.innerHTML = 'Partido <span class="g">No Encontrado</span>';
+      fichaDesc.textContent = 'No se especificó un ID de partido.';
+      fichaCard.innerHTML = `<div class="ficha-header" style="text-align:center;padding:40px;">
+        <p style="color:var(--grey);">ID inválido. <a href="calendario.html">Volver al calendario</a></p>
+      </div>`;
+    } else {
+      db.collection('partidos').doc(partidoId).get()
+        .then(doc => {
+          if (!doc.exists) {
+            fichaTitulo.innerHTML = 'Partido <span class="g">No Encontrado</span>';
+            fichaDesc.textContent = 'El partido solicitado no existe.';
+            fichaCard.innerHTML = `<div class="ficha-header" style="text-align:center;padding:40px;">
+              <p style="color:var(--grey);">Partido no encontrado. <a href="calendario.html">Volver al calendario</a></p>
+            </div>`;
+            return;
+          }
+
+          const p = doc.data();
+          const fo = new Date(p.fecha + 'T12:00:00');
+          const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+          const DIAS  = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+          const fLg = DIAS[fo.getUTCDay()] + ' ' + fo.getUTCDate() + ' de ' + MESES[fo.getUTCMonth()] + ' 2026';
+          const ri = p.rival.substring(0,2).toUpperCase();
+
+          fichaTitulo.innerHTML = `HUGUS FC <span class="g">VS</span> ${p.rival}`;
+          fichaDesc.textContent = `Información del partido del ${fLg}.`;
+
+          const esJ = p.estado === 'jugado';
+          const esE = p.estado === 'en_vivo';
+
+          const resHTML = (esJ && p.golesHUGUS !== undefined)
+            ? `<div class="ficha-info-item" style="grid-column:span 2;text-align:center;background:linear-gradient(135deg,rgba(201,162,39,.14),rgba(201,162,39,.04));border-color:rgba(201,162,39,.4)">
+                 <div class="ficha-info-label">🏆 RESULTADO FINAL</div>
+                 <div class="ficha-info-val" style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold)">HUGUS FC ${p.golesHUGUS} — ${p.golesRival} ${p.rival}</div>
+               </div>`
+            : '';
+
+          const golesHTML = (esJ && p.goles && p.goles.length)
+            ? `<div class="ficha-info-item" style="grid-column:span 2">
+                 <div class="ficha-info-label">⚽ Detalle de Goles</div>
+                 <ul class="goles-lista" style="margin-top:8px;">${p.goles.map(g => `<li><span class="gol-minuto">${g.minuto}'</span><span class="gol-jugador">${g.jugador}</span><span class="gol-equipo">${g.equipo}</span></li>`).join('')}</ul>
+               </div>`
+            : '';
+
+          fichaCard.innerHTML = `
+            <div class="ficha-header">
+              <div class="ficha-teams">
+                <div class="ficha-team"><div class="ficha-emblem"><img src="imag/escudo_hugusfc.png" alt="HUGUS FC"></div><div class="ficha-teamname">HUGUS FC</div></div>
+                <div class="ficha-vs">VS</div>
+                <div class="ficha-team"><div class="ficha-emblem"><span class="ficha-emblem-txt">${ri}</span></div><div class="ficha-teamname">${p.rival}</div></div>
+              </div>
+            </div>
+            <div class="ficha-body">
+              <div class="ficha-info-grid">
+                <div class="ficha-info-item"><div class="ficha-info-label">📅 Fecha</div><div class="ficha-info-val">${fLg}</div></div>
+                <div class="ficha-info-item"><div class="ficha-info-label">⏰ Hora</div><div class="ficha-info-val">${p.hora}</div></div>
+                <div class="ficha-info-item"><div class="ficha-info-label">📍 Lugar</div><div class="ficha-info-val">${p.lugar || 'Por definir'}</div></div>
+                <div class="ficha-info-item"><div class="ficha-info-label">🏆 Competencia</div><div class="ficha-info-val">${p.competencia || 'Partido Oficial'}</div></div>
+                ${resHTML}${golesHTML}
+              </div>
+              <div class="previa-box">
+                <div class="previa-title">${esJ ? 'Resumen del Partido' : esE ? 'Partido en Juego' : 'Previa del Partido'}</div>
+                <p class="previa-txt">${esJ ? `HUGUS FC disputó este encuentro frente a ${p.rival}.` : esE ? 'El partido está en juego ahora mismo. Sigue el marcador en tiempo real.' : `HUGUS FC disputará un encuentro frente a ${p.rival} el ${fLg} a las ${p.hora}.`}</p>
+              </div>
+            </div>`;
+        })
+        .catch(err => {
+          console.error('Error al cargar partido:', err);
+          fichaTitulo.innerHTML = 'Error <span class="g">al cargar</span>';
+          fichaDesc.textContent = 'Hubo un problema al obtener los datos del partido.';
+          fichaCard.innerHTML = `<div class="ficha-header" style="text-align:center;padding:40px;">
+            <p style="color:var(--grey);">Error: ${err.message}</p>
+          </div>`;
+        });
+    }
+  </script>
+</body>
+</html>

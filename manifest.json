@@ -1,21 +1,21 @@
 {
-    "name": "HUGUS FC",
-    "short_name": "HUGUS FC",
-    "description": "Web Oficial del club de fútbol HUGUS FC",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#0f150f",
-    "theme_color": "#0f150f",
-    "icons": [
-        {
-            "src": "imag/logo.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "imag/logo.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ]
+  "name": "HUGUS FC Oficial",
+  "short_name": "HUGUS FC",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050b14",
+  "theme_color": "#4c0f16",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "imag/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "imag/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }

@@ -1,127 +1,244 @@
-// ============================================================
-// HUGUS FC · noticias.js — CRUD noticias Firebase
-// ============================================================
+/* ==========================================================================
+   HUGUS FC — noticias.js
+   Noticias del club: renderizado público en tiempo real + CRUD desde admin.
+   Depende de firebase.js (db, storage) y ui.js (showToast).
+   ========================================================================== */
 
-let _noticiaEditandoId  = null;
-let _noticiaFotoBase64  = null;
+const MESES_LARGOS_ES = [
+  "enero","febrero","marzo","abril","mayo","junio",
+  "julio","agosto","septiembre","octubre","noviembre","diciembre"
+];
 
-/* ── RENDER PÚBLICO ── */
-function renderNoticias() {
-  db.collection(COL.NOTICIAS).orderBy('fecha','desc').get().then(snap => {
-    const noticias = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    const grid = document.getElementById('noticiasGrid');
-    if (!grid) return;
-    if (!noticias.length) {
-      grid.innerHTML = '<div class="noticias-empty">📰 Las noticias se publicarán próximamente</div>'; return;
-    }
-    grid.innerHTML = noticias.map(n => {
-      const f   = new Date(n.fecha+'T12:00:00').toLocaleDateString('es-PE',{day:'2-digit',month:'long',year:'numeric'});
-      const img = n.foto
-        ? `<div class="noticia-img-wrap"><img src="${n.foto}" class="noticia-img" alt="${n.titulo}" loading="lazy"></div>`
-        : `<div class="noticia-img-placeholder">📰</div>`;
-      return `<div class="noticia-card reveal-up">
-        ${img}
-        <div class="noticia-body">
-          <div class="noticia-cat">${n.categoria||'General'}</div>
-          <div class="noticia-titulo">${n.titulo}</div>
-          <div class="noticia-resumen">${n.resumen}</div>
-          <div class="noticia-fecha">📅 ${f}</div>
-        </div>
-      </div>`;
-    }).join('');
-    /* Re-observe new cards */
-    grid.querySelectorAll('.reveal-up').forEach(el => revObs && revObs.observe(el));
-  }).catch(console.error);
+function formatearFechaLarga(fechaISO) {
+  if (!fechaISO) return "";
+  const [y, m, d] = fechaISO.split("-").map(Number);
+  if (!y || !m || !d) return fechaISO;
+  return `${d} de ${MESES_LARGOS_ES[m - 1]} de ${y}`;
 }
 
-/* ── ADMIN ── */
+/* ==========================================================================
+   PÚBLICO
+   ========================================================================== */
+
+function iniciarListenerNoticias() {
+  const grid = document.getElementById("noticiasGrid");
+  if (!grid || typeof db === "undefined") return;
+
+  db.collection("noticias")
+    .orderBy("fecha", "desc")
+    .onSnapshot(
+      (snap) => {
+        const noticias = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        renderNoticias(noticias);
+      },
+      (err) => {
+        console.error("Error escuchando noticias:", err);
+        grid.innerHTML = `<div class="noticias-empty">No se pudieron cargar las noticias.</div>`;
+      }
+    );
+}
+
+function renderNoticias(noticias) {
+  const grid = document.getElementById("noticiasGrid");
+  if (!grid) return;
+
+  if (!noticias.length) {
+    grid.innerHTML = `<div class="noticias-empty">📰 Aún no hay noticias publicadas. ¡Vuelve pronto!</div>`;
+    return;
+  }
+
+  grid.innerHTML = noticias
+    .map(
+      (n) => `
+    <article class="noticia-card">
+      <img class="noticia-img" src="${n.foto || "imag/escudo_hugusfc.png"}" alt="${escapeHTML(n.titulo || "Noticia HUGUS FC")}" loading="lazy">
+      <div class="noticia-body">
+        <span class="noticia-cat">${escapeHTML(n.categoria || "Club")}</span>
+        <h3 class="noticia-title">${escapeHTML(n.titulo || "Sin título")}</h3>
+        <p class="noticia-resumen">${escapeHTML(n.resumen || "")}</p>
+        <span class="noticia-fecha">${formatearFechaLarga(n.fecha)}</span>
+      </div>
+    </article>`
+    )
+    .join("");
+}
+
+/* ==========================================================================
+   ADMIN — CRUD de noticias
+   ========================================================================== */
+
+let noticiaFotoBase64 = null;
+
 function previewNoticiaFoto(input) {
-  const file = input.files[0];
-  if (!file) return;
-  if (file.size > 2*1024*1024) { showToast('Imagen no puede superar 2 MB','error'); input.value=''; return; }
+  const file = input.files?.[0];
+  const preview = document.getElementById("noticiaFotoPreview");
+  if (!file || !preview) return;
+
+  if (file.size > 2 * 1024 * 1024) {
+    showToast("La imagen supera los 2 MB permitidos.", "error");
+    input.value = "";
+    return;
+  }
+  if (!["image/png", "image/jpeg", "image/webp"].includes(file.type)) {
+    showToast("Formato no soportado. Usa PNG, JPG o WEBP.", "error");
+    input.value = "";
+    return;
+  }
+
   const reader = new FileReader();
-  reader.onload = e => {
-    const p = document.getElementById('noticiaFotoPreview');
-    if (p) { p.src = e.target.result; p.classList.add('show'); }
-    _noticiaFotoBase64 = e.target.result;
+  reader.onload = (e) => {
+    noticiaFotoBase64 = e.target.result;
+    preview.src = noticiaFotoBase64;
+    preview.classList.add("show");
   };
   reader.readAsDataURL(file);
 }
 
-function cancelarNoticia() {
-  _noticiaEditandoId = null;
-  _noticiaFotoBase64 = null;
-  ['noticiaEditId','noticiaTitulo','noticiaResumen','noticiaContenido','noticiaFecha'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value='';
-  });
-  const cat = document.getElementById('noticiaCategoria'); if(cat) cat.value='Partido';
-  const fi  = document.getElementById('noticiaFotoInput'); if(fi) fi.value='';
-  const p   = document.getElementById('noticiaFotoPreview'); if(p) { p.src=''; p.classList.remove('show'); }
-  const btn = document.getElementById('btnCancelarNoticia'); if(btn) btn.style.display='none';
+async function subirFotoNoticia(id) {
+  const input = document.getElementById("noticiaFotoInput");
+  const file = input?.files?.[0];
+  if (!file) return null;
+
+  const ref = storage.ref(`noticias/${id}_${Date.now()}_${file.name}`);
+  const snapshot = await ref.put(file);
+  return await snapshot.ref.getDownloadURL();
 }
 
-function editarNoticia(id) {
-  db.collection(COL.NOTICIAS).doc(id).get().then(doc => {
+async function guardarNoticia() {
+  const id = document.getElementById("noticiaEditId")?.value;
+
+  const data = {
+    titulo: document.getElementById("noticiaTitulo")?.value.trim() || "",
+    categoria: document.getElementById("noticiaCategoria")?.value || "Club",
+    fecha: document.getElementById("noticiaFecha")?.value || new Date().toISOString().slice(0, 10),
+    resumen: document.getElementById("noticiaResumen")?.value.trim() || "",
+    contenido: document.getElementById("noticiaContenido")?.value.trim() || ""
+  };
+
+  if (!data.titulo || !data.resumen) {
+    showToast("Completa al menos título y resumen.", "error");
+    return;
+  }
+
+  try {
+    let docId = id;
+    if (docId) {
+      await db.collection("noticias").doc(docId).update(data);
+    } else {
+      data.creado = firebase.firestore.FieldValue.serverTimestamp();
+      const ref = await db.collection("noticias").add(data);
+      docId = ref.id;
+    }
+
+    const input = document.getElementById("noticiaFotoInput");
+    if (input?.files?.[0]) {
+      const url = await subirFotoNoticia(docId);
+      if (url) await db.collection("noticias").doc(docId).update({ foto: url });
+    }
+
+    showToast(id ? "Noticia actualizada" : "Noticia publicada", "success");
+    cancelarNoticia();
+    cargarNoticiasAdmin();
+  } catch (err) {
+    console.error(err);
+    showToast("Error al guardar la noticia", "error");
+  }
+}
+
+function cancelarNoticia() {
+  document.getElementById("noticiaEditId").value = "";
+  document.getElementById("noticiaTitulo").value = "";
+  document.getElementById("noticiaCategoria").value = "Partido";
+  document.getElementById("noticiaFecha").value = "";
+  document.getElementById("noticiaResumen").value = "";
+  document.getElementById("noticiaContenido").value = "";
+  document.getElementById("noticiaFotoInput").value = "";
+  const preview = document.getElementById("noticiaFotoPreview");
+  if (preview) { preview.src = ""; preview.classList.remove("show"); }
+  noticiaFotoBase64 = null;
+  document.getElementById("btnCancelarNoticia").style.display = "none";
+}
+
+async function editarNoticiaAdmin(id) {
+  try {
+    const doc = await db.collection("noticias").doc(id).get();
     if (!doc.exists) return;
     const n = doc.data();
-    _noticiaEditandoId = id;
-    document.getElementById('noticiaEditId').value     = id;
-    document.getElementById('noticiaTitulo').value     = n.titulo;
-    document.getElementById('noticiaResumen').value    = n.resumen;
-    document.getElementById('noticiaContenido').value  = n.contenido||'';
-    document.getElementById('noticiaFecha').value      = n.fecha;
-    document.getElementById('noticiaCategoria').value  = n.categoria||'Partido';
-    if (n.foto) {
-      const p = document.getElementById('noticiaFotoPreview');
-      if(p) { p.src=n.foto; p.classList.add('show'); }
-      _noticiaFotoBase64 = n.foto;
+
+    document.getElementById("noticiaEditId").value = id;
+    document.getElementById("noticiaTitulo").value = n.titulo || "";
+    document.getElementById("noticiaCategoria").value = n.categoria || "Club";
+    document.getElementById("noticiaFecha").value = n.fecha || "";
+    document.getElementById("noticiaResumen").value = n.resumen || "";
+    document.getElementById("noticiaContenido").value = n.contenido || "";
+
+    const preview = document.getElementById("noticiaFotoPreview");
+    if (preview && n.foto) {
+      preview.src = n.foto;
+      preview.classList.add("show");
     }
-    const btn = document.getElementById('btnCancelarNoticia'); if(btn) btn.style.display='inline-flex';
-    document.getElementById('adminNoticiaForm').scrollIntoView({ behavior:'smooth' });
-  }).catch(console.error);
+
+    document.getElementById("btnCancelarNoticia").style.display = "inline-flex";
+    document.getElementById("adminNoticiaForm").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (err) {
+    console.error(err);
+    showToast("No se pudo cargar la noticia", "error");
+  }
 }
 
-function eliminarNoticia(id) {
-  if (!confirm('¿Eliminar esta noticia?')) return;
-  db.collection(COL.NOTICIAS).doc(id).delete()
-    .then(() => { showToast('🗑 Noticia eliminada','error'); cargarTablaNoticiasAdmin(); renderNoticias(); })
-    .catch(console.error);
+async function eliminarNoticiaAdmin(id) {
+  if (!confirm("¿Eliminar esta noticia?")) return;
+  try {
+    await db.collection("noticias").doc(id).delete();
+    showToast("Noticia eliminada", "success");
+    cargarNoticiasAdmin();
+  } catch (err) {
+    console.error(err);
+    showToast("Error al eliminar la noticia", "error");
+  }
 }
 
-function guardarNoticia() {
-  const titulo    = document.getElementById('noticiaTitulo').value.trim();
-  const categoria = document.getElementById('noticiaCategoria').value;
-  const fecha     = document.getElementById('noticiaFecha').value;
-  const resumen   = document.getElementById('noticiaResumen').value.trim();
-  const contenido = document.getElementById('noticiaContenido').value.trim();
-  if (!titulo||!fecha||!resumen) { showToast('Título, fecha y resumen son obligatorios','error'); return; }
-  const data = { titulo, categoria, fecha, resumen, contenido, foto: _noticiaFotoBase64||null };
-  const op = _noticiaEditandoId
-    ? db.collection(COL.NOTICIAS).doc(_noticiaEditandoId).update(data)
-    : db.collection(COL.NOTICIAS).add(data);
-  op.then(() => {
-    showToast(_noticiaEditandoId ? '✏️ Noticia actualizada' : '📰 Noticia publicada');
-    cancelarNoticia();
-    cargarTablaNoticiasAdmin();
-    renderNoticias();
-  }).catch(e => { console.error(e); showToast('Error al guardar','error'); });
+async function cargarNoticiasAdmin() {
+  const tbody = document.getElementById("adminNoticiasTableBody");
+  if (!tbody) return;
+  try {
+    const snap = await db.collection("noticias").orderBy("fecha", "desc").get();
+    const noticias = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+
+    if (!noticias.length) {
+      tbody.innerHTML = `<tr><td colspan="5" class="admin-no-data">No hay noticias publicadas aún.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = noticias
+      .map(
+        (n) => `
+      <tr>
+        <td><img src="${n.foto || "imag/escudo_hugusfc.png"}" alt="" style="width:44px;height:44px;object-fit:cover;border-radius:8px"></td>
+        <td>${escapeHTML(n.titulo || "—")}</td>
+        <td>${escapeHTML(n.categoria || "—")}</td>
+        <td>${formatearFechaLarga(n.fecha)}</td>
+        <td>
+          <button class="action-btn" onclick="editarNoticiaAdmin('${n.id}')" title="Editar">✏️</button>
+          <button class="action-btn" onclick="eliminarNoticiaAdmin('${n.id}')" title="Eliminar">🗑️</button>
+        </td>
+      </tr>`
+      )
+      .join("");
+  } catch (err) {
+    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="5" class="admin-no-data">Error al cargar las noticias.</td></tr>`;
+  }
 }
 
-function cargarTablaNoticiasAdmin() {
-  db.collection(COL.NOTICIAS).orderBy('fecha','desc').get().then(snap => {
-    const noticias = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-    const tbody = document.getElementById('adminNoticiasTableBody');
-    if (!tbody) return;
-    if (!noticias.length) { tbody.innerHTML='<tr><td colspan="5" class="admin-no-data">No hay noticias.</td></tr>'; return; }
-    tbody.innerHTML = noticias.map(n => {
-      const f   = new Date(n.fecha+'T12:00:00').toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'});
-      const img = n.foto
-        ? `<img src="${n.foto}" style="width:44px;height:44px;object-fit:cover;border-radius:8px" alt="">`
-        : `<div style="width:44px;height:44px;background:var(--dark3);border-radius:8px;display:flex;align-items:center;justify-content:center">📰</div>`;
-      return `<tr><td>${img}</td><td style="max-width:200px;white-space:normal">${n.titulo}</td>
-        <td><span class="admin-badge proximo">${n.categoria||'General'}</span></td><td>${f}</td>
-        <td><button class="btn-admin-edit" onclick="editarNoticia('${n.id}')">✏️</button>
-            <button class="btn-admin-delete" onclick="eliminarNoticia('${n.id}')">🗑</button></td></tr>`;
-    }).join('');
-  }).catch(console.error);
+if (typeof escapeHTML !== "function") {
+  function escapeHTML(str) {
+    return String(str).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  iniciarListenerNoticias();
+});
