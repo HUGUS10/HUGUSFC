@@ -37,6 +37,11 @@
       --line: rgba(237, 229, 204, .1);
       --shadow: 0 20px 50px -20px rgba(0, 0, 0, .7);
       --radius: 14px;
+      --win: #3C8A5B;
+      --win-bg: rgba(60, 138, 91, .12);
+      --draw: #93A69C;
+      --draw-bg: rgba(147, 166, 156, .1);
+      --loss-bg: rgba(184, 48, 37, .12);
       --ff-display: 'Bebas Neue', sans-serif;
       --ff-cond: 'Barlow Condensed', sans-serif;
       --ff-body: 'Barlow', sans-serif;
@@ -107,7 +112,7 @@
       color: var(--grey);
       font-size: 1rem;
       max-width: 560px;
-      margin: 0 0 44px;
+      margin: 0 0 32px;
     }
 
     /* ---------- PRELOADER ---------- */
@@ -517,33 +522,105 @@
       padding: 130px 0 60px;
     }
 
-    /* TARJETAS DE RESULTADOS (más detalladas) */
+    /* ---- Barra de filtros / resumen rápido ---- */
+    .res-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 34px;
+    }
+    .res-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(22, 41, 92, 0.4);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-family: var(--ff-cond);
+      font-size: .82rem;
+      letter-spacing: .04em;
+      color: var(--grey);
+    }
+    .res-chip b {
+      font-family: var(--ff-display);
+      font-size: 1.1rem;
+      letter-spacing: .04em;
+      color: var(--white);
+      margin-right: 2px;
+    }
+    .res-chip.win b { color: var(--win); }
+    .res-chip.draw b { color: var(--draw); }
+    .res-chip.loss b { color: var(--red); }
+
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+    .filter-tab {
+      font-family: var(--ff-cond);
+      font-size: .76rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--grey);
+      background: transparent;
+      transition: all .2s ease;
+    }
+    .filter-tab:hover {
+      border-color: rgba(201, 162, 39, .4);
+      color: var(--cream);
+    }
+    .filter-tab.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--navy-dark);
+    }
+
+    /* TARJETAS DE RESULTADOS */
     .match-results-container {
       display: flex;
       flex-direction: column;
       gap: 24px;
-      margin-top: 30px;
+      margin-top: 6px;
     }
     .match-card {
-      background: rgba(22, 41, 92, 0.4);
+      position: relative;
+      background: linear-gradient(155deg, rgba(22, 41, 92, 0.45), rgba(13, 27, 58, 0.35));
       border: 1px solid var(--line);
+      border-left: 4px solid var(--draw);
       border-radius: var(--radius);
-      padding: 28px 32px;
+      padding: 26px 30px;
       transition: transform .3s, border-color .3s, box-shadow .3s;
+      overflow: hidden;
     }
+    .match-card.win { border-left-color: var(--win); }
+    .match-card.loss { border-left-color: var(--red); }
+    .match-card.draw { border-left-color: var(--gold); }
     .match-card:hover {
       transform: translateY(-4px);
       border-color: rgba(201, 162, 39, 0.3);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
     }
 
     .match-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
       gap: 10px;
+    }
+    .match-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
     .match-competition {
       font-family: var(--ff-cond);
@@ -555,67 +632,390 @@
       padding: 4px 14px;
       border-radius: 999px;
       border: 1px solid rgba(201, 162, 39, 0.2);
+      white-space: nowrap;
     }
+    .match-jornada {
+      font-family: var(--ff-cond);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      white-space: nowrap;
+    }
+    .result-pill {
+      font-family: var(--ff-cond);
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+    }
+    .result-pill.win { background: var(--win-bg); color: var(--win); }
+    .result-pill.draw { background: var(--draw-bg); color: var(--cream); }
+    .result-pill.loss { background: var(--loss-bg); color: #e58a80; }
     .match-date {
       font-family: var(--ff-cond);
       font-size: .78rem;
       color: var(--grey);
+      white-space: nowrap;
     }
 
     .match-teams {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 12px;
+      gap: 18px;
+      margin-bottom: 18px;
     }
     .team-block {
       display: flex;
       align-items: center;
       gap: 14px;
+      min-width: 0;
     }
     .team-block.away {
       justify-content: flex-end;
       text-align: right;
     }
     .team-logo {
-      width: 48px;
-      height: 48px;
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       object-fit: cover;
       background: var(--navy-light);
-      border: 2px solid rgba(201, 162, 39, 0.2);
+      border: 2px solid rgba(201, 162, 39, 0.25);
       flex-shrink: 0;
+    }
+    .team-logo-fallback {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--navy-light);
+      border: 2px solid rgba(201, 162, 39, 0.25);
+      font-family: var(--ff-display);
+      font-size: 1.35rem;
+      color: var(--gold);
+      letter-spacing: .03em;
+    }
+    .team-info {
+      min-width: 0;
     }
     .team-name {
       font-family: var(--ff-cond);
-      font-size: 1.2rem;
+      font-size: 1.22rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .02em;
+      line-height: 1.15;
+      overflow-wrap: break-word;
+    }
+    .team-condition {
+      font-family: var(--ff-cond);
+      font-size: .68rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--grey-dim);
+      margin-top: 2px;
     }
 
     .score-block {
       text-align: center;
-      background: rgba(7, 15, 33, 0.5);
-      padding: 8px 22px;
-      border-radius: 10px;
+      background: rgba(7, 15, 33, 0.55);
+      padding: 10px 24px;
+      border-radius: 12px;
       border: 1px solid var(--line);
+      flex-shrink: 0;
     }
     .score-text {
       font-family: var(--ff-display);
-      font-size: 2rem;
+      font-size: 2.1rem;
       color: var(--gold);
-      letter-spacing: 2px;
+      letter-spacing: 3px;
+      white-space: nowrap;
     }
     .score-status {
       font-family: var(--ff-cond);
-      font-size: .6rem;
-      letter-spacing: .1em;
+      font-size: .58rem;
+      letter-spacing: .12em;
       text-transform: uppercase;
       color: var(--grey);
       margin-top: 2px;
     }
+
+    /* ---- Goleadores ---- */
+    .scorers-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 18px;
+      margin-bottom: 14px;
+      min-height: 4px;
+    }
+    .scorers-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .scorers-col.away {
+      align-items: flex-end;
+    }
+    .scorer-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--ff-cond);
+      font-size: .8rem;
+      color: var(--cream);
+      background: rgba(201, 162, 39, 0.07);
+      border: 1px solid rgba(201, 162, 39, 0.15);
+      border-radius: 999px;
+      padding: 4px 12px 4px 6px;
+      max-width: 100%;
+    }
+    .scorers-col.away .scorer-chip {
+      flex-direction: row-reverse;
+      padding: 4px 6px 4px 12px;
+    }
+    .scorer-ball {
+      font-size: .78rem;
+      flex-shrink: 0;
+    }
+    .scorer-name {
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 160px;
+    }
+    .scorer-min {
+      color: var(--gold);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .scorer-spacer {
+      min-width: 1px;
+    }
+
+    /* ---- Destacado del partido (MVP) ---- */
+    .mvp-strip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(201, 162, 39, 0.06);
+      border: 1px dashed rgba(201, 162, 39, 0.3);
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 14px;
+    }
+    .mvp-photo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+      flex-shrink: 0;
+      background: var(--navy-light);
+    }
+    .mvp-photo-fallback {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--navy-light);
+      border: 2px solid var(--gold);
+      font-family: var(--ff-display);
+      font-size: .95rem;
+      color: var(--gold);
+    }
+    .mvp-text {
+      font-family: var(--ff-cond);
+      font-size: .82rem;
+      color: var(--cream);
+    }
+    .mvp-text b {
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .mvp-tag {
+      font-size: .6rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--grey-dim);
+      display: block;
+    }
+
+    /* ---- Mini estadísticas ---- */
+    .stat-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .stat-mini-row {
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--ff-cond);
+      font-size: .72rem;
+      color: var(--grey);
+    }
+    .stat-mini-row span:first-child { text-align: right; color: var(--cream); }
+    .stat-mini-row span:last-child { text-align: left; color: var(--cream); }
+    .stat-mini-label {
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: .62rem;
+      color: var(--grey-dim);
+    }
+    .stat-mini-bar {
+      position: relative;
+      height: 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, .08);
+      overflow: hidden;
+    }
+    .stat-mini-bar-fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      background: var(--gold);
+      border-radius: 4px;
+    }
+
+    /* ---- Tarjetas amarillas / rojas ---- */
+    .cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .card-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--ff-cond);
+      font-size: .74rem;
+      color: var(--cream);
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 12px 4px 8px;
+    }
+    .card-swatch {
+      width: 11px;
+      height: 15px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .card-swatch.amarilla { background: #E8C547; }
+    .card-swatch.roja { background: var(--red); }
+    .card-chip .card-min { color: var(--gold); font-weight: 700; margin-left: 2px; }
+
+    /* ---- Botón "Ver detalles" + panel expandible ---- */
+    .match-extra-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--ff-cond);
+      font-size: .74rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--grey);
+      border: 1px dashed var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      margin-bottom: 14px;
+      transition: color .2s, border-color .2s;
+    }
+    .match-extra-toggle:hover {
+      color: var(--gold);
+      border-color: rgba(201, 162, 39, .4);
+    }
+    .match-extra-toggle .chev {
+      display: inline-block;
+      transition: transform .25s ease;
+      font-size: .68rem;
+    }
+    .match-extra-toggle.open .chev {
+      transform: rotate(180deg);
+    }
+    .match-extra {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 22px;
+      background: rgba(7, 15, 33, 0.45);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    .match-extra.open {
+      display: grid;
+    }
+    .extra-block h5 {
+      font-family: var(--ff-cond);
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .extra-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .extra-list li {
+      font-family: var(--ff-cond);
+      font-size: .8rem;
+      color: var(--cream);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .extra-list li .dim {
+      color: var(--grey-dim);
+      font-size: .72rem;
+    }
+    .extra-empty {
+      font-family: var(--ff-cond);
+      font-size: .78rem;
+      color: var(--grey-dim);
+      font-style: italic;
+    }
+    .lineup-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .lineup-tag {
+      font-family: var(--ff-cond);
+      font-size: .72rem;
+      color: var(--cream);
+      background: rgba(201, 162, 39, .08);
+      border: 1px solid rgba(201, 162, 39, .18);
+      border-radius: 6px;
+      padding: 3px 9px;
+    }
+    .match-meta-extra {
+      font-family: var(--ff-cond);
+      font-size: .76rem;
+      color: var(--grey);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 18px;
+    }
+    .match-meta-extra span { color: var(--cream); }
 
     .match-footer {
       display: flex;
@@ -623,7 +1023,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 10px;
-      padding-top: 14px;
+      padding-top: 16px;
       border-top: 1px solid var(--line);
       margin-top: 4px;
     }
@@ -635,14 +1035,6 @@
     .match-stadium span {
       color: var(--cream);
     }
-    .match-goles {
-      font-family: var(--ff-cond);
-      font-size: .78rem;
-      color: var(--grey);
-    }
-    .match-goles span {
-      color: var(--gold);
-    }
     .btn-ver-ficha {
       font-family: var(--ff-cond);
       font-size: .72rem;
@@ -650,7 +1042,7 @@
       text-transform: uppercase;
       letter-spacing: .06em;
       color: var(--gold);
-      padding: 6px 16px;
+      padding: 7px 18px;
       border: 1px solid rgba(201, 162, 39, 0.3);
       border-radius: 999px;
       transition: all .25s ease;
@@ -665,11 +1057,32 @@
     .match-empty {
       grid-column: 1/-1;
       text-align: center;
-      padding: 60px 20px;
+      padding: 70px 20px;
       color: var(--grey);
       font-family: var(--ff-cond);
-      font-size: 1.2rem;
-      letter-spacing: .1em;
+      font-size: 1.15rem;
+      letter-spacing: .06em;
+      background: rgba(22, 41, 92, 0.25);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .match-empty span {
+      display: block;
+      margin-top: 8px;
+    }
+
+    /* skeleton loading */
+    .skel-card {
+      height: 200px;
+      border-radius: var(--radius);
+      background: linear-gradient(100deg, rgba(255,255,255,.03) 30%, rgba(255,255,255,.07) 50%, rgba(255,255,255,.03) 70%);
+      background-size: 300% 100%;
+      animation: skel-shine 1.4s ease infinite;
+      border: 1px solid var(--line);
+    }
+    @keyframes skel-shine {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
     }
 
     /* ---------- FOOTER ---------- */
@@ -860,15 +1273,24 @@
       .match-card { padding: 20px; }
       .match-teams {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 14px;
       }
-      .team-block { justify-content: center !important; text-align: center !important; flex-direction: column; gap: 6px; }
-      .team-name { font-size: 1rem; }
-      .team-logo { width: 40px; height: 40px; }
-      .score-block { padding: 6px 16px; }
-      .score-text { font-size: 1.6rem; }
-      .match-header { flex-direction: column; align-items: flex-start; gap: 6px; }
-      .match-footer { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .team-block,
+      .team-block.away { justify-content: center; text-align: center; flex-direction: column; gap: 8px; }
+      .team-name { font-size: 1.02rem; }
+      .team-logo, .team-logo-fallback { width: 46px; height: 46px; }
+      .score-block { padding: 8px 20px; order: -1; margin: 0 auto 6px; }
+      .score-text { font-size: 1.7rem; }
+      .match-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .match-footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .scorers-row { grid-template-columns: 1fr; gap: 8px; }
+      .scorers-col, .scorers-col.away { align-items: center; }
+      .scorers-col.away .scorer-chip { flex-direction: row; padding: 4px 12px 4px 6px; }
+      .scorer-name { max-width: 130px; }
+      .stat-mini-row { grid-template-columns: 34px 1fr 34px; }
+      .match-extra { grid-template-columns: 1fr; padding: 16px; }
+      .cards-row { justify-content: center; }
+      .match-meta-extra { justify-content: center; text-align: center; }
       .footer-inner { grid-template-columns: 1fr; gap: 30px; }
       .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
       .nav-brand-logo { width: 34px; height: 34px; }
@@ -881,8 +1303,11 @@
       .nav-icon-wrapper { width: 38px; height: 38px; font-size: 1rem; }
       .nav-item .nav-label { font-size: .5rem; }
       .nav-icon-circle { width: 58px; height: 58px; font-size: 2rem; }
-      .score-text { font-size: 1.4rem; }
+      .score-text { font-size: 1.5rem; }
       .match-card { padding: 16px; }
+      .res-chip { padding: 7px 14px; font-size: .74rem; }
+      .filter-tab { padding: 7px 13px; font-size: .7rem; }
+      .mvp-text { font-size: .76rem; }
     }
   </style>
 </head>
@@ -948,7 +1373,18 @@
     <div class="si">
       <div class="stag">Últimos Resultados</div>
       <h2 class="stit">MARCADORES DE <span class="g">HUGUS FC</span></h2>
-      <p class="sdesc">Sigue al día el rendimiento de nuestro club en cada jornada de la temporada actual.</p>
+      <p class="sdesc">Sigue al día el rendimiento de nuestro club en cada jornada de la temporada actual, con goleadores, figuras del partido y el detalle de cada encuentro.</p>
+
+      <!-- Resumen rápido de la temporada -->
+      <div class="res-summary" id="resSummary"></div>
+
+      <!-- Filtros -->
+      <div class="filter-tabs" id="filterTabs">
+        <button class="filter-tab active" data-filter="todos">Todos</button>
+        <button class="filter-tab" data-filter="win">Victorias</button>
+        <button class="filter-tab" data-filter="draw">Empates</button>
+        <button class="filter-tab" data-filter="loss">Derrotas</button>
+      </div>
 
       <div class="match-results-container" id="resultadosContainer">
         <!-- Los resultados se renderizan con JavaScript -->
@@ -1184,14 +1620,455 @@
     const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
+    // guarda los partidos ya cargados para poder filtrar sin volver a pedirlos a Firestore
+    let PARTIDOS_CACHE = [];
+    let FILTRO_ACTUAL = 'todos';
+
     // ============================================================
-    // RENDERIZAR RESULTADOS
+    // Helpers de resultado (gana / empata / pierde)
+    // ============================================================
+    function resultadoDe(p) {
+      const gh = Number(p.golesHUGUS || 0);
+      const gr = Number(p.golesRival || 0);
+      if (gh > gr) return 'win';
+      if (gh < gr) return 'loss';
+      return 'draw';
+    }
+    function etiquetaResultado(res) {
+      return res === 'win' ? 'Victoria' : res === 'loss' ? 'Derrota' : 'Empate';
+    }
+
+    // ============================================================
+    // RENDER: chip de goleador
+    // ============================================================
+    function chipGoleador(g) {
+      const nombre = (g.jugador || 'Jugador').toString();
+      const minuto = g.minuto != null ? `${g.minuto}'` : '';
+      const asistencia = g.asistencia ? ` <span class="dim" style="font-size:.66rem;color:var(--grey-dim);">(as. ${g.asistencia})</span>` : '';
+      return `
+        <span class="scorer-chip" title="${nombre}${g.asistencia ? ' — asistencia de ' + g.asistencia : ''}">
+          <span class="scorer-ball">⚽</span>
+          <span class="scorer-name">${nombre}${asistencia}</span>
+          <span class="scorer-min">${minuto}</span>
+        </span>
+      `;
+    }
+
+    // ============================================================
+    // RENDER: chip de tarjeta (amarilla / roja)
+    // ============================================================
+    function chipTarjeta(t) {
+      const tipo = (t.tipo || 'amarilla').toString().toLowerCase().includes('roj') ? 'roja' : 'amarilla';
+      const nombre = (t.jugador || 'Jugador').toString();
+      const minuto = t.minuto != null ? `${t.minuto}'` : '';
+      return `
+        <span class="card-chip">
+          <span class="card-swatch ${tipo}"></span>
+          ${nombre}<span class="card-min">${minuto}</span>
+        </span>
+      `;
+    }
+
+    // ============================================================
+    // RENDER: lista de cambios (sustituciones)
+    // ============================================================
+    function listaCambios(cambios) {
+      if (!Array.isArray(cambios) || !cambios.length) {
+        return '<div class="extra-empty">Sin cambios registrados</div>';
+      }
+      const items = cambios
+        .slice()
+        .sort((a, b) => (a.minuto || 0) - (b.minuto || 0))
+        .map(c => `<li>🔁 <b>${c.entra || '—'}</b> <span class="dim">por ${c.sale || '—'}</span> <span class="dim">${c.minuto != null ? c.minuto + "'" : ''}</span></li>`)
+        .join('');
+      return `<ul class="extra-list">${items}</ul>`;
+    }
+
+    // ============================================================
+    // RENDER: alineación titular
+    // ============================================================
+    function listaAlineacion(alineacion) {
+      if (!Array.isArray(alineacion) || !alineacion.length) {
+        return '<div class="extra-empty">Alineación no publicada</div>';
+      }
+      const tags = alineacion.map(j => `<span class="lineup-tag">${j}</span>`).join('');
+      return `<div class="lineup-grid">${tags}</div>`;
+    }
+
+    // ============================================================
+    // RENDER: barra mini-estadística (posesión, tiros, etc.)
+    // ============================================================
+    function filaEstadistica(label, valA, valB) {
+      const a = Number(valA) || 0;
+      const b = Number(valB) || 0;
+      const total = a + b || 1;
+      const pctA = Math.round((a / total) * 100);
+      return `
+        <div class="stat-mini-row">
+          <span>${valA ?? '-'}</span>
+          <div>
+            <div class="stat-mini-bar"><div class="stat-mini-bar-fill" style="width:${pctA}%;"></div></div>
+            <div class="stat-mini-label">${label}</div>
+          </div>
+          <span>${valB ?? '-'}</span>
+        </div>
+      `;
+    }
+
+    // ============================================================
+    // RENDER: resumen rápido (V-E-D) arriba de la lista
+    // ============================================================
+    function renderResumen(partidos) {
+      const cont = document.getElementById('resSummary');
+      if (!cont) return;
+      if (!partidos.length) { cont.innerHTML = ''; return; }
+
+      let w = 0, d = 0, l = 0, gf = 0, gc = 0;
+      partidos.forEach(p => {
+        const r = resultadoDe(p);
+        if (r === 'win') w++; else if (r === 'draw') d++; else l++;
+        gf += Number(p.golesHUGUS || 0);
+        gc += Number(p.golesRival || 0);
+      });
+
+      cont.innerHTML = `
+        <div class="res-chip win">🏆 <b>${w}</b> Victorias</div>
+        <div class="res-chip draw">➖ <b>${d}</b> Empates</div>
+        <div class="res-chip loss">❌ <b>${l}</b> Derrotas</div>
+        <div class="res-chip">⚽ <b>${gf}</b> Goles a favor</div>
+        <div class="res-chip">🥅 <b>${gc}</b> Goles en contra</div>
+      `;
+    }
+
+    // ============================================================
+    // RENDER: una tarjeta de partido
+    // ============================================================
+    function crearTarjeta(p, id) {
+      const fechaObj = new Date(p.fecha + 'T12:00:00');
+      const fechaFormateada = DIAS[fechaObj.getUTCDay()] + ' ' + fechaObj.getUTCDate() + ' de ' + MESES[fechaObj.getUTCMonth()] + ' 2026';
+
+      const res = resultadoDe(p);
+      const rivalIniciales = p.rival ? p.rival.substring(0, 2).toUpperCase() : '??';
+      const condicion = p.condicion ? p.condicion.toString().toUpperCase() : null; // "LOCAL" / "VISITA"
+
+      // ---- Goleadores propios (HUGUS) ----
+      const goles = Array.isArray(p.goles) ? p.goles.slice().sort((a, b) => (a.minuto || 0) - (b.minuto || 0)) : [];
+      const golesHUGUSChips = goles.length
+        ? goles.map(chipGoleador).join('')
+        : '';
+
+      // ---- Goleadores rivales (opcional, si se registran) ----
+      const golesRivalArr = Array.isArray(p.golesRivalDetalle) ? p.golesRivalDetalle.slice().sort((a, b) => (a.minuto || 0) - (b.minuto || 0)) : [];
+      const golesRivalChips = golesRivalArr.length
+        ? golesRivalArr.map(chipGoleador).join('')
+        : '';
+
+      // ---- Escudo del rival (si existe) ----
+      const escudoRivalHTML = p.escudoRival
+        ? `<img src="${p.escudoRival}" alt="${p.rival || 'Rival'}" class="team-logo" onerror="this.outerHTML='<div class=&quot;team-logo-fallback&quot;>${rivalIniciales}</div>'">`
+        : `<div class="team-logo-fallback">${rivalIniciales}</div>`;
+
+      // ---- Figura del partido (MVP), si viene en los datos ----
+      const mvpHTML = p.mvp ? `
+        <div class="mvp-strip">
+          ${p.mvpFoto
+            ? `<img src="${p.mvpFoto}" alt="${p.mvp}" class="mvp-photo" onerror="this.outerHTML='<div class=&quot;mvp-photo-fallback&quot;>⭐</div>'">`
+            : `<div class="mvp-photo-fallback">⭐</div>`}
+          <div class="mvp-text">
+            <span class="mvp-tag">Figura del partido</span>
+            <b>${p.mvp}</b>
+          </div>
+        </div>
+      ` : '';
+
+      // ---- Mini estadísticas opcionales ----
+      const est = p.estadisticas || null;
+      const statsHTML = est ? `
+        <div class="stat-mini">
+          ${est.posesion ? filaEstadistica('Posesión %', est.posesion.hugus, est.posesion.rival) : ''}
+          ${est.tiros ? filaEstadistica('Tiros', est.tiros.hugus, est.tiros.rival) : ''}
+          ${est.corners ? filaEstadistica('Córners', est.corners.hugus, est.corners.rival) : ''}
+        </div>
+      ` : '';
+
+      // ---- Tarjetas amarillas / rojas (propias + rival) ----
+      const tarjetasPropias = Array.isArray(p.tarjetas) ? p.tarjetas.slice().sort((a, b) => (a.minuto || 0) - (b.minuto || 0)) : [];
+      const tarjetasRival = Array.isArray(p.tarjetasRival) ? p.tarjetasRival.slice().sort((a, b) => (a.minuto || 0) - (b.minuto || 0)) : [];
+      const cardsHTML = (tarjetasPropias.length || tarjetasRival.length) ? `
+        <div class="cards-row">
+          ${tarjetasPropias.map(chipTarjeta).join('')}
+          ${tarjetasRival.map(chipTarjeta).join('')}
+        </div>
+      ` : '';
+
+      // ---- Panel expandible: cambios, alineación titular, árbitro / asistencia ----
+      const tieneExtra = (Array.isArray(p.cambios) && p.cambios.length)
+        || (Array.isArray(p.alineacion) && p.alineacion.length)
+        || p.arbitro || p.asistenciaPublico || p.clima;
+
+      const metaExtraHTML = (p.arbitro || p.asistenciaPublico || p.clima) ? `
+        <div class="match-meta-extra">
+          ${p.arbitro ? `<div>🧑‍⚖️ Árbitro: <span>${p.arbitro}</span></div>` : ''}
+          ${p.asistenciaPublico ? `<div>👥 Público: <span>${p.asistenciaPublico}</span></div>` : ''}
+          ${p.clima ? `<div>🌤️ Clima: <span>${p.clima}</span></div>` : ''}
+        </div>
+      ` : '';
+
+      const extraToggleHTML = tieneExtra ? `
+        <button type="button" class="match-extra-toggle" onclick="toggleExtra(this)">
+          <span class="chev">▾</span> Ver detalles del partido
+        </button>
+        <div class="match-extra">
+          <div class="extra-block">
+            <h5>🔁 Cambios</h5>
+            ${listaCambios(p.cambios)}
+          </div>
+          <div class="extra-block">
+            <h5>👕 Alineación titular</h5>
+            ${listaAlineacion(p.alineacion)}
+          </div>
+          ${metaExtraHTML ? `<div class="extra-block"><h5>ℹ️ Datos del encuentro</h5>${metaExtraHTML}</div>` : ''}
+        </div>
+      ` : '';
+
+      const card = document.createElement('div');
+      card.className = `match-card ${res}`;
+      card.dataset.resultado = res;
+
+      card.innerHTML = `
+        <div class="match-header">
+          <div class="match-header-left">
+            <span class="match-competition">🏆 ${p.competencia || 'Partido Oficial'}</span>
+            ${p.jornada ? `<span class="match-jornada">Jornada ${p.jornada}</span>` : ''}
+            <span class="result-pill ${res}">${etiquetaResultado(res)}</span>
+          </div>
+          <span class="match-date">📅 ${fechaFormateada}</span>
+        </div>
+
+        <div class="match-teams">
+          <div class="team-block">
+            <img src="imag/logo.png" alt="HUGUS FC" class="team-logo" onerror="this.src='https://placehold.co/56/0D1B3A/C9A227?text=H'">
+            <div class="team-info">
+              <div class="team-name">HUGUS FC</div>
+              ${condicion ? `<div class="team-condition">${condicion}</div>` : ''}
+            </div>
+          </div>
+
+          <div class="score-block">
+            <div class="score-text">${p.golesHUGUS ?? 0} - ${p.golesRival ?? 0}</div>
+            <div class="score-status">Finalizado</div>
+          </div>
+
+          <div class="team-block away">
+            <div class="team-info">
+              <div class="team-name">${p.rival || 'Por definir'}</div>
+              ${condicion ? `<div class="team-condition">${condicion === 'LOCAL' ? 'VISITA' : 'LOCAL'}</div>` : ''}
+            </div>
+            ${escudoRivalHTML}
+          </div>
+        </div>
+
+        <div class="scorers-row">
+          <div class="scorers-col home">${golesHUGUSChips}</div>
+          <div class="scorer-spacer"></div>
+          <div class="scorers-col away">${golesRivalChips}</div>
+        </div>
+
+        ${mvpHTML}
+        ${cardsHTML}
+        ${statsHTML}
+        ${extraToggleHTML}
+
+        <div class="match-footer">
+          <div class="match-stadium">📍 <span>${p.lugar || 'Estadio Municipal de El Colorado'}</span></div>
+          <button class="btn-ver-ficha" onclick="verFicha('${id}')">Ver ficha completa →</button>
+        </div>
+      `;
+
+
+      return card;
+    }
+
+    // ============================================================
+    // RENDER: lista completa según filtro activo
+    // ============================================================
+    function pintarLista() {
+      const container = document.getElementById('resultadosContainer');
+      if (!container) return;
+
+      const partidos = FILTRO_ACTUAL === 'todos'
+        ? PARTIDOS_CACHE
+        : PARTIDOS_CACHE.filter(item => resultadoDe(item.data) === FILTRO_ACTUAL);
+
+      if (!partidos.length) {
+        container.innerHTML = `
+          <div class="match-empty">
+            🏟️ No hay resultados en esta categoría.<br>
+            <span style="font-size:.85rem;color:var(--grey-dim);">Prueba con otro filtro o vuelve más tarde.</span>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '';
+      partidos.forEach(item => container.appendChild(crearTarjeta(item.data, item.id)));
+    }
+
+    // ============================================================
+    // 🧪 MODO SIMULACIÓN — partidos de ejemplo (sin Firestore)
+    // Esto es solo para previsualizar el diseño con datos reales.
+    // Cuando conectes Firestore de verdad, borra este bloque y
+    // usa la función renderResultadosFirestore() de más abajo.
+    // ============================================================
+    const PARTIDOS_SIMULADOS = [
+      {
+        id: 'demo-partido-3',
+        data: {
+          estado: 'jugado',
+          fecha: '2026-07-12',
+          competencia: 'Liga Distrital El Colorado',
+          jornada: 8,
+          condicion: 'LOCAL',
+          rival: 'Atlético Virú',
+          escudoRival: '',
+          golesHUGUS: 3,
+          golesRival: 2,
+          lugar: 'Estadio Municipal de El Colorado',
+          arbitro: 'Marco Ruiz Peña',
+          asistenciaPublico: '420',
+          clima: 'Soleado, 26°C',
+          mvp: 'Jhonatan Paredes',
+          mvpFoto: '',
+          goles: [
+            { jugador: 'Jhonatan Paredes', minuto: 12, asistencia: 'Luis Cabanillas' },
+            { jugador: 'Luis Cabanillas', minuto: 34 },
+            { jugador: 'Jhonatan Paredes', minuto: 77, asistencia: 'Renzo Quiroz' }
+          ],
+          golesRivalDetalle: [
+            { jugador: 'C. Medina', minuto: 25 },
+            { jugador: 'C. Medina', minuto: 68 }
+          ],
+          tarjetas: [
+            { jugador: 'Renzo Quiroz', tipo: 'amarilla', minuto: 41 }
+          ],
+          tarjetasRival: [
+            { jugador: 'C. Medina', tipo: 'amarilla', minuto: 55 },
+            { jugador: 'J. Salazar', tipo: 'roja', minuto: 82 }
+          ],
+          cambios: [
+            { entra: 'Franco Terrones', sale: 'Luis Cabanillas', minuto: 70 },
+            { entra: 'Diego Alva', sale: 'Renzo Quiroz', minuto: 85 }
+          ],
+          alineacion: [
+            'E. Gonzales', 'M. Vargas', 'J. Rojas', 'D. Cruz', 'P. Salinas',
+            'Renzo Quiroz', 'A. Benites', 'Luis Cabanillas', 'Jhonatan Paredes',
+            'S. Ibáñez', 'K. Fernández'
+          ],
+          estadisticas: {
+            posesion: { hugus: 58, rival: 42 },
+            tiros: { hugus: 14, rival: 9 },
+            corners: { hugus: 6, rival: 3 }
+          }
+        }
+      },
+      {
+        id: 'demo-partido-2',
+        data: {
+          estado: 'jugado',
+          fecha: '2026-07-05',
+          competencia: 'Liga Distrital El Colorado',
+          jornada: 7,
+          condicion: 'VISITA',
+          rival: 'Sporting Chocope',
+          escudoRival: '',
+          golesHUGUS: 1,
+          golesRival: 1,
+          lugar: 'Estadio Municipal de Chocope',
+          arbitro: 'Elvis Tantaleán',
+          asistenciaPublico: '260',
+          clima: 'Nublado, 21°C',
+          mvp: 'Elmer Gonzales',
+          goles: [
+            { jugador: 'Franco Terrones', minuto: 63, asistencia: 'Jhonatan Paredes' }
+          ],
+          golesRivalDetalle: [
+            { jugador: 'R. Paz', minuto: 30 }
+          ],
+          tarjetas: [
+            { jugador: 'M. Vargas', tipo: 'amarilla', minuto: 20 },
+            { jugador: 'D. Cruz', tipo: 'amarilla', minuto: 74 }
+          ],
+          tarjetasRival: [],
+          cambios: [
+            { entra: 'Diego Alva', sale: 'S. Ibáñez', minuto: 60 }
+          ],
+          alineacion: [],
+          estadisticas: {
+            posesion: { hugus: 47, rival: 53 },
+            tiros: { hugus: 7, rival: 10 }
+          }
+        }
+      },
+      {
+        id: 'demo-partido-1',
+        data: {
+          estado: 'jugado',
+          fecha: '2026-06-28',
+          competencia: 'Copa Amistad La Libertad',
+          jornada: 1,
+          condicion: 'LOCAL',
+          rival: 'Deportivo San José',
+          escudoRival: '',
+          golesHUGUS: 0,
+          golesRival: 2,
+          lugar: 'Estadio Municipal de El Colorado',
+          goles: [],
+          golesRivalDetalle: [
+            { jugador: 'F. Ortiz', minuto: 18 },
+            { jugador: 'F. Ortiz', minuto: 71 }
+          ],
+          tarjetas: [
+            { jugador: 'P. Salinas', tipo: 'amarilla', minuto: 39 }
+          ]
+        }
+      }
+    ];
+
+    // ============================================================
+    // CARGAR RESULTADOS (SIMULADOS)
     // ============================================================
     function renderResultados() {
       const container = document.getElementById('resultadosContainer');
       if (!container) return;
 
-      container.innerHTML = '<div class="match-empty">⏳ Cargando resultados...</div>';
+      container.innerHTML = `
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+      `;
+
+      // Simula el pequeño delay de una carga real desde Firestore
+      setTimeout(() => {
+        PARTIDOS_CACHE = PARTIDOS_SIMULADOS;
+        renderResumen(PARTIDOS_CACHE.map(item => item.data));
+        pintarLista();
+        showToast('🧪 Mostrando datos de simulación (sin Firestore)', 'success');
+      }, 500);
+    }
+
+    // ============================================================
+    // CARGAR RESULTADOS DESDE FIRESTORE (versión real — descomenta
+    // esta función y bórrala la de arriba cuando conectes datos reales)
+    // ============================================================
+    function renderResultadosFirestore() {
+      const container = document.getElementById('resultadosContainer');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+        <div class="skel-card"></div>
+      `;
 
       db.collection('partidos')
         .where('estado', '==', 'jugado')
@@ -1199,6 +2076,8 @@
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
+            PARTIDOS_CACHE = [];
+            renderResumen([]);
             container.innerHTML = `
               <div class="match-empty">
                 🏟️ No hay resultados disponibles aún.<br>
@@ -1208,52 +2087,11 @@
             return;
           }
 
-          container.innerHTML = '';
-          snapshot.forEach(doc => {
-            const p = doc.data();
-            const fechaObj = new Date(p.fecha + 'T12:00:00');
-            const fechaFormateada = DIAS[fechaObj.getUTCDay()] + ' ' + fechaObj.getUTCDate() + ' de ' + MESES[fechaObj.getUTCMonth()] + ' 2026';
+          PARTIDOS_CACHE = [];
+          snapshot.forEach(doc => PARTIDOS_CACHE.push({ id: doc.id, data: doc.data() }));
 
-            // Goles (si existen)
-            let golesText = '';
-            if (p.goles && p.goles.length > 0) {
-              const golesList = p.goles.map(g => `${g.jugador} (${g.minuto}')`).join(', ');
-              golesText = `<span>⚽ ${golesList}</span>`;
-            }
-
-            const rivalIniciales = p.rival ? p.rival.substring(0, 2).toUpperCase() : '??';
-
-            const card = document.createElement('div');
-            card.className = 'match-card';
-
-            card.innerHTML = `
-              <div class="match-header">
-                <span class="match-competition">🏆 ${p.competencia || 'Partido Oficial'}</span>
-                <span class="match-date">📅 ${fechaFormateada}</span>
-              </div>
-              <div class="match-teams">
-                <div class="team-block">
-                  <img src="imag/logo.png" alt="HUGUS FC" class="team-logo" onerror="this.src='https://placehold.co/48/0D1B3A/C9A227?text=H'">
-                  <span class="team-name">HUGUS FC</span>
-                </div>
-                <div class="score-block">
-                  <div class="score-text">${p.golesHUGUS || 0} - ${p.golesRival || 0}</div>
-                  <div class="score-status">Finalizado</div>
-                </div>
-                <div class="team-block away">
-                  <span class="team-name">${p.rival || 'Por definir'}</span>
-                  <div class="team-logo" style="display:flex;align-items:center;justify-content:center;background:var(--navy-light);font-family:var(--ff-display);font-size:1.2rem;color:var(--gold);">${rivalIniciales}</div>
-                </div>
-              </div>
-              <div class="match-footer">
-                <div class="match-stadium">📍 <span>${p.lugar || 'Estadio Municipal de El Colorado'}</span></div>
-                <div class="match-goles">${golesText || 'Sin goleadores registrados'}</div>
-                <button class="btn-ver-ficha" onclick="verFicha('${doc.id}')">Ver ficha →</button>
-              </div>
-            `;
-
-            container.appendChild(card);
-          });
+          renderResumen(PARTIDOS_CACHE.map(item => item.data));
+          pintarLista();
         })
         .catch(err => {
           console.error('Error al cargar resultados:', err);
@@ -1264,6 +2102,30 @@
             </div>
           `;
         });
+    }
+
+    // ============================================================
+    // FILTROS (Todos / Victorias / Empates / Derrotas)
+    // ============================================================
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        FILTRO_ACTUAL = tab.dataset.filter;
+        pintarLista();
+      });
+    });
+
+    // ============================================================
+    // TOGGLE del panel "Ver detalles del partido"
+    // ============================================================
+    function toggleExtra(btn) {
+      const panel = btn.nextElementSibling;
+      const abierto = panel.classList.toggle('open');
+      btn.classList.toggle('open', abierto);
+      btn.innerHTML = abierto
+        ? '<span class="chev">▾</span> Ocultar detalles del partido'
+        : '<span class="chev">▾</span> Ver detalles del partido';
     }
 
     // ============================================================
