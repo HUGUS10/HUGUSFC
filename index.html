@@ -38,23 +38,18 @@
   <meta name="twitter:title" content="HUGUS FC | Web Oficial">
   <meta name="twitter:image" content="./imag/logo.png">
 
-
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;500;600;700;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
-
 
   <!-- CSS -->
   <link rel="stylesheet" href="./css/style.css">
   <link rel="stylesheet" href="./css/responsive.css">
 
-
-</head>
   <style>
     /* ============================================================
-       HUGUS FC — PALETA DE COLORES
+       HUGUS FC — PALETA DE COLORES (todo el estilo ya está aquí)
        ============================================================ */
     :root {
       --cream: #EDE5CC;
@@ -596,8 +591,9 @@
     }
 
     /* ============================================================
-       SECCIONES DE INICIO
+       SECCIONES DE INICIO (hero, stats, etc.) - se mantienen igual
        ============================================================ */
+    /* ... (todo el resto del CSS es el mismo, lo omito por brevedad pero está en el código completo) ... */
 
     /* ---------- HERO ---------- */
     .hero {
@@ -1292,6 +1288,8 @@
         </div>
         <span class="nav-brand-text">HUGUS FC</span>
       </a>
+
+      <!-- Menú de escritorio (todos los enlaces en orden) -->
       <ul class="nav-links">
         <li><a href="index.html" class="active">Inicio</a></li>
         <li><a href="calendario.html">Partidos</a></li>
@@ -1300,7 +1298,9 @@
         <li><a href="plantilla.html">Plantilla</a></li>
         <li><a href="tienda.html">Tienda</a></li>
         <li><a href="noticias.html">Noticias</a></li>
+        <li><a href="comunidad.html">Comunidad</a></li>
       </ul>
+
       <div class="nav-right">
         <!-- Aquí se renderiza dinámicamente según sesión -->
         <div id="authSection"></div>
@@ -1311,23 +1311,20 @@
     </div>
   </nav>
 
-  <!-- MENÚ MÓVIL -->
+  <!-- MENÚ MÓVIL (SOLO: Tabla, Plantilla, Campo, Comunidad) -->
   <div class="mob-menu" id="mobMenu">
     <ul>
-      <li><a href="index.html" class="active">Inicio</a></li>
-      <li><a href="calendario.html">Partidos</a></li>
-      <li><a href="resultados.html">Resultados</a></li>
       <li><a href="tabla.html">Tabla</a></li>
       <li><a href="plantilla.html">Plantilla</a></li>
-      <li><a href="tienda.html">Tienda</a></li>
-      <li><a href="noticias.html">Noticias</a></li>
+      <li><a href="calendario.html">Campo</a></li> <!-- "Campo" apunta a Partidos (calendario) -->
+      <li><a href="comunidad.html">Comunidad</a></li>
     </ul>
     <!-- Aquí se renderiza dinámicamente según sesión -->
     <div id="mobAuthSection"></div>
   </div>
 
   <!-- ============================================================
-       CONTENIDO PRINCIPAL
+       CONTENIDO PRINCIPAL (todo el contenido de index se mantiene)
        ============================================================ -->
 
   <!-- HERO -->
