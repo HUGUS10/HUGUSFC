@@ -281,7 +281,7 @@
       .nav-icon-circle { width:54px; height:54px; font-size:1.8rem; }
     }
 
-    /* ---------- CAMPO: mapa + info ---------- */
+    /* ---------- CAMPO: mapa + info (CORREGIDO) ---------- */
     .campo-map-wrap {
       border-radius: var(--radius);
       overflow: hidden;
@@ -294,7 +294,8 @@
       width: 100%;
       height: 420px;
       border: 0;
-      filter: grayscale(.25) contrast(1.05) invert(0.92) hue-rotate(180deg);
+      /* ELIMINADO EL FILTRO QUE INVERTÍA LOS COLORES. Solo un leve blanco y negro */
+      filter: grayscale(0.2) contrast(1.05);
       display: block;
     }
     .campo-map-badge {
@@ -311,6 +312,7 @@
       padding: 8px 14px;
       border-radius: 999px;
       z-index: 5;
+      pointer-events: none; /* Evita que el botón estorbe al hacer clic en el mapa */
     }
     .campo-info-grid {
       display: grid;
@@ -472,7 +474,7 @@
     </div>
   </section>
 
-  <!-- MAPA -->
+  <!-- MAPA CORREGIDO -->
   <section>
     <div class="si">
       <div class="reveal" style="text-align:center;">
@@ -481,14 +483,15 @@
         <p class="sdesc" style="margin:0 auto;">Nuestra cancha se ubica en pleno Caser&iacute;o El Colorado. Ub&iacute;cala en el mapa y planifica tu visita.</p>
       </div>
       <div class="campo-map-wrap reveal">
-        <span class="campo-map-badge">📍 El Colorado, La Libertad</span>
-        <iframe src="https://www.google.com/maps?q=Caser%C3%ADo+El+Colorado,+La+Libertad,+Peru&output=embed" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <span class="campo-map-badge">📍 El Colorado, Namballe -  San Ignacio - Cajamarca</span>
+        <!-- URL CORREGIDA: Usa coordenadas exactas y Namballe como referencia -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1793.2713424149368!2d-79.16619416670073!3d-4.986447361918068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91b5590052efa61d%3A0x6eb975d21349b7ef!2sEl%20Colorado!5e0!3m2!1ses!2spe!4v1719385723000!5m2!1ses!2spe" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <div class="campo-info-grid reveal">
         <div class="campo-info-card">
           <span class="campo-info-icon">📍</span>
           <div class="campo-info-label">Direcci&oacute;n</div>
-          <div class="campo-info-value">Caser&iacute;o El Colorado</div>
+          <div class="campo-info-value">Caser&iacute;o El Colorado, Namballe, San Ignacio</div>
         </div>
         <div class="campo-info-card">
           <span class="campo-info-icon">🌾</span>
@@ -638,7 +641,7 @@
         <p>
           📱 <a href="https://wa.me/51935419810" target="_blank">+51 935 419 810</a><br>
           ✉️ <a href="mailto:lg_hugusfc@hotmail.com">LG_HUGUSFC@hotmail.com</a><br>
-          📍 C. El Colorado, La Libertad, Per&uacute;
+          📍 C. El Colorado, Cajamarca, Per&uacute;
         </p>
       </div>
     </div>
