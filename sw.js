@@ -7,7 +7,7 @@ const assets = [
   '/tienda.html',
   '/login.html',
   '/css/style.css',
-  '/imag/logo.png'
+  '/imag/logo.png' 
 ];
 
 self.addEventListener('install', e => {
