@@ -281,7 +281,7 @@
       .nav-icon-circle { width:54px; height:54px; font-size:1.8rem; }
     }
 
-    /* ---------- CAMPO: mapa + info (CORREGIDO) ---------- */
+    /* ---------- CAMPO: mapa + info ---------- */
     .campo-map-wrap {
       border-radius: var(--radius);
       overflow: hidden;
@@ -294,7 +294,6 @@
       width: 100%;
       height: 420px;
       border: 0;
-      /* ELIMINADO EL FILTRO QUE INVERTÍA LOS COLORES. Solo un leve blanco y negro */
       filter: grayscale(0.2) contrast(1.05);
       display: block;
     }
@@ -312,7 +311,7 @@
       padding: 8px 14px;
       border-radius: 999px;
       z-index: 5;
-      pointer-events: none; /* Evita que el botón estorbe al hacer clic en el mapa */
+      pointer-events: none;
     }
     .campo-info-grid {
       display: grid;
@@ -378,26 +377,189 @@
     }
     .llegar-txt { color: var(--grey); font-size: .9rem; margin: 0; }
 
+    /* ---------- GALERÍA (corregida: ya no salta al inicio, abre modal) ---------- */
     .campo-gallery {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
     }
-    .campo-gallery img {
+    .campo-gallery-item {
       border-radius: 10px;
-      aspect-ratio: 4/3;
-      object-fit: cover;
+      overflow: hidden;
+      display: block;
+      position: relative;
+      border: none;
+      padding: 0;
       width: 100%;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      background: var(--navy-light);
+    }
+    .campo-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       transition: transform .35s;
     }
-    .campo-gallery a { border-radius: 10px; overflow: hidden; display: block; }
-    .campo-gallery a:hover img { transform: scale(1.06); }
+    .campo-gallery-item:hover img { transform: scale(1.06); }
+    .campo-gallery-item::after {
+      content: '🔍 Ver foto';
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 10px 12px;
+      font-family: var(--ff-cond);
+      font-size: .72rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: linear-gradient(0deg, rgba(0,0,0,.75), rgba(0,0,0,0));
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .25s, transform .25s;
+    }
+    .campo-gallery-item:hover::after { opacity: 1; transform: none; }
+
+    /* ---------- MODAL DE GALERÍA (foto completa + descripción) ---------- */
+    .photo-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(4, 8, 18, 0.88);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .photo-modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .photo-modal {
+      position: relative;
+      width: min(780px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+      border: 1px solid rgba(201, 162, 39, .35);
+      border-radius: 18px;
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(201,162,39,.08);
+      transform: translateY(24px) scale(.97);
+      transition: transform .3s ease;
+    }
+    .photo-modal-overlay.open .photo-modal {
+      transform: translateY(0) scale(1);
+    }
+    .photo-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 5;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(7, 15, 33, 0.75);
+      border: 1px solid rgba(201, 162, 39, .5);
+      color: var(--gold);
+      font-size: 1.3rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s, transform .2s;
+    }
+    .photo-modal-close:hover { background: var(--red); color: var(--white); transform: rotate(90deg); }
+    .photo-modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 5;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(7, 15, 33, 0.65);
+      border: 1px solid rgba(201, 162, 39, .5);
+      color: var(--gold);
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s;
+    }
+    .photo-modal-nav:hover { background: rgba(201,162,39,.3); }
+    .photo-modal-prev { left: 14px; }
+    .photo-modal-next { right: 14px; }
+    .photo-modal-img-wrap {
+      width: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-height: 56vh;
+      overflow: hidden;
+      border-radius: 18px 18px 0 0;
+    }
+    .photo-modal-img {
+      width: 100%;
+      max-height: 56vh;
+      object-fit: contain;
+      background: #000;
+    }
+    .photo-modal-body {
+      padding: 26px 30px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .photo-modal-tag {
+      font-family: var(--ff-cond);
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .photo-modal-title {
+      font-family: var(--ff-display);
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      text-transform: uppercase;
+      letter-spacing: .01em;
+      line-height: 1.05;
+    }
+    .photo-modal-text {
+      color: var(--grey);
+      font-size: .95rem;
+      line-height: 1.7;
+    }
+    .photo-modal-counter {
+      font-family: var(--ff-cond);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--grey-dim);
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      margin-top: 4px;
+    }
+    body.modal-lock { overflow: hidden; }
 
     @media (max-width: 900px) {
       .campo-info-grid { grid-template-columns: repeat(2, 1fr); }
       .pitch-wrap { grid-template-columns: 1fr; }
       .como-llegar-grid { grid-template-columns: 1fr; }
       .campo-gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 720px) {
+      .photo-modal-overlay { padding: 0; align-items: flex-end; }
+      .photo-modal { width: 100%; max-height: 94vh; border-radius: 18px 18px 0 0; }
+      .photo-modal-img-wrap, .photo-modal-img { max-height: 42vh; }
+      .photo-modal-body { padding: 20px 18px 28px; }
+      .photo-modal-nav { width: 36px; height: 36px; font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -474,7 +636,7 @@
     </div>
   </section>
 
-  <!-- MAPA CORREGIDO -->
+  <!-- MAPA -->
   <section>
     <div class="si">
       <div class="reveal" style="text-align:center;">
@@ -484,7 +646,6 @@
       </div>
       <div class="campo-map-wrap reveal">
         <span class="campo-map-badge">📍 El Colorado, Namballe -  San Ignacio - Cajamarca</span>
-        <!-- URL CORREGIDA: Usa coordenadas exactas y Namballe como referencia -->
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1793.2713424149368!2d-79.16619416670073!3d-4.986447361918068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91b5590052efa61d%3A0x6eb975d21349b7ef!2sEl%20Colorado!5e0!3m2!1ses!2spe!4v1719385723000!5m2!1ses!2spe" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
       <div class="campo-info-grid reveal">
@@ -582,14 +743,30 @@
         <h2 class="stit">El Colorado en <span class="g">Im&aacute;genes</span></h2>
         <p class="sdesc" style="margin:0 auto;">As&iacute; luce el campo donde entrenamos y competimos.</p>
       </div>
-      <div class="campo-gallery reveal">
-        <a href="#"><img src="imag/campo_1.png" alt="Cancha HUGUS FC" onerror="this.src='https://placehold.co/400x300/16295C/EDE5CC?text=Campo+1'"></a>
-        <a href="#"><img src="imag/campo_2.jpg" alt="Entrenamiento" onerror="this.src='https://placehold.co/400x300/0D1B3A/EDE5CC?text=Campo+2'"></a>
-        <a href="#"><img src="imag/campo_3.jfif" alt="D&iacute;a de partido" onerror="this.src='https://placehold.co/400x300/530E0A/EDE5CC?text=Campo+3'"></a>
-        <a href="#"><img src="imag/campo_4.jfif" alt="Vista general" onerror="this.src='https://placehold.co/400x300/16295C/C9A227?text=Campo+4'"></a>
+      <div class="campo-gallery reveal" id="campoGallery">
+        <!-- Se renderiza con JavaScript para poder abrir el modal sin recargar ni saltar al inicio -->
       </div>
     </div>
   </section>
+
+  <!-- MODAL DE GALERÍA -->
+  <div class="photo-modal-overlay" id="photoModal">
+    <div class="photo-modal" role="dialog" aria-modal="true" aria-labelledby="photoModalTitle">
+      <button class="photo-modal-close" id="photoModalClose" aria-label="Cerrar">✕</button>
+      <button class="photo-modal-nav photo-modal-prev" id="photoModalPrev" aria-label="Foto anterior">‹</button>
+      <button class="photo-modal-nav photo-modal-next" id="photoModalNext" aria-label="Foto siguiente">›</button>
+      <div class="photo-modal-img-wrap">
+        <img src="" alt="" class="photo-modal-img" id="photoModalImg" onerror="this.src='https://placehold.co/900x600/16295C/EDE5CC?text=HUGUS+FC'">
+      </div>
+      <div class="photo-modal-body">
+        <span class="photo-modal-tag" id="photoModalTag">Galer&iacute;a &middot; El Colorado</span>
+        <h3 class="photo-modal-title" id="photoModalTitle"></h3>
+        <p class="photo-modal-text" id="photoModalText"></p>
+        <span class="photo-modal-counter" id="photoModalCounter"></span>
+      </div>
+    </div>
+  </div>
+
   <!-- BOTTOM NAV (móvil) -->
   <div class="bottom-nav">
     <a href="index.html" class="nav-item active">
@@ -768,6 +945,103 @@
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
     updateAuthUI();
+
+    // ============================================================
+    // GALERÍA DEL CAMPO + MODAL (foto completa, sin saltar al inicio)
+    // ============================================================
+    const galeriaData = [
+      {
+        img: 'imag/campo_1.png',
+        titulo: 'La cancha principal',
+        texto: 'Vista general del campo donde HUGUS FC entrena semana a semana y disputa sus partidos como local, en pleno Caserío El Colorado.'
+      },
+      {
+        img: 'imag/campo_2.jpg',
+        titulo: 'Día de entrenamiento',
+        texto: 'El plantel trabajando en una jornada de entrenamiento, puliendo detalles tácticos y físicos de cara a la competencia.'
+      },
+      {
+        img: 'imag/campo_3.jfif',
+        titulo: 'Día de partido',
+        texto: 'Ambiente de partido en El Colorado, con la hinchada y el equipo dejando todo por los colores de HUGUS FC.'
+      },
+      {
+        img: 'imag/campo_4.jfif',
+        titulo: 'Vista general del terreno',
+        texto: 'Una toma amplia del campo, mostrando el entorno natural del Caserío El Colorado que rodea a nuestra cancha.'
+      }
+    ];
+
+    function renderGaleria() {
+      const grid = document.getElementById('campoGallery');
+      if (!grid) return;
+      grid.innerHTML = '';
+      galeriaData.forEach((foto, index) => {
+        const btnEl = document.createElement('button');
+        btnEl.type = 'button';
+        btnEl.className = 'campo-gallery-item';
+        btnEl.setAttribute('aria-label', 'Ver foto: ' + foto.titulo);
+        btnEl.innerHTML = `<img src="${foto.img}" alt="${foto.titulo}" onerror="this.src='https://placehold.co/400x300/16295C/EDE5CC?text=Campo+${index + 1}'">`;
+        btnEl.addEventListener('click', () => openPhotoModal(index));
+        grid.appendChild(btnEl);
+      });
+    }
+
+    let photoIndex = 0;
+    const photoModal = document.getElementById('photoModal');
+    const photoModalImg = document.getElementById('photoModalImg');
+    const photoModalTitle = document.getElementById('photoModalTitle');
+    const photoModalText = document.getElementById('photoModalText');
+    const photoModalCounter = document.getElementById('photoModalCounter');
+    const photoModalClose = document.getElementById('photoModalClose');
+    const photoModalPrev = document.getElementById('photoModalPrev');
+    const photoModalNext = document.getElementById('photoModalNext');
+
+    function openPhotoModal(index) {
+      photoIndex = index;
+      renderPhotoModal();
+      photoModal.classList.add('open');
+      document.body.classList.add('modal-lock');
+    }
+
+    function renderPhotoModal() {
+      const foto = galeriaData[photoIndex];
+      if (!foto) return;
+      photoModalImg.src = foto.img;
+      photoModalImg.alt = foto.titulo;
+      photoModalTitle.textContent = foto.titulo;
+      photoModalText.textContent = foto.texto;
+      photoModalCounter.textContent = 'Foto ' + (photoIndex + 1) + ' de ' + galeriaData.length;
+    }
+
+    function closePhotoModal() {
+      photoModal.classList.remove('open');
+      document.body.classList.remove('modal-lock');
+    }
+
+    function showPrevPhoto() {
+      photoIndex = (photoIndex - 1 + galeriaData.length) % galeriaData.length;
+      renderPhotoModal();
+    }
+    function showNextPhoto() {
+      photoIndex = (photoIndex + 1) % galeriaData.length;
+      renderPhotoModal();
+    }
+
+    photoModalClose.addEventListener('click', closePhotoModal);
+    photoModalPrev.addEventListener('click', showPrevPhoto);
+    photoModalNext.addEventListener('click', showNextPhoto);
+    photoModal.addEventListener('click', (e) => {
+      if (e.target === photoModal) closePhotoModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!photoModal.classList.contains('open')) return;
+      if (e.key === 'Escape') closePhotoModal();
+      if (e.key === 'ArrowLeft') showPrevPhoto();
+      if (e.key === 'ArrowRight') showNextPhoto();
+    });
+
+    renderGaleria();
   </script>
 </body>
 </html>
