@@ -525,17 +525,39 @@
       transition: transform .3s, border-color .3s, box-shadow .3s;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
     }
     .noticia-card:hover {
       transform: translateY(-6px);
       border-color: rgba(201, 162, 39, 0.4);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
     }
-    .noticia-img {
+    /* --- IMAGEN COMPLETA, SIN RECORTES ---
+       El contenedor mantiene proporción fija (evita saltos de layout)
+       y usa un fondo desenfocado detrás para que la foto se vea
+       ENTERA (object-fit: contain) sin dejar franjas vacías feas. */
+    .noticia-img-wrap {
+      position: relative;
       width: 100%;
       aspect-ratio: 16/10;
-      object-fit: cover;
+      overflow: hidden;
       background: var(--navy-light);
+    }
+    .noticia-img-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(18px) brightness(.55) saturate(1.2);
+      transform: scale(1.15);
+    }
+    .noticia-img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      z-index: 1;
     }
     .noticia-body {
       padding: 24px 24px 28px;
@@ -575,6 +597,9 @@
       margin-top: auto;
       padding-top: 12px;
       transition: color .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .noticia-leer:hover {
       color: var(--cream);
@@ -588,6 +613,150 @@
       font-family: var(--ff-cond);
       font-size: 1.2rem;
       letter-spacing: .1em;
+    }
+
+    /* ============================================================
+       MODAL DE NOTICIA (ventana emergente centrada)
+       ============================================================ */
+    .noticia-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      background: rgba(4, 8, 18, 0.86);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .noticia-modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    .noticia-modal {
+      position: relative;
+      width: min(760px, 100%);
+      max-height: 88vh;
+      overflow-y: auto;
+      background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+      border: 1px solid rgba(201, 162, 39, .35);
+      border-radius: 18px;
+      box-shadow: 0 30px 80px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(201,162,39,.08);
+      transform: translateY(24px) scale(.97);
+      transition: transform .3s ease;
+    }
+    .noticia-modal-overlay.open .noticia-modal {
+      transform: translateY(0) scale(1);
+    }
+    .noticia-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 5;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(7, 15, 33, 0.75);
+      border: 1px solid rgba(201, 162, 39, .5);
+      color: var(--gold);
+      font-size: 1.3rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s, transform .2s;
+    }
+    .noticia-modal-close:hover {
+      background: var(--red);
+      color: var(--white);
+      transform: rotate(90deg);
+    }
+    .noticia-modal-img-wrap {
+      width: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-height: 55vh;
+      overflow: hidden;
+      border-radius: 18px 18px 0 0;
+    }
+    .noticia-modal-img {
+      width: 100%;
+      max-height: 55vh;
+      object-fit: contain;
+      background: #000;
+    }
+    .noticia-modal-body {
+      padding: 28px 32px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .noticia-modal-fecha {
+      font-family: var(--ff-cond);
+      font-size: .74rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .noticia-modal-titulo {
+      font-family: var(--ff-display);
+      font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+      text-transform: uppercase;
+      letter-spacing: .01em;
+      line-height: 1.05;
+    }
+    .noticia-modal-texto {
+      color: var(--grey);
+      font-size: .98rem;
+      line-height: 1.75;
+      white-space: pre-line;
+    }
+    .noticia-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 10px;
+      margin-top: 6px;
+      border-top: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    .noticia-modal-tag {
+      font-family: var(--ff-cond);
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--navy-dark);
+      background: var(--gold);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+    .noticia-modal-share {
+      font-family: var(--ff-cond);
+      font-size: .78rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,162,39,.4);
+      padding: 8px 16px;
+      border-radius: 999px;
+      transition: background .2s, color .2s;
+    }
+    .noticia-modal-share:hover {
+      background: var(--gold);
+      color: var(--navy-dark);
+    }
+    body.modal-lock {
+      overflow: hidden;
     }
 
     /* ---------- FOOTER ---------- */
@@ -776,6 +945,22 @@
       .nav-center {
         margin-top: -14px;
       }
+      .noticia-modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+      }
+      .noticia-modal {
+        width: 100%;
+        max-height: 92vh;
+        border-radius: 18px 18px 0 0;
+      }
+      .noticia-modal-img-wrap,
+      .noticia-modal-img {
+        max-height: 42vh;
+      }
+      .noticia-modal-body {
+        padding: 22px 20px 30px;
+      }
     }
 
     @media (max-width:480px) {
@@ -791,9 +976,6 @@
         width: 58px;
         height: 58px;
         font-size: 2rem;
-      }
-      .noticia-img {
-        aspect-ratio: 16/9;
       }
       .noticia-titulo {
         font-size: .95rem;
@@ -869,6 +1051,25 @@
       </div>
     </div>
   </section>
+
+  <!-- MODAL DE NOTICIA -->
+  <div class="noticia-modal-overlay" id="noticiaModal">
+    <div class="noticia-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+      <button class="noticia-modal-close" id="modalCloseBtn" aria-label="Cerrar">✕</button>
+      <div class="noticia-modal-img-wrap">
+        <img src="" alt="" class="noticia-modal-img" id="modalImg" onerror="this.src='https://placehold.co/900x600/16295C/F7F5EF?text=HUGUS+FC'">
+      </div>
+      <div class="noticia-modal-body">
+        <span class="noticia-modal-fecha" id="modalFecha"></span>
+        <h3 class="noticia-modal-titulo" id="modalTitulo"></h3>
+        <p class="noticia-modal-texto" id="modalTexto"></p>
+        <div class="noticia-modal-footer">
+          <span class="noticia-modal-tag">HUGUS FC</span>
+          <a href="#" class="noticia-modal-share" id="modalShareBtn">Compartir 📤</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <div class="footer-strip"></div>
@@ -1075,43 +1276,37 @@
 
     // ============================================================
     // DATOS DE NOTICIAS (¡REEMPLAZA AQUÍ CON TUS PROPIAS NOTICIAS!)
+    // Cada noticia ahora tiene un campo "contenido" con el texto
+    // completo que aparece en la ventana emergente (modal).
     // ============================================================
     const noticiasData = [
       {
         titulo: 'Hugus FC inicia pretemporada 2026',
         fecha: '12 de Julio, 2026',
         resumen: 'El plantel oficial arrancó con los trabajos de resistencia física de cara a los torneos de la segunda mitad del año. Los jugadores se preparan con intensidad.',
-        img: 'imag/temporada.jpg'
-      },
-      {
-        titulo: 'Inauguración de la academia de menores',
-        fecha: '5 de Julio, 2026',
-        resumen: 'Comienzan las inscripciones para menores de 8 a 14 años en la escuela oficial de Hugus FC en El Colorado. ¡Forma parte de nuestra cantera!',
-        img: 'imag/kit_oficial.png'
+        img: 'imag/temporada.jpg',
+        contenido: 'El plantel oficial de HUGUS FC arrancó oficialmente su pretemporada 2026 con una exigente jornada de trabajos físicos enfocados en resistencia, velocidad y fuerza. Bajo la dirección del cuerpo técnico, los jugadores realizaron sesiones dobles durante la primera semana, sentando las bases para encarar con solidez los torneos que se vienen en la segunda mitad del año.\n\nEl objetivo del club es llegar en óptimas condiciones físicas y tácticas a la liga distrital, manteniendo los valores que identifican a la institución: Dios, Familia y Fútbol. Se espera que en las próximas semanas se sumen amistosos de preparación contra clubes de la zona.'
       },
       {
         titulo: 'Victoria en el amistoso regional',
         fecha: '28 de Junio, 2026',
         resumen: 'Nuestros guerreros se impusieron con solidez 3-1 ante el conjunto de San Francisco de El Colorado, en un partido lleno de garra y fútbol.',
-        img: 'imag/kit_oficial.png'
+        img: 'imag/victoria2025.png',
+        contenido: 'En un partido cargado de emoción, HUGUS FC se impuso 3-1 ante el conjunto de San Francisco de El Colorado en el amistoso regional disputado en casa. El equipo mostró carácter, orden defensivo y una gran definición en los momentos clave del encuentro.\n\nLos goles del local llegaron en distintos tramos del partido, reflejando el trabajo constante en los entrenamientos. La afición respondió con una gran asistencia, acompañando a los jugadores desde el silbatazo inicial hasta el final del partido.'
       },
       {
         titulo: 'Nuevo kit oficial 2026 presentado',
         fecha: '20 de Junio, 2026',
         resumen: 'La nueva indumentaria del club, diseñada con tecnología Dry-Fit, ya está disponible en la tienda oficial. Colores verde, rojo y dorado.',
-        img: 'imag/kit_oficial.png'
+        img: 'imag/Conjunto HFC Oficial 2026.png',
+        contenido: 'HUGUS FC presentó oficialmente su nuevo kit de temporada 2026, diseñado con tecnología Dry-Fit que ofrece mayor transpirabilidad y comodidad durante los partidos y entrenamientos. La indumentaria combina los colores tradicionales del club —verde, rojo y dorado— en un diseño moderno que representa la identidad y el orgullo de la institución.\n\nDesde hoy, la nueva camiseta está disponible en la tienda oficial del club en distintas tallas, tanto para jugadores como para hinchas que quieran vestir los colores de HUGUS FC.'
       },
       {
         titulo: 'Hugus FC se une a la liga local',
         fecha: '15 de Junio, 2026',
         resumen: 'El club ha sido oficialmente aceptado para participar en la liga distrital de El Colorado. El sueño sigue creciendo.',
-        img: 'imag/kit_oficial.png'
-      },
-      {
-        titulo: 'Cena de confraternidad del club',
-        fecha: '10 de Junio, 2026',
-        resumen: 'Jugadores, cuerpo técnico y directivos compartieron una velada de unidad y proyección para el futuro del HUGUS FC.',
-        img: 'imag/camiseta.png'
+        img: 'imag/liga.png',
+        contenido: 'Gran noticia para toda la familia HUGUS: el club ha sido oficialmente aceptado para participar en la liga distrital de El Colorado. Este paso representa un logro importante para la institución, fruto del trabajo constante de sus dirigentes, jugadores y de toda la comunidad que respalda al equipo.\n\nCon esta incorporación, HUGUS FC empieza una nueva etapa de competencia formal, donde buscará representar con orgullo al Caserío El Colorado. El sueño de crecer como club sigue firme, paso a paso, con Dios, Familia y Fútbol por delante.'
       }
     ];
 
@@ -1128,12 +1323,15 @@
       }
 
       grid.innerHTML = '';
-      noticiasData.forEach(noticia => {
+      noticiasData.forEach((noticia, index) => {
         const card = document.createElement('div');
         card.className = 'noticia-card';
 
         card.innerHTML = `
-          <img src="${noticia.img}" alt="${noticia.titulo}" class="noticia-img" onerror="this.src='https://placehold.co/600x375/16295C/F7F5EF?text=HUGUS+FC'">
+          <div class="noticia-img-wrap">
+            <img src="${noticia.img}" alt="" class="noticia-img-bg" aria-hidden="true" onerror="this.style.display='none'">
+            <img src="${noticia.img}" alt="${noticia.titulo}" class="noticia-img" onerror="this.src='https://placehold.co/600x375/16295C/F7F5EF?text=HUGUS+FC'">
+          </div>
           <div class="noticia-body">
             <span class="noticia-fecha">📅 ${noticia.fecha}</span>
             <h3 class="noticia-titulo">${noticia.titulo}</h3>
@@ -1142,13 +1340,53 @@
           </div>
         `;
 
-        card.addEventListener('click', () => {
-          showToast(`📰 "${noticia.titulo}" - Pronto más detalles.`, 'success');
-        });
-
+        card.addEventListener('click', () => openNoticiaModal(index));
         grid.appendChild(card);
       });
     }
+
+    // ============================================================
+    // MODAL DE NOTICIA (abrir / cerrar)
+    // ============================================================
+    const noticiaModal = document.getElementById('noticiaModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalFecha = document.getElementById('modalFecha');
+    const modalTitulo = document.getElementById('modalTitulo');
+    const modalTexto = document.getElementById('modalTexto');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalShareBtn = document.getElementById('modalShareBtn');
+
+    function openNoticiaModal(index) {
+      const noticia = noticiasData[index];
+      if (!noticia) return;
+
+      modalImg.src = noticia.img;
+      modalImg.alt = noticia.titulo;
+      modalFecha.textContent = '📅 ' + noticia.fecha;
+      modalTitulo.textContent = noticia.titulo;
+      modalTexto.textContent = noticia.contenido || noticia.resumen;
+
+      modalShareBtn.onclick = (e) => {
+        e.preventDefault();
+        showToast('🔗 Enlace copiado / listo para compartir', 'success');
+      };
+
+      noticiaModal.classList.add('open');
+      document.body.classList.add('modal-lock');
+    }
+
+    function closeNoticiaModal() {
+      noticiaModal.classList.remove('open');
+      document.body.classList.remove('modal-lock');
+    }
+
+    modalCloseBtn.addEventListener('click', closeNoticiaModal);
+    noticiaModal.addEventListener('click', (e) => {
+      if (e.target === noticiaModal) closeNoticiaModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeNoticiaModal();
+    });
 
     // ============================================================
     // INICIALIZAR UI DE AUTENTICACIÓN

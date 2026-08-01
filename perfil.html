@@ -565,19 +565,22 @@
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
     }
 
+    /* Avatar — mismo lenguaje visual que el logo grande de login/registro:
+       círculo dorado más grueso + halo suave, tamaño consistente (132px) */
     .profile-avatar {
-      width: 120px;
-      height: 120px;
+      width: 132px;
+      height: 132px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--gold), #b8921f);
       color: var(--navy-dark);
       font-family: var(--ff-display);
-      font-size: 4rem;
+      font-size: 4.2rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 18px;
-      box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.3), 0 8px 30px rgba(0, 0, 0, 0.4);
+      margin: 0 auto 20px;
+      border: 3px solid rgba(201, 162, 39, 0.55);
+      box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.08), 0 12px 30px -8px rgba(0, 0, 0, .55);
       user-select: none;
     }
     .profile-name {
@@ -868,7 +871,7 @@
       .profile-section { padding: 110px 0 40px; }
       .profile-grid { grid-template-columns: 1fr; gap: 30px; }
       .profile-card { padding: 30px 20px; }
-      .profile-avatar { width: 90px; height: 90px; font-size: 3rem; }
+      .profile-avatar { width: 108px; height: 108px; font-size: 3.4rem; }
       .profile-name { font-size: 1.8rem; }
       .profile-info-grid { grid-template-columns: 1fr; gap: 8px; }
       .stats-card { padding: 30px 20px; }
@@ -879,7 +882,7 @@
     }
 
     @media (max-width:480px) {
-      .profile-avatar { width: 80px; height: 80px; font-size: 2.5rem; }
+      .profile-avatar { width: 96px; height: 96px; font-size: 3rem; }
       .profile-name { font-size: 1.5rem; }
       .stats-grid { grid-template-columns: 1fr; }
       .stat-number { font-size: 1.6rem; }
